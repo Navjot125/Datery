@@ -68,6 +68,10 @@ import CustomIcon from "../../../assets/CustomIcon";
 let page = 0;
 
 const Home = (props) => {
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
   const navigation = useNavigation();
   const role = props.state.roleReducer.role.id;
   const [modalVisible, setModalVisible] = useState(false);
@@ -498,7 +502,9 @@ const Home = (props) => {
   const requestMerchants = async () => {
     let coords = await getCurrentCity();
 
+    const token = userToken ? userToken : Usertoken
     let params = {
+      token,
       endpoint: API_URL.fetchAllServices,
       coordinates: tempCords
         ? tempCords
@@ -582,7 +588,9 @@ const Home = (props) => {
   const getApiRes = (item) => {
     console.log(item, "pp");
     page = 0;
+    const token = userToken ? userToken : Usertoken
     let params = {
+      token,
       endpoint: API_URL.fetchAllServices,
       coordinates: tempCords
         ? tempCords
@@ -606,7 +614,9 @@ const Home = (props) => {
   const getSortRes = (item) => {
     console.log(item, "hhh");
     page = 0;
+    const token = userToken ? userToken : Usertoken
     let params = {
+      token,
       endpoint: API_URL.fetchAllServices,
       coordinates: tempCords
         ? tempCords
@@ -627,7 +637,9 @@ const Home = (props) => {
   const endReached = () => {
     if (totalMerchant > merchants.length) {
       page += 1;
+      const token = userToken ? userToken : Usertoken
       let params = {
+        token,
         endpoint: API_URL.fetchAllServices,
         coordinates: tempCords
           ? tempCords

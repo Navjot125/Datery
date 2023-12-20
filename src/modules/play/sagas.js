@@ -19,10 +19,11 @@ function* onplayRequest({ data }) {
           }
         },
         {
-        coordinates: data.coordinates,
+          coordinates: data.coordinates,
         // sortby: data.sortby ? data.sortby : '',
-        gametype: data.gametype ?
-          data.gametype : null, name: data.name
+          gametype: data.gametype ?
+          data.gametype : null, 
+          name: data.name
       })
     // .then(function (response) {
     //   return response;

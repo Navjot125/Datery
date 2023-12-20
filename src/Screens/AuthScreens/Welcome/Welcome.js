@@ -18,7 +18,7 @@ import * as Atom from "../../../Components/atoms";
 import * as Molecules from "../../../Components/molecules";
 import { APPLE_LOGO, GOOGLE_LOGO, LOGO_ORANGE } from "../../../assets";
 import { useNavigation } from "@react-navigation/native";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import * as Models from "../../../Components/models";
 import { API_URL } from "../../../Constants/Config";
 import { questionRequest } from "../../../modules/GetQuestions/actions";
@@ -27,6 +27,10 @@ import { merchantRequest } from "../../../modules/Merchants/actions";
 
 const Welcome = (props) => {
   const navigation = useNavigation();
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -75,11 +79,13 @@ const Welcome = (props) => {
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => {
+                const token = userToken ? userToken : Usertoken;
                 let data = { sortby: 'Price' }
                 let params = {
                   endpoint: API_URL.fetchAllServices,
                   coordinates: null,
                   serviceType: null,
+                  token
                 };
                 props.merchantRequest(data, params)
                 navigation.reset({

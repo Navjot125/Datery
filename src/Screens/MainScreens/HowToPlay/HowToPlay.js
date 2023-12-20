@@ -21,7 +21,7 @@ import { connect, useDispatch } from "react-redux";
 import { API_URL } from "../../../Constants/Config";
 import {
   playRequest,
-  playfavouriteRequest,
+  playfavouriteRequest, 
   playguestFavouriteRequest,
 } from "../../../modules/play/actions";
 import {
@@ -41,7 +41,7 @@ const HowToPlay = (props) => {
   const [dataa, setDataa] = useState([props.route.params.item]);
   const role = props.state.roleReducer.role.id;
   // const dataa = props.state.learnReducer.details
-  const [result, setResults] = useState(props.route.params.item);
+  const [result, setResults] = useState(props.route.params.item); 
   const [isFavorite, setIsFavorite] = useState(props.route.params.item?.isFavorite);
   
   const onLoad = async () => {

@@ -22,7 +22,7 @@ import Minus from "react-native-vector-icons/Entypo";
 import DropShadow from "react-native-drop-shadow";
 import { BackHeader } from "../../../Components/molecules";
 import { useNavigation } from "@react-navigation/native";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Icon from "react-native-vector-icons/FontAwesome";
 import AntDesign from "react-native-vector-icons/AntDesign";
 
@@ -61,6 +61,8 @@ import {
 import CustomIcon from "../../../assets/CustomIcon";
 import ReviewTab from "../ReviewTab/ReviewTab";
 import base from "../../../Constants/CommonStyle";
+import { LearnfavouriteListRequest, LearnfavouriteRequest, LearnremoveFavouriteRequest, LearnremoveGuestFavouriteRequest } from "../../../modules/learn/actions";
+import { playRequest } from "../../../modules/play/actions";
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
@@ -183,6 +185,9 @@ const ListingDetail = (props) => {
   const [selectedDate, setSelectedDate] = React.useState("");
   const [selectedTime, setSelectedTime] = React.useState("");
   const navigation = useNavigation();
+  const [isFavorite, setIsFavorite] = useState(props.route?.params?.item?.isFavorite);
+  console.log('props.route?.params?.item', props.route?.params?.item);
+  dispatch = useDispatch()
   const onPress = (page) => {
     navigation.navigate(page);
   };
@@ -201,53 +206,137 @@ const ListingDetail = (props) => {
 
   // console.log(props.state.merchantReducer.details.locationCordinates.coordinates)
 
-  const centerImage = () => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-        // style = {{backgroundColor:'red'}}
-        onPress={() => {
-          let param = {
-            endpoint: API_URL.favoritiesInsert,
-            id: {
-              userId: props.state?.loginReducer?.loginData?._id
-                ? props.state?.loginReducer?.loginData?._id
-                : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-              serviceId: props.state?.merchantReducer?.details?._id,
-            },
-          };
-          let data = {
-            averageRating: result?.averageRating,
-            price: result?.radioButtonsData[0]?.price,
-            providerName: result?.title,
-            providerfile: result?.image,
-            providerlocationAddress: result?.address,
-            ratingCount: result?.ratingCount,
-            serviceId: result?._id,
-          };
-          props.state.roleReducer.role.id == 2
-            ? props.favouriteRequest(param)
-            : // : showAlert(`Please login as a user`, 4000)
-            !existingFavourite(result?._id)
-            ? (props.guestFavouriteRequest(data),
-              data
-                ? showAlertSuccess(`Item added to your favourite list`)
-                : null)
-            : showAlertError(`Item already exist in your favourite list`);
-        }}
-      >
-        <Image
-          style={{
-            height: 15,
-            width: 16,
-            resizeMode: "contain",
-            marginRight: 10,
-          }}
-          source={require("../../../assets/images/WhiteHeart.png")}
-        />
-      </TouchableOpacity>
+  const handleFavListing = () => {
+    dispatch(
+      LearnfavouriteListRequest({
+        endpoint: API_URL.fetchFavoriteLearn,
+        userId: props.state.loginReducer.loginData._id,
+      })
     );
   };
+  
+  const handleDelete = (id) => {
+    // console.log(id, "IIDDDDd");
+    // setData((prevData) => prevData.filter((item) => item.id !== id));
+    let param = {
+      endpoint: API_URL.deleteFavorite,
+      data: {
+        serviceId: id,
+        userId: props.state?.loginReducer?.loginData?._id
+          ? props.state?.loginReducer?.loginData?._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+      },
+    };
+    let serviceId = {
+      serviceId: id,
+    };
+    role == 2
+      ? props.LearnremoveFavouriteRequest(param)
+      : props.LearnremoveGuestFavouriteRequest(serviceId);
+      setIsFavorite(!isFavorite)
+    showAlertSuccess(`Item removed from your favourite list`);
+    setTimeout(() => {
+      handleFavListing();
+    }, 250);
+    // console.log('sfsf',id);
+  };
+
+  const onLoad = async () => {
+    let apiData = {
+      endpoint: API_URL.fetchAllLearn,
+      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
+        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      id: {
+        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
+          props.state?.signupReducer?.signupSucessData?.UserData?._id
+      },
+    };
+    dispatch(playRequest(apiData))  
+    console.log("APPPPPPPP2-----", apiData)
+  }
+
+  const centerImage = () => {
+    // return (
+    //   <TouchableOpacity
+    //     activeOpacity={0.9}
+    //     // style = {{backgroundColor:'red'}}
+    //     onPress={() => {
+    //       let param = {
+    //         endpoint: API_URL.favoritiesInsert,
+    //         id: {
+    //           userId: props.state?.loginReducer?.loginData?._id
+    //             ? props.state?.loginReducer?.loginData?._id
+    //             : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+    //           serviceId: props.state?.merchantReducer?.details?._id,
+    //         },
+    //       };
+    //       let data = {
+    //         averageRating: result?.averageRating,
+    //         price: result?.radioButtonsData[0]?.price,
+    //         providerName: result?.title,
+    //         providerfile: result?.image,
+    //         providerlocationAddress: result?.address,
+    //         ratingCount: result?.ratingCount,
+    //         serviceId: result?._id,
+    //       };
+    //       props.state.roleReducer.role.id == 2
+    //         ? props.favouriteRequest(param)
+    //         : // : showAlert(`Please login as a user`, 4000)
+    //         !existingFavourite(result?._id)
+    //         ? (props.guestFavouriteRequest(data),
+    //           data
+    //             ? showAlertSuccess(`Item added to your favourite list`)
+    //             : null)
+    //         : showAlertError(`Item already exist in your favourite list`);
+    //     }}
+    //   >
+    //     <Image
+    //       style={{
+    //         height: 15,
+    //         width: 16,
+    //         resizeMode: "contain",
+    //         marginRight: 10,
+    //       }}
+    //       source={require("../../../assets/images/WhiteHeart.png")}
+    //     />
+    //   </TouchableOpacity>
+    // );
+    return (
+      <CustomIcon
+        type={"Entypo"}
+        name={isFavorite ? "heart" : "heart-outlined"}
+        size={25}
+        color={isFavorite ? color._primary_orange : null}
+        onPress={async () => {
+          if (!isFavorite) {
+            onLoad()
+            console.log('yes is favorite 2');
+            let param = {
+              endpoint: API_URL.favoritiesInsert,
+              id: {
+                userId: props.state?.loginReducer?.loginData?._id
+                  ? props.state?.loginReducer?.loginData?._id
+                  : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+                serviceId: result?._id,
+              },
+            };
+            if (role == 2) {
+              console.log('role is 2 2');
+              await props.LearnfavouriteRequest(param);
+              setIsFavorite(!isFavorite)
+            } else if (existingFavourite(result?._id)) {
+              showAlertError(`Item already exist in your favourite list`);
+            } else showAlertError(`Please login to add favourites`);
+          } else {
+            onLoad(),
+            console.log('not in favorite'),
+            handleDelete(result?._id);
+          }
+        }}
+      />
+    );
+  };
+  console.log('---------------------', result);
   // console.log(props.state.cartReducer?.INITIAL_STATE,'props.state.cartReducer------------------');
   const rightImage = () => {
     return (
@@ -1122,6 +1211,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addToCartGuestRequest(data, navigation)),
   CartListRequest: (data) => dispatch(CartListRequest(data)),
   guestFavouriteRequest: (data) => dispatch(guestFavouriteRequest(data)),
+  LearnremoveFavouriteRequest: (navigation) =>
+    dispatch(LearnremoveFavouriteRequest(navigation)),
+    LearnremoveGuestFavouriteRequest: (data) =>
+      dispatch(LearnremoveGuestFavouriteRequest(data)),
+  LearnfavouriteRequest: (data) => dispatch(LearnfavouriteRequest(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListingDetail);

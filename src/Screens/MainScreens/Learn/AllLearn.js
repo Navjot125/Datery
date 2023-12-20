@@ -40,8 +40,7 @@ const AllLearn = (props) => {
 
 
 
-  const showList = ({ item }) => {
-
+  const showList = ({ item, index }) => {
     const formatDate = (isoDateString) => {
       const createdAtDate = new Date(isoDateString);
       return `${createdAtDate.toDateString()}`;

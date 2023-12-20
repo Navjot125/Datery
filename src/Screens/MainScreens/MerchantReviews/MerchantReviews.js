@@ -19,7 +19,6 @@ import { connect, useDispatch, useSelector } from "react-redux";
 import axiosClient from "../../../Utils/ApiClient";
 import { API_URL } from "../../../Constants/Config";
 
-
 const MerchantReviews = (props) => {
 
   // console.log(props.route.params)
@@ -48,7 +47,6 @@ const MerchantReviews = (props) => {
     } catch (error) {
       // console.log("ERR", error)
     }
-
   }
   // console.log(userReview[0]?.reviews)
 
@@ -120,7 +118,6 @@ const MerchantReviews = (props) => {
     );
   };
 
-
   const [selected, setSelected] = useState(undefined);
   const data = [
     { label: "Most Recent", value: "1" },
@@ -130,8 +127,6 @@ const MerchantReviews = (props) => {
     { label: "Five", value: "5" },
   ];
   const [value, setValue] = useState(null);
-
-
   return (
     <SafeAreaView style={styles.scrollView}>
       <View style={styles.mainView}>

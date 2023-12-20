@@ -37,7 +37,6 @@ const All = (props) => {
       >
         <TouchableOpacity
           activeOpacity={0.9}
-
           onPress={() => navigation.navigate("HowToPlay", { item })}
           style={{
             marginHorizontal: 10, flexDirection: "row", alignItems: 'center'

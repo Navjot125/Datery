@@ -17,9 +17,15 @@ function* onMerchantRequest({ data }) {
         category: data.category ?
           data.category : null, name: data.name,
         offset: data.offset
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: data?.token,
+        },
+      
       })
     if (res) {
-      console.log(res.data)
+      console.log(res.data?.data[0],'------------------')
       if (res?.data?.status) {
 
         // yield put(setLoader(false));

@@ -46,7 +46,8 @@ import {
   addToCartRequest,
 } from "../../../modules/Cart/actions";
 import CustomIcon from "../../../assets/CustomIcon";
-import { showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import { showAlertError, showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import { playRequest } from "../../../modules/play/actions";
 const data = [
   {
     id: 1,
@@ -65,7 +66,9 @@ const CourseOverview = (props) => {
   const [controlsVisible, setControlsVisible] = useState(true);
   const [controlsTimeout, setControlsTimeout] = useState(null);
   const role = props.state.roleReducer.role.id;
-  const [result, setResult] = useState(props.route.params.item);
+  const [result, setResult] = useState(props.route?.params?.item);  
+  const [isFavorite, setIsFavorite] = useState(props.route?.params?.item?.isFavorite);
+
   const dispatch = useDispatch();
   const [reviews, setReviews] = useState(
     props.route.params.item.reviews[0]?.reviews || []
@@ -181,26 +184,40 @@ const CourseOverview = (props) => {
     role == 2
       ? props.LearnremoveFavouriteRequest(param)
       : props.LearnremoveGuestFavouriteRequest(serviceId);
+      setIsFavorite(!isFavorite)
     showAlertSuccess(`Item removed from your favourite list`);
     setTimeout(() => {
       handleFavListing();
     }, 250);
     // console.log('sfsf',id);
   };
+
+  const onLoad = async () => {
+    let apiData = {
+      endpoint: API_URL.fetchAllLearn,
+      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
+        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      id: {
+        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
+          props.state?.signupReducer?.signupSucessData?.UserData?._id
+      },
+    };
+    dispatch(playRequest(apiData))  
+    console.log("APPPPPPPP2-----", apiData)
+  }
   const centerImage = () => {
     return (
       <CustomIcon
         type={"Entypo"}
-        name={!existingFavourite(result?._id) ? "heart" : "heart-outlined"}
+        name={isFavorite ? "heart" : "heart-outlined"}
         size={25}
-        color={!existingFavourite(result?._id) ? color._primary_orange : null}
+        color={isFavorite ? color._primary_orange : null}
         onPress={async () => {
-          // handleDelete
-          if (existingFavourite(result?._id)) {
+          if (!isFavorite) {
+            onLoad()
+            console.log('yes is favorite 2');
             let param = {
-              endpoint: existingFavourite(result?._id)
-                ? API_URL.favoritiesInsert
-                : API_URL.deleteFavorite,
+              endpoint: API_URL.favoritiesInsert,
               id: {
                 userId: props.state?.loginReducer?.loginData?._id
                   ? props.state?.loginReducer?.loginData?._id
@@ -208,53 +225,23 @@ const CourseOverview = (props) => {
                 serviceId: result?._id,
               },
             };
-            // console.log(JSON.stringify(result, null, 2), "PARARARAR")
-
-            if (role == 2 && !existingFavourite(result?._id)) {
+            if (role == 2) {
+              console.log('role is 2 2');
               await props.LearnfavouriteRequest(param);
-              // console.log("LearnApi", res)
-              // showAlertSuccess(`Item added to your favourite list`)
+              setIsFavorite(!isFavorite)
             } else if (existingFavourite(result?._id)) {
               showAlertError(`Item already exist in your favourite list`);
             } else showAlertError(`Please login to add favourites`);
           } else {
+            onLoad(),
+            console.log('not in favorite'),
             handleDelete(result?._id);
           }
         }}
       />
-      // <TouchableOpacity
-      //   activeOpacity={0.9}
-
-      //   style={{ justifyContent: "center", alignItems: 'center' }}
-      //   onPress={async () => {
-      //     let param = {
-      //       endpoint: API_URL.favoritiesInsert,
-      //       id: {
-      //         userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
-      //           props.state?.signupReducer?.signupSucessData?.UserData?._id,
-      //         serviceId: result?._id
-      //       },
-      //     }
-      //     // console.log(JSON.stringify(result, null, 2), "PARARARAR")
-
-      //     if (role == 2 && !existingFavourite(result?._id)) {
-      //       await props.LearnfavouriteRequest(param)
-      //       // console.log("LearnApi", res)
-      //       // showAlertSuccess(`Item added to your favourite list`)
-      //     }
-      //     else if (existingFavourite(result?._id)) {
-      //       showAlertError(`Item already exist in your favourite list`)
-      //     } else
-      //       showAlertError(`Please login to add favourites`)
-      //   }}
-      // >
-      //   <Image
-      //     style={{ height: 18, width: 18, tintColor: color._black, resizeMode: 'contain' }}
-      //     source={require("../../../assets/images/WhiteHeart.png")}
-      //   />
-      // </TouchableOpacity>
     );
   };
+  console.log('isFavorite', isFavorite);
   const shareImage = () => {
     return (
       <TouchableOpacity

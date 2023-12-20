@@ -36,14 +36,9 @@ import CustomIcon from "../../../assets/CustomIcon";
 
 
 const AllHome = (props) => {
-
   const navigation = useNavigation();
   const [list, setList] = useState([])
   const { merchants, totalMerchant } = useSelector(state => state.merchantReducer)
-
-
-
-
   const showList = ({ item, index }) => {
     return (
       <View
@@ -59,7 +54,7 @@ const AllHome = (props) => {
             let param = {
               endpoint: API_URL.fetchSingleService,
               serviceId: { serviceId: item?._id },
-              navigation: () => navigation.navigate("ListingDetail")
+              navigation: () => navigation.navigate("ListingDetail", item)
             }
             props.merchantDetailsRequest(param)
           }}
@@ -261,7 +256,6 @@ const AllHome = (props) => {
 
     <View style={{ flex: 1 }}>
       {/* {console.log(props.state.merchantReducer?.merchants.length)} */}
-
       {
         merchants[0] == null ? null :
           <FlatList
@@ -282,11 +276,9 @@ const AllHome = (props) => {
             bounces={false}
             alwaysBounceVertical={false}
             ListFooterComponent={() => {
-
             }}
           />
       }
-
     </View>
   );
 };
