@@ -84,7 +84,6 @@ const Learn = (props) => {
       // navigation.navigate("DatingProfile"),
     };
     // console.log("HHHHH___test", apiData, role, "RIIIIIII")
-    console.log("working LearnAllRequest------------------------");
     dispatch(LearnAllRequest(apiData));
     // role == 2 ?
     //   props.LearnAllRequest(apiData) : null

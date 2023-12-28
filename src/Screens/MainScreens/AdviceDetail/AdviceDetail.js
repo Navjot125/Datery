@@ -29,10 +29,10 @@ import { playRequest } from "../../../modules/play/actions";
 const AdviceDetail = (props) => {
 
   const navigation = useNavigation()
-  // console.log("PROSSSSS++++", props.route.params.item);
+  // console.log("PROSSSSS++++", props.route.params);
   const role = props.state.roleReducer.role.id
   const dataa = props.state.learnReducer.details
-  const [result, setResults] = useState(props.route.params.item);
+  const [result, setResults] = useState(props.route.params);
   const [selectedValue, setSelectedValue] = useState();
   const [selectedValueName, setSelectedValueName] = useState();
   const [selectedValuePrice, setSelectedValuePrice] = useState();
@@ -40,9 +40,9 @@ const AdviceDetail = (props) => {
   const [date, setDate] = useState();
   const [emptyCart, setEmptyCart] = useState(false);
   const [valueDropdown, setValueDropdown] = useState(null);
-  const [listData, setListData] = useState([props.route.params.item])
+  const [listData, setListData] = useState([props.route.params])
   const [imgChng, setImgChng] = useState('false')
-  const [isFavorite, setIsFavorite] = useState(props.route?.params?.item?.isFavorite);
+  const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
   dispatch = useDispatch()
 console.log('----------------------result',result);
   const likeImage = () => {

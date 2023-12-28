@@ -73,8 +73,6 @@ const Play = (props) => {
       },
     };
     dispatch(playRequest(apiData))
-
-    console.log("APPPPPPPP-----", apiData)
   }
 
   useEffect(() => {
@@ -118,6 +116,9 @@ const Play = (props) => {
       // let query = `?category=${item.id == "2" ? "Q%26A" : item.id == '3' ? "Physical" :
       //   item.id == '4' ? "Solo" : ""}`
       let params = {
+        
+      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
+      props.state?.signupReducer?.signupSucessData?.Usertoken,
         endpoint: sortData[sortItem-1]?.name ? `${allItem == "1" ?API_URL.fetchAllGame : `${API_URL?.fetchAllGame}?category=${String(allData[allItem-1]?.title).replace('&','%26')}`}&labels=${sortData[sortItem-1]?.name}`:
         `${allItem == "1" ?API_URL.fetchAllGame : `${API_URL?.fetchAllGame}?category=${String(allData[allItem-1]?.title).replace('&','%26')}`}`,
 

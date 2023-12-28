@@ -60,7 +60,7 @@ function* onLearnRequest({ data }) {
         
       )
       .then(function (response) {
-        console.log("onMerchantListRequest SAGA ERROR ===>", response.data);
+        // console.log("onMerchantListRequest SAGA ERROR ===>", response.data);
         return response;
       })
       .catch(function (error) {
@@ -68,12 +68,9 @@ function* onLearnRequest({ data }) {
         return;
       });
     if (res) {
-      console.log(res, "----------------------------rrrrreeeeeessssss");
+      // console.log(res?.data, "----------------------------rrrrreeeeeessssss");
       if (res?.data?.status) {
         // yield put(setLoader(false));
-        console.log("====================================");
-        console.log(res?.data, "-----------------");
-        console.log("====================================");
         yield put(LearnAllSuccess(res?.data?.data));
       } else {
         // yield put(setLoader(false));
@@ -100,22 +97,32 @@ function* onLearnRequest({ data }) {
 
 function* onLearnDetailsRequest({ navigation }) {
   // yield put(setLoader(true));
-  // console.log(navigation, 'navigation --------------- ');
+  try{  
   let res = yield axiosClient
-    .post(navigation.endpoint, navigation.serviceId)
+    .get(navigation.endpoint,
+      //  navigation.serviceId
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: navigation?.userToken,
+        },
+     params:{ learnId: navigation?.learnId, learnType: navigation?.learnType },
+      },
+       )
     .then(function (response) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      console.log('onLearnDetailsRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
-    // console.log(res.data, '....');
     if (res?.data?.status) {
+      // console.log(res.data, '----------------....');
       yield put(setLoader(false));
       yield put(LearnAllDetailsSuccess(res?.data?.data));
-      navigation.navigation();
+      navigation.cb(res?.data?.data);
+      // navigation.navigation();
       // console.log(res.data.data, ' message from saga merchant details');
     } else {
       yield put(setLoader(false));
@@ -127,6 +134,9 @@ function* onLearnDetailsRequest({ navigation }) {
     yield put(setLoader(false));
     // showAlert(res.data.message)
     // console.log(REQUIRED_ERROR_MESSAGE);
+  }}catch (error) {
+    yield put(setLoader(false));
+    console.log("onLearnDetailsRequest SAGA ERROR 2 ===>", error);
   }
   // yield put(setLoader(false));
 }

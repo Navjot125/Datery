@@ -111,6 +111,7 @@ const styles = StyleSheet.create({
     // height: hp('100%'),
     // width: wp('100%'),
     backgroundColor: color._white,
+    marginTop:35
   },
   scrollView2: {
     marginHorizontal: 6,

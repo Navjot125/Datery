@@ -186,7 +186,7 @@ const ListingDetail = (props) => {
   const [selectedTime, setSelectedTime] = React.useState("");
   const navigation = useNavigation();
   const [isFavorite, setIsFavorite] = useState(props.route?.params?.item?.isFavorite);
-  console.log('props.route?.params?.item', props.route?.params?.item);
+  // console.log('props.route?.params?.item', pro ps.route?.params?.item);
   dispatch = useDispatch()
   const onPress = (page) => {
     navigation.navigate(page);

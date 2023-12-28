@@ -490,11 +490,11 @@ const Navigation = (props) => {
           name="Receipt"
           component={Receipt}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           options={{ headerShown: false, gestureEnabled: false }}
           name="PurchasedActivity"
           component={PurchasedActivity}
-        />
+        /> */}
         <Stack.Screen
           options={{ headerShown: false, gestureEnabled: false }}
           name="Learn"

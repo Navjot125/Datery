@@ -10,6 +10,29 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: color._white,
   },
+
+  newMain: {
+    flexDirection: "row",
+    alignItems: 'center',
+    gap: 10,
+    marginTop: '2%'
+  },
+  newWrpTxt: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: color._font_white,
+    fontFamily: fonts.SEMI_BOLD,
+    textAlign: 'justify'
+  },
+  newWrp: {
+    backgroundColor: color._primary_orange,
+    // justifyContent: 'center',
+    height: 25,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    flexDirection: 'row'
+  },
   mainView: {
     flex: 1,
     backgroundColor: color._white,

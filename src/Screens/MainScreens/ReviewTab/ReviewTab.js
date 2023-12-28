@@ -124,15 +124,12 @@ const ReviewTab = ({ dReview, setListData, listData }) => {
             // titleStyle={{ paddingVertical: 8 }}
             />
           </View>
-          <Text style={styles.dateText}>{formatDate(item.createdAt)}</Text>
+          <Text style={styles.dateText}>{formatDate(item?.createdAt)}</Text>
         </View>
-        <Text style={styles.text}>{item.summary}</Text>
+        <Text style={styles.text}>{item?.summary}</Text>
       </View>
     );
   };
-
-
-  console.log(dReview._id)
 
   return (
     <View style={styles.scrollView}>

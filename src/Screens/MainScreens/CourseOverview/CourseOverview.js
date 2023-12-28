@@ -57,7 +57,8 @@ const data = [
   },
 ];
 const CourseOverview = (props) => {
-  const [listData, setListData] = useState([props.route.params.item]);
+  // console.log('props.route?.params',props.route?.params);
+  const [listData, setListData] = useState([props.route.params]);
   const [currentTime, setCurrentTime] = useState(0);
   const [paused, setPaused] = useState(false);
   // const videoPlayer = React.createRef();
@@ -66,12 +67,12 @@ const CourseOverview = (props) => {
   const [controlsVisible, setControlsVisible] = useState(true);
   const [controlsTimeout, setControlsTimeout] = useState(null);
   const role = props.state.roleReducer.role.id;
-  const [result, setResult] = useState(props.route?.params?.item);  
-  const [isFavorite, setIsFavorite] = useState(props.route?.params?.item?.isFavorite);
+  const [result, setResult] = useState(props.route?.params);  
+  const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
 
   const dispatch = useDispatch();
   const [reviews, setReviews] = useState(
-    props.route.params.item.reviews[0]?.reviews || []
+    props.route?.params?.reviews?.[0]?.reviews || []
   );
 
   // const FirstRoute = () => <OverViewTab descrip={props.route.params.item} />;
@@ -294,7 +295,7 @@ const CourseOverview = (props) => {
               {/* <ScrollView> */}
               <VideoPlayer
                 source={{
-                  uri: `http://54.92.82.16:3001/data/${listData[0]?.file[0]}`,
+                  uri: `http://54.92.82.16:3001/data/${listData?.[0]?.file[0]}`,
                 }} // Can be a URL or a local file.
                 disableBack
                 disableVolume

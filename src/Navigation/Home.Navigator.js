@@ -44,6 +44,7 @@ import Play from "../Screens/MainScreens/Play/Play";
 import Home from "../Screens/MainScreens/Home/Home";
 import AllLearn from "../Screens/MainScreens/Learn/AllLearn";
 import All from "../Screens/MainScreens/Play/All";
+import ProfileScreen from "../Screens/MainScreens/Profile";
 import ProfileGuestUser from "../Screens/GuestScreens/ProfileGuestUser";
 import AllMap from "../Screens/MainScreens/Home/AllMap";
 import MapViews from "../Screens/MainScreens/Home/MapViews";
@@ -57,6 +58,18 @@ import { Models } from "../Components";
 import PlanReservedGuest from "../Screens/MainScreens/PlanReserved/PlanReservedGuest";
 import color from "../Constants/Color";
 import Images from "../assets/Images";
+import ListingDetail from "../Screens/MainScreens/ListingDetail/ListingDetail";
+import MerchantReviews from "../Screens/MainScreens/MerchantReviews/MerchantReviews";
+import ReviewCart from "../Screens/MainScreens/ReviewCart/ReviewCart";
+import FavoriteHome from "../Screens/MainScreens/FavoriteHome/FavoriteHome";
+import Planed from "../Screens/MainScreens/PlanReadyReservation/Planed";
+import Unplaned from "../Screens/MainScreens/PlanReadyReservation/Unplaned";
+import ReviewTab from "../Screens/MainScreens/ReviewTab/ReviewTab";
+import WriteReview from "../Screens/MainScreens/WriteReview/WriteReview";
+import PurchasedActivity from "../Screens/MainScreens/PurchasedActivity/PurchasedActivity";
+import Receipt from "../Screens/MainScreens/Receipt/Receipt";
+import CustomerSupport from "../Screens/MainScreens/CustomerSupport/CustomerSupport";
+import DatingProfile from "../Screens/MainScreens/DatingProfile/DatingProfile";
 // import { CommonPopUp } from "../Components/models";
 // import * as Model from "../Components/models";
 
@@ -73,7 +86,9 @@ export const HomeNavigator = (props) => {
   // const tabBarListeners = ({navigation, route, params}) => ({
   //   tabPress: () => navigation.navigate(route.name),
   // });
+  const role = useSelector((state) => state.roleReducer.role);
 
+// console.log('role',role?.id);
   return (
     <Tab.Navigator
       // initialRouteName={
@@ -128,10 +143,12 @@ export const HomeNavigator = (props) => {
                 size={20}
               /> */}
               <Image
-                source={
-                  require("../assets/images/Discover.png")
-                }
-                style={{ height: 25, width: 25, tintColor: focused ? color._black : color._gray }}
+                source={require("../assets/images/Discover.png")}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? color._black : color._gray,
+                }}
               />
               <Text
                 style={[
@@ -154,17 +171,13 @@ export const HomeNavigator = (props) => {
           title: "",
           tabBarIcon: ({ focused }) => (
             <View style={styles.iconFlex}>
-              {/* <SimpleLineIcons
-                name="magnifier"
-                color={focused ? 'red' : 'grey'}
-                size={20}
-              /> */}
               <Image
-                source={
-                  require("../assets/images/Plan.png")
-
-                }
-                style={{ height: 25, width: 25, tintColor: focused ? color._black : color._gray }}
+                source={require("../assets/images/Plan.png")}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? color._black : color._gray,
+                }}
               />
               <Text
                 style={[
@@ -178,26 +191,22 @@ export const HomeNavigator = (props) => {
           ),
         })}
       />
-
       <Tab.Screen
         name={"Profile"}
-        component={props.route.params == "guest" ? ProfileGuestUser : Profile}
+        component={ProfileStack}
+        // component={props.route.params == "guest" ? ProfileGuestUser : Profile}
         options={({ navigation }) => ({
           headerShown: false,
           title: "",
           tabBarIcon: ({ focused }) => (
             <View style={styles.iconFlex}>
-              {/* <SimpleLineIcons
-                name="magnifier"
-                color={focused ? 'red' : 'grey'}
-                size={20}
-              /> */}
               <Image
-                source={
-                  require("../assets/images/Profile.png")
-
-                }
-                style={{ height: 25, width: 25, tintColor: focused ? color._black : color._gray }}
+                source={require("../assets/images/Profile.png")}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? color._black : color._gray,
+                }}
               />
               <Text
                 style={[
@@ -225,11 +234,12 @@ export const HomeNavigator = (props) => {
                 size={20}
               /> */}
               <Image
-                source={
-                  require("../assets/images/LearnIconFocused.png")
-
-                }
-                style={{ height: 25, width: 25, tintColor: focused ? color._black : color._gray }}
+                source={require("../assets/images/LearnIconFocused.png")}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? color._black : color._gray,
+                }}
               />
               <Text
                 style={[
@@ -258,11 +268,7 @@ export const HomeNavigator = (props) => {
                 size={20}
               /> */}
               <Image
-                source={
-                  focused ?
-                    Images.playImage :
-                    Images.playCardImage
-                }
+                source={focused ? Images.playImage : Images.playCardImage}
                 style={{ height: 25, width: 25 }}
               />
               <Text
@@ -276,14 +282,14 @@ export const HomeNavigator = (props) => {
             </View>
           ),
         })}
-      // component={ChampionScreen}
-      // options={{
-      //   headerShown: false,
-      //   tabBarLabel: '',
-      //   tabBarIcon: ({color, focused}) =>
-      //     focused ? <Learn style={{marginTop: 15}} /> : <Learn />,
-      // }}
-      // listeners={tabBarListeners}
+        // component={ChampionScreen}
+        // options={{
+        //   headerShown: false,
+        //   tabBarLabel: '',
+        //   tabBarIcon: ({color, focused}) =>
+        //     focused ? <Learn style={{marginTop: 15}} /> : <Learn />,
+        // }}
+        // listeners={tabBarListeners}
       />
     </Tab.Navigator>
     //   <Tab.Navigator>
@@ -403,7 +409,6 @@ const HomeNavigator2 = () => {
   );
 };
 
-
 const HomeTab = () => {
   return (
     <Stack.Navigator>
@@ -416,6 +421,26 @@ const HomeTab = () => {
         name={"MapViews"}
         component={MapViews}
         options={{ headerShown: false, gestureEnabled: false }}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="ListingDetail"
+        component={ListingDetail}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="MerchantReviews"
+        component={MerchantReviews}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="ReviewCart"
+        component={ReviewCart}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="FavoriteHome"
+        component={FavoriteHome}
       />
       {/* <Stack.Screen
         name={'Subscription'}
@@ -452,13 +477,79 @@ const PlanStack = () => {
       <Stack.Screen
         name={"PlanReadyReservation"}
         component={PlanReadyReservation}
-        options={{ headerShown: false, gestureEnabled: false, }}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="Planed"
+        component={Planed}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="Unplaned"
+        component={Unplaned}
+      />
+      {/* <Stack.Screen
+          options={{ headerShown: false, gestureEnabled: false }}
+          name="PurchasedActivity"
+          component={PurchasedActivity}
+        /> */}
       <Stack.Screen
         name={"PlanReservedGuest"}
         component={PlanReservedGuest}
-        options={{ headerShown: false, gestureEnabled: false, }}
+        options={{ headerShown: false, gestureEnabled: false }}
       />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="ReviewTab"
+        component={ReviewTab}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="WriteReview"
+        component={WriteReview}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="PurchasedActivity"
+        component={PurchasedActivity}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="Receipt"
+        component={Receipt}
+      />
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="CustomerSupport"
+        component={CustomerSupport}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const ProfileStack = () => {
+  const role = useSelector((state) => state.roleReducer.role);
+  return (
+    <Stack.Navigator>
+      {
+        role?.id == 2 ? 
+        <Stack.Screen
+        name={"ProfileScreen"}
+        component={ProfileScreen}
+        options={{ headerShown: false, gestureEnabled: false }}
+      /> : 
+      <Stack.Screen
+        options={{ headerShown: false, gestureEnabled: false }}
+        name="ProfileGuestUser"
+        component={ProfileGuestUser}
+        />
+      }
+        {/* <Stack.Screen
+          options={{ headerShown: false, gestureEnabled: false }}
+          name="DatingProfile"
+          component={DatingProfile}
+        /> */}
     </Stack.Navigator>
   );
 };
@@ -476,16 +567,16 @@ const LearnStack = () => {
         component={CourseOverview}
         options={{ headerShown: false, gestureEnabled: false }}
       />
-      {/* <Stack.Screen
+      <Stack.Screen
         name={"AdviceDetail"}
         component={AdviceDetail}
         options={{ headerShown: false, gestureEnabled: false }}
-      /> */}
-      {/* <Stack.Screen
+      />
+      <Stack.Screen
         name={"CoachDetail"}
         component={CoachDetail}
         options={{ headerShown: false, gestureEnabled: false }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

@@ -230,8 +230,6 @@ const Receipt = (props) => {
     const year = createdAtDate.getFullYear();
     return `${month} ${day}, ${year}`;
   };
-
-
   return (
     <SafeAreaView style={styles.scrollView}>
       <View style={{ marginVertical: 15, marginHorizontal: 10 }}>

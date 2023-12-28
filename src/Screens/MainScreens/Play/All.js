@@ -16,17 +16,33 @@ import { useNavigation } from "@react-navigation/native";
 import CommonList from "../Home/CommonList";
 import { playDetailsRequest, playRequest } from "../../../modules/play/actions";
 import { setLoader } from "../../../modules/Loader/actions";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import Images from "../../../assets/Images";
+import { API_URL } from "../../../Constants/Config";
 const width = Dimensions.get("window").width;
 const All = (props) => {
+  const dispatch = useDispatch()
   const navigation = useNavigation();
   const [list, setList] = useState([])
   const { play } = useSelector(state => state.playReducer)
   useEffect(() => {
     setList(play)
   }, [play])
+  
   const showList = ({ item }) => {
+    const callDetailAppi = (id)=>{
+      const param ={
+        gameId:id,
+        endpoint: API_URL.fetchSingleGame,
+        userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
+          props.state?.signupReducer?.signupSucessData?.Usertoken,
+          cb: (data) => {
+            navigation.navigate("HowToPlay", item = data )
+            // navigation.navigate("HowToPlay")
+          },
+      }
+      dispatch(playDetailsRequest(param))
+    }
     return (
       <View
         style={{
@@ -37,7 +53,7 @@ const All = (props) => {
       >
         <TouchableOpacity
           activeOpacity={0.9}
-          onPress={() => navigation.navigate("HowToPlay", { item })}
+          onPress={() => callDetailAppi(item?._id)}
           style={{
             marginHorizontal: 10, flexDirection: "row", alignItems: 'center'
           }}

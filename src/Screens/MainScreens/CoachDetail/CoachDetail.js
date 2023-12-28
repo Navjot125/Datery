@@ -34,16 +34,14 @@ import { playRequest } from "../../../modules/play/actions";
 const CoachDetail = (props) => {
   dispatch = useDispatch()
   const navigation = useNavigation()
-  const [listData, setListData] = useState([props.route.params.item])
+  const [listData, setListData] = useState([props.route.params])
   const role = props.state.roleReducer.role.id
   const dataa = props.state.learnReducer.details
-  const [result, setResults] = useState(props.route.params.item);
-  const [isFavorite, setIsFavorite] = useState(props.route?.params?.item?.isFavorite);
+  const [result, setResults] = useState(props.route.params);
+  const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
   // {
   //   console.log("LUUUUUUDDDDD", dataa)
   // }
-
-
 
   const showData = ({ item, index }) => {
     return (

@@ -37,13 +37,11 @@ import { LearnfavouriteListRequest, LearnfavouriteRequest, LearnremoveFavouriteR
 const HowToPlay = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  // console.log(props.route.params.item, "HHHHOOOOOWWW")
-  const [dataa, setDataa] = useState([props.route.params.item]);
+  const [dataa, setDataa] = useState(props?.route?.params);
   const role = props.state.roleReducer.role.id;
-  // const dataa = props.state.learnReducer.details
-  const [result, setResults] = useState(props.route.params.item); 
-  const [isFavorite, setIsFavorite] = useState(props.route.params.item?.isFavorite);
-  
+  const [result, setResults] = useState(props.route.params); 
+  const [isFavorite, setIsFavorite] = useState(props.route.params[0]?.isFavorite);
+  console.log('isFavorite',isFavorite);
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.fetchAllGame,
@@ -224,21 +222,20 @@ const HowToPlay = (props) => {
                 userId: props.state?.loginReducer?.loginData?._id
                   ? props.state?.loginReducer?.loginData?._id
                   : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-                serviceId: result?._id,
-              },
+                  serviceId: result[0]?._id,
+                },   
             };
             if (role == 2) {
-              console.log('role is 2');
               await props.LearnfavouriteRequest(param);
               setIsFavorite(!isFavorite)
               // showAlertSuccess(`Item added to your favourite list`);
-            } else if (existingFavourite(result?._id)) {
+            } else if (existingFavourite(result[0]?._id)) {
               showAlertError(`Item already exist in your favourite list`);
             } else showAlertError(`Please login to add favourites`);
           } else {
             onLoad(),
             console.log('not in favorite'),
-            handleDelete(result?._id);
+            handleDelete(result[0]?._id);
           }
         }}
       />
@@ -326,7 +323,7 @@ const HowToPlay = (props) => {
       </View>
       <View style={styles.mainView}>
         <FlatList
-          data={dataa}
+          data={result}
           keyExtractor={(item) => item._id}
           renderItem={showList}
           numColumns={2}

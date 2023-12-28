@@ -558,11 +558,11 @@ const PurchasedActivity = (props) => {
                   setShowModal(!showModal);
                 }
                 }>
-                <Icon name={'arrowleft'} size={24} color={color._black} />
+                <Icon name={'angle-left'} size={24} color={color._black} />
+                {/* <Icon name={'arrowleft'} size={24} color={color._black} /> */}
               </TouchableOpacity>
               <Text style={styles.title3}>{"Review"}</Text>
             </View>
-
             <ScrollView
               bounces={false}
               alwaysBounceVertical={false}
