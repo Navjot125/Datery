@@ -18,7 +18,7 @@ function* onAddToCartRequest({ data, navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onAddToCartRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -83,7 +83,7 @@ function* onCartListRequest({ data }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onCartListRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -117,7 +117,7 @@ function* onRemoveItemFromCartRequest({ data }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onRemoveItemFromCartRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {

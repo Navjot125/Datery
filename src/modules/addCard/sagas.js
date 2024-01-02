@@ -141,7 +141,6 @@ function* onCardDetailsRequest({ navigation }) {
     //   return response;
     // })
     // .catch(function (error) {
-    //   console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
     //   return;
     // });
     if (res) {
@@ -212,7 +211,6 @@ function* onCardFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -256,7 +254,6 @@ function* onCardRemoveFavouriteRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {

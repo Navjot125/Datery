@@ -293,27 +293,27 @@ const Home = (props) => {
         },
         {
           title: "Unrated",
-          key: "",
+          key: 0,
           value: "Unrated",
         },
         {
           title: ["★", "★", "★", "★", "☆", "& up"],
-          key: "",
+          key: 4,
           value: ["★", "★", "★", "★", "☆", "& up"],
         },
         {
           title: ["★", "★", "★", "☆", "☆", "& up"],
-          key: "",
+          key: 3,
           value: ["★", "★", "★", "☆", "☆", "& up"],
         },
         {
           title: ["★", "★", "☆", "☆", "☆", "& up"],
-          key: "",
+          key: 2,
           value: ["★", "★", "☆", "☆", "☆", "& up"],
         },
         {
           title: ["★", "☆", "☆", "☆", "☆", "& up"],
-          key: "",
+          key: 1,
           value: ["★", "☆", "☆", "☆", "☆", "& up"],
         },
       ],
@@ -356,8 +356,11 @@ const Home = (props) => {
   );
 
   const applyFilter = (mainItem, indexMain, subItem, idxItem) => {
+    // console.log(subItem?.title, "mainItem?.title-------------", subItem?.key);
     let arr = [...selectedFilter];
-    let mainitemIncludedIdx = arr.findIndex((i) => i?.title === mainItem?.title);
+    let mainitemIncludedIdx = arr.findIndex(
+      (i) => i?.title === mainItem?.title
+    );
     if (mainitemIncludedIdx !== -1) {
       arr.splice(mainitemIncludedIdx, 1);
       // arr.push({
@@ -367,9 +370,10 @@ const Home = (props) => {
     }
     arr.push({
       title: mainItem?.title,
-      sortyBy: subItem?.title,
+      sortyBy: indexMain === 5 ? subItem?.key : subItem?.title,
       value: subItem?.value || "",
     });
+    console.log("arr", arr);
     setSelectedFilters(arr);
   };
 
@@ -388,6 +392,7 @@ const Home = (props) => {
             <TouchableOpacity
               onPress={() => {
                 applyFilter(item, index, i, idx);
+                // console.log(item, index, i, idx,'item, index, i, idx');
                 // setIsExpanded(i.title)
               }}
               style={styles.rdioBttnCntnr}
@@ -502,7 +507,7 @@ const Home = (props) => {
   const requestMerchants = async () => {
     let coords = await getCurrentCity();
 
-    const token = userToken ? userToken : Usertoken
+    const token = userToken ? userToken : Usertoken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
@@ -588,7 +593,7 @@ const Home = (props) => {
   const getApiRes = (item) => {
     console.log(item, "pp");
     page = 0;
-    const token = userToken ? userToken : Usertoken
+    const token = userToken ? userToken : Usertoken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
@@ -606,15 +611,15 @@ const Home = (props) => {
   };
 
   const getFilterValue = (head) => {
+    // return selectedFilter.filter((item) => console.log(item,'------------', head))
     return selectedFilter.filter((item) => item?.title === head).length > 0
       ? selectedFilter.filter((item) => item?.title === head)[0]
       : {};
   };
-
   const getSortRes = (item) => {
     console.log(item, "hhh");
     page = 0;
-    const token = userToken ? userToken : Usertoken
+    const token = userToken ? userToken : Usertoken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
@@ -628,16 +633,17 @@ const Home = (props) => {
       category: item?.title || null,
       sortby: getFilterValue("Sort By")?.value,
       priceRange: getFilterValue("Price")?.value,
+      rating:getFilterValue("Rating")?.sortyBy,
       offset: page,
     };
-    console.log(JSON.stringify(params, null, 2));
+    // console.log('param of fetchAllSerrvices', params, null, 2)
     props.merchantRequest(params);
   };
 
   const endReached = () => {
     if (totalMerchant > merchants.length) {
       page += 1;
-      const token = userToken ? userToken : Usertoken
+      const token = userToken ? userToken : Usertoken;
       let params = {
         token,
         endpoint: API_URL.fetchAllServices,

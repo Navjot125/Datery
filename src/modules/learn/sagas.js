@@ -40,7 +40,7 @@ import { setLoader } from "../Loader/actions";
 import { API_URL } from "../../Constants/Config";
 
 function* onLearnRequest({ data }) {
-  console.log("onLearnRequest--------------------------onLearnRequest",data?.endpoint, data?.token);
+  // console.log("onLearnRequest--------------------------onLearnRequest",data?.endpoint, data?.token);
   try {
     let res = yield axiosClient
       .post(
@@ -193,7 +193,7 @@ function* onLearnFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onLearnFavouriteListRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -227,7 +227,7 @@ function* onLearnRemoveFavouriteRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onLearnRemoveFavouriteRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {

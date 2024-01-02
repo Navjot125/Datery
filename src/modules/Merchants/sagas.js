@@ -24,9 +24,10 @@ import {
   showAlertSuccess,
 } from "../../Common/Functions/CommonFunctions";
 import { setLoader } from "../Loader/actions";
+
 function* onMerchantRequest({ data }) {
   // yield put(setLoader(true));
-  console.log(data?.token, "hiiiiå0----------------------");
+  console.log(data, "hiiiiå0----------------------");
   try {
     let res = yield axiosClient.post(
       data.endpoint,
@@ -35,8 +36,12 @@ function* onMerchantRequest({ data }) {
         sortby: data?.sortby ? data?.sortby : "",
         category: data?.category ? data?.category : null,
         name: data?.name,
-        offset: data.offset,
-        priceRange: data?.priceRange
+        offset: data?.offset,
+        priceRange: data?.priceRange,
+        // rating: data?.rating ? data?.rating : ""
+        rating: data?.rating || ""
+        // rating: 4,
+        // distance: data?.distance ? data?.distance : "",
       },
       {
         headers: {
@@ -46,11 +51,17 @@ function* onMerchantRequest({ data }) {
       }
     );
     if (res) {
-      console.log(res.data?.data[0], "------------------");
+      // console.log(res.data?.data[0], "------------------res");
       if (res?.data?.status) {
         // yield put(setLoader(false));
+        console.log(
+          "res?.data?.data-------------------------------------------------------",
+          res?.data?.data
+        );
         // console.log(res.data.data, ' message from saga merchant onMerchantRequest');
         yield put(merchantSuccess(res?.data?.data, data));
+        // if(res?.data?.data?.lenght > 0){
+        // }
       } else {
         // yield put(setLoader(false));
         // yield put(merchantFail());
@@ -73,34 +84,48 @@ function* onMerchantRequest({ data }) {
 }
 
 function* onMerchantDetailsRequest({ navigation }) {
-  yield put(setLoader(true));
-  // console.log(navigation, 'navigation --------------- ');
-  let res = yield axiosClient
-    .post(navigation.endpoint, navigation.serviceId)
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
-      return;
-    });
-  if (res) {
-    // console.log(res.data, '....');
-    if (res?.data?.status) {
-      yield put(setLoader(false));
-      yield put(merchantDetailsSuccess(res?.data?.data));
-      navigation.navigation();
-      // console.log(res.data.data, ' message from saga merchant details');
+  try {
+    yield put(setLoader(true));
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: navigation?.userToken,
+    };
+
+    const config = {
+      headers,
+      params: {
+        serviceId: navigation?.serviceId?.serviceId,
+      },
+    };
+    let res = yield axiosClient
+      .get(navigation.endpoint, config)
+      .then(function (response) {
+        return response;
+      })
+      .catch(function (error) {
+        console.log("onMerchantDetailsRequest SAGA ERROR ===>", error);
+        return;
+      });
+    if (res) {
+      // console.log(res.data, '....');
+      if (res?.data?.status) {
+        yield put(setLoader(false));
+        yield put(merchantDetailsSuccess(res?.data?.data));
+        navigation.cb(res?.data?.data);
+        // console.log(res.data.data, ' message from saga merchant details');
+      } else {
+        yield put(setLoader(false));
+        // showAlertError(res.data.message)
+        yield put(merchantDetailsFail());
+        // console.log(res.data.message);
+      }
     } else {
       yield put(setLoader(false));
-      // showAlertError(res.data.message)
-      yield put(merchantDetailsFail());
-      // console.log(res.data.message);
+      // showAlert(res.data.message)
+      // console.log(REQUIRED_ERROR_MESSAGE);
     }
-  } else {
-    yield put(setLoader(false));
-    // showAlert(res.data.message)
-    // console.log(REQUIRED_ERROR_MESSAGE);
+  } catch (error) {
+    console.log(error, "error in ");
   }
   // yield put(setLoader(false));
 }
@@ -114,7 +139,7 @@ function* onFavouriteRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onFavouriteRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -154,7 +179,7 @@ function* onFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onFavouriteListRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -188,7 +213,7 @@ function* onRemoveFavouriteRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onRemoveFavouriteRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {

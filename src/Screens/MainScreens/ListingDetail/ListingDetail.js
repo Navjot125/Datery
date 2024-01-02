@@ -171,9 +171,10 @@ let readio = [
   },
 ];
 const ListingDetail = (props) => {
+  console.log('props.route.params',props.route.params);
   const role = props.state.roleReducer.role.id;
-  const dataa = props.state.merchantReducer.details;
-  const [result, setResults] = useState(dataa);
+  const dataa = props.route.params;
+  const [result, setResults] = useState(props.route.params);
   const [selectedValue, setSelectedValue] = useState();
   const [selectedValueName, setSelectedValueName] = useState();
   const [selectedValuePrice, setSelectedValuePrice] = useState();
@@ -185,7 +186,7 @@ const ListingDetail = (props) => {
   const [selectedDate, setSelectedDate] = React.useState("");
   const [selectedTime, setSelectedTime] = React.useState("");
   const navigation = useNavigation();
-  const [isFavorite, setIsFavorite] = useState(props.route?.params?.item?.isFavorite);
+  const [isFavorite, setIsFavorite] = useState(props.route.params?.isFavorite);
   // console.log('props.route?.params?.item', pro ps.route?.params?.item);
   dispatch = useDispatch()
   const onPress = (page) => {
@@ -336,7 +337,7 @@ const ListingDetail = (props) => {
       />
     );
   };
-  console.log('---------------------', result);
+  // console.log('---------------------', result);
   // console.log(props.state.cartReducer?.INITIAL_STATE,'props.state.cartReducer------------------');
   const rightImage = () => {
     return (
@@ -1028,7 +1029,7 @@ const ListingDetail = (props) => {
                   </Text>
                 </View>
                 <FlatList
-                  data={result.reviews}
+                  data={result?.reviews}
                   renderItem={renderItem}
                   keyExtractor={(item) => item.id}
                   // ItemSeparatorComponent={FlatListItemSeparator}

@@ -135,7 +135,7 @@ function* onplayDetailsRequest({ navigation }) {
         return response;
       })
       .catch(function (error) {
-        console.log("onMerchantDetailsRequest SAGA ERROR 1 ===>", error);
+        console.log("onplayDetailsRequest SAGA ERROR 1 ===>", error);
         return;
       });
     if (res) {
@@ -160,7 +160,7 @@ function* onplayDetailsRequest({ navigation }) {
     // yield put(setLoader(false));
   } catch (error) {
     yield put(setLoader(false));
-    console.log("onMerchantDetailsRequest SAGA ERROR 2 ===>", error);
+    console.log("onplayDetailsRequest SAGA ERROR 2 ===>", error);
     // Handle error scenarios here
     // showAlert(error.message) or dispatch failure action
     // console.error(REQUIRED_ERROR_MESSAGE);
@@ -209,7 +209,7 @@ function* onplayFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onplayFavouriteListRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -243,7 +243,7 @@ function* onplayRemoveFavouriteRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onplayRemoveFavouriteRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {

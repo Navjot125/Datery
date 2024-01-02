@@ -545,7 +545,6 @@ const PurchasedActivity = (props) => {
         {/*Animation can be slide, slide, none*/}
         <View style={styles.safeView}>
           <View style={styles.mainView2}>
-
             <View style={[base.horizontal, styles.header, base.center]}>
               <TouchableOpacity
                 activeOpacity={0.9}

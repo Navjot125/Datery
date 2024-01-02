@@ -58,7 +58,7 @@ function* onPlanDetailsRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onPlanDetailsRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -128,7 +128,7 @@ function* onPlanFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onPlanFavouriteListRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -164,7 +164,7 @@ function* onPlanRemoveFavouriteRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onPlanRemoveFavouriteRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {

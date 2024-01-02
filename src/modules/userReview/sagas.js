@@ -61,7 +61,7 @@ function* onReviewDetailsRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onReviewDetailsRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -130,7 +130,7 @@ function* onReviewFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onReviewFavouriteListRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {
@@ -170,7 +170,7 @@ function* onReviewRemoveFavouriteRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onMerchantDetailsRequest SAGA ERROR ===>', error);
+      // console.log('onReviewRemoveFavouriteRequest SAGA ERROR ===>', error);
       return;
     });
   if (res) {

@@ -133,7 +133,7 @@ const Login = memo((props) => {
       // console.log(data,'data',params,'params')
       let res = await axiosClient.post(params.endpoint, data)
       if (res) {
-        console.log(res?.data, '..--------------------------------------------..');
+        // console.log(res?.data, '..--------------------------------------------..');
         if (res?.data?.status) {
           console.log(res.data)
           // await put(setLoader(false));

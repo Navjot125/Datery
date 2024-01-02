@@ -16,29 +16,31 @@ import * as Atom from "../../../Components/atoms";
 import { useNavigation } from "@react-navigation/native";
 
 // const width = Dimensions.get("window").width;
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 import LocationIcon from "react-native-vector-icons/Entypo";
-
-
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { connect, useSelector } from "react-redux";
 import { setLoader } from "../../../modules/Loader/actions";
-import { merchantDetailsRequest, merchantRequest } from "../../../modules/Merchants/actions";
+import {
+  merchantDetailsRequest,
+  merchantRequest,
+} from "../../../modules/Merchants/actions";
 import { API_URL } from "../../../Constants/Config";
 import { Alert } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { AirbnbRating } from "@rneui/themed";
 import CustomIcon from "../../../assets/CustomIcon";
 
-
 const AllHome = (props) => {
   const navigation = useNavigation();
-  const [list, setList] = useState([])
-  const { merchants, totalMerchant } = useSelector(state => state.merchantReducer)
+  const [list, setList] = useState([]);
+  const { merchants, totalMerchant } = useSelector(
+    (state) => state.merchantReducer
+  );
   const showList = ({ item, index }) => {
     return (
       <View
@@ -54,9 +56,15 @@ const AllHome = (props) => {
             let param = {
               endpoint: API_URL.fetchSingleService,
               serviceId: { serviceId: item?._id },
-              navigation: () => navigation.navigate("ListingDetail", item)
-            }
-            props.merchantDetailsRequest(param)
+              userToken: props?.state?.loginReducer?.userToken
+                ? props?.state?.loginReducer?.userToken
+                : props.state?.signupReducer?.signupSucessData?.Usertoken,
+              navigation: () => navigation.navigate("ListingDetail", item),
+              cb: (data) => {
+                navigation.navigate("ListingDetail", (item = data));
+              },
+            };
+            props.merchantDetailsRequest(param);
           }}
         >
           <Image
@@ -69,15 +77,13 @@ const AllHome = (props) => {
               // borderTopLeftRadius: 12,
               // borderTopRightRadius: 12,
               // marginLeft: 9,
-              resizeMode: 'cover',
-              alignSelf: 'center'
+              resizeMode: "cover",
+              alignSelf: "center",
             }}
             source={{ uri: `http://54.92.82.16:3001/data/${item.image}` }}
-          // source={item.image}
+            // source={item.image}
           />
-          <Text style={styles.titleTxt} >
-            {item.title}{" "}
-          </Text>
+          <Text style={styles.titleTxt}>{item.title} </Text>
           <View
             style={{
               flexDirection: "row",
@@ -86,16 +92,16 @@ const AllHome = (props) => {
               // width: screenWidth * 0.42,
               // flexWrap: 'wrap',
               // backgroundColor:'red',
-              justifyContent: 'flex-start',
+              justifyContent: "flex-start",
               flex: 1,
-              left: -3
+              left: -3,
             }}
           >
             <LocationIcon
               name="location-pin"
               size={15}
               color={color._primary_orange}
-            // style={{backgroundColor:'red'}}
+              // style={{backgroundColor:'red'}}
             />
             <Text
               style={{
@@ -108,30 +114,31 @@ const AllHome = (props) => {
                 // backgroundColor:'red'
               }}
             >
-              {item.address}{" "}{"\u2022"} {item?.Distance.toFixed(2)} mi
+              {item.address} {"\u2022"} {item?.Distance.toFixed(2)} mi
               {/* {item.address}{" "} */}
             </Text>
           </View>
-          <View style={{
-            flexDirection: "row",
-            marginTop: 4,
-            flexWrap: 'wrap',
-            alignItems: 'center'
-          }}>
-            {item.Rating == 0 ?
-              null :
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 4,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            {item.Rating == 0 ? null : (
               <Text
                 style={{
                   fontFamily: fonts.BOLD,
                   // color: "#9796A1",
                   fontSize: 11,
                   color: color._black,
-                  lineHeight: 15
+                  lineHeight: 15,
                 }}
               >
                 {item.Rating.toFixed(2)}{" "}
               </Text>
-            }
+            )}
             <Atom.Rating
               disabled={true}
               currentRating={Math.round(item.Rating)}
@@ -143,14 +150,27 @@ const AllHome = (props) => {
                 color: color._black,
                 fontSize: 11,
                 lineHeight: 15,
-                left: 8
+                left: 8,
               }}
             >
-              {item.ratingCount}{" "}Rating
+              {item.ratingCount} Rating
             </Text>
 
-            <View style={{ backgroundColor: color._primary_orange, padding: 3, borderRadius: 5, alignItems: "center", justifyContent: 'center', marginLeft: 25 }}>
-              <Text style={{ fontSize: 12, fontWeight: '700', color: color._white }}>Caribbean</Text>
+            <View
+              style={{
+                backgroundColor: color._primary_orange,
+                padding: 3,
+                borderRadius: 5,
+                alignItems: "center",
+                justifyContent: "center",
+                marginLeft: 25,
+              }}
+            >
+              <Text
+                style={{ fontSize: 12, fontWeight: "700", color: color._white }}
+              >
+                Caribbean
+              </Text>
             </View>
           </View>
           <Text
@@ -162,7 +182,18 @@ const AllHome = (props) => {
               fontSize: 13,
             }}
           >
-            Starting at <Text style={{ fontSize: 18, fontFamily: fonts.BOLD, fontWeight: '700', lineHeight: 21 }} >{"$"}{item.Price}</Text>
+            Starting at{" "}
+            <Text
+              style={{
+                fontSize: 18,
+                fontFamily: fonts.BOLD,
+                fontWeight: "700",
+                lineHeight: 21,
+              }}
+            >
+              {"$"}
+              {item.Price}
+            </Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -179,23 +210,30 @@ const AllHome = (props) => {
     >
       <Atom.Button
         title={item.name}
-        onPress={() => { props.setFilter(item.name) }}
+        onPress={() => {
+          props.setFilter(item.name);
+        }}
         style={
           item.selected
             ? { height: 45 }
             : {
-              borderWidth: 1,
-              backgroundColor: "#FFF",
-              borderColor: color._dusty_white,
-              height: 40,
-              // paddingHorizontal: 26,
-              paddingHorizontal: 16,
-            }
+                borderWidth: 1,
+                backgroundColor: "#FFF",
+                borderColor: color._dusty_white,
+                height: 40,
+                // paddingHorizontal: 26,
+                paddingHorizontal: 16,
+              }
         }
         textStyle={
           item.selected
             ? {}
-            : { color: color._black, fontFamily: fonts.MEDIUM, fontSize: 16, lineHeight: 18 }
+            : {
+                color: color._black,
+                fontFamily: fonts.MEDIUM,
+                fontSize: 16,
+                lineHeight: 18,
+              }
         }
       />
     </View>
@@ -246,39 +284,34 @@ const AllHome = (props) => {
   };
 
   useEffect(() => {
-    setList(props.state.merchantReducer?.merchants)
+    setList(props.state.merchantReducer?.merchants);
     // console.log('LIST______', merchants.length)
-  }, [props.state.merchantReducer?.merchants])
-
-
+  }, [props.state.merchantReducer?.merchants]);
 
   return (
-
     <View style={{ flex: 1 }}>
       {/* {console.log(props.state.merchantReducer?.merchants.length)} */}
-      {
-        merchants[0] == null ? null :
-          <FlatList
-            data={merchants}
-            // data={dataList}
-            keyExtractor={(item) => item._id}
-            renderItem={showList}
-            // numColumns={0}
-            contentContainerStyle={{ flexGrow: 1 }}
-            key="#"
-            showsVerticalScrollIndicator={false}
-            scrollEnabled={true}
-            ListEmptyComponent={() => {
-              Alert.alert('hello')
-              // console.log('iwhbeiywbeif');
-            }}
-            onEndReachedThreshold={0.8}
-            bounces={false}
-            alwaysBounceVertical={false}
-            ListFooterComponent={() => {
-            }}
-          />
-      }
+      {merchants[0] == null ? null : (
+        <FlatList
+          data={merchants}
+          // data={dataList}
+          keyExtractor={(item) => item._id}
+          renderItem={showList}
+          // numColumns={0}
+          contentContainerStyle={{ flexGrow: 1 }}
+          key="#"
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={true}
+          ListEmptyComponent={() => {
+            Alert.alert("hello");
+            // console.log('iwhbeiywbeif');
+          }}
+          onEndReachedThreshold={0.8}
+          bounces={false}
+          alwaysBounceVertical={false}
+          ListFooterComponent={() => {}}
+        />
+      )}
     </View>
   );
 };
@@ -287,8 +320,10 @@ const mapStateToProps = (state) => ({ state: state });
 
 const mapDispatchToProps = (dispatch) => ({
   setLoader: (data) => dispatch(setLoader(data)),
-  merchantRequest: (data, navigation) => dispatch(merchantRequest(data, navigation)),
-  merchantDetailsRequest: (data, navigation) => dispatch(merchantDetailsRequest(data, navigation)),
+  merchantRequest: (data, navigation) =>
+    dispatch(merchantRequest(data, navigation)),
+  merchantDetailsRequest: (data, navigation) =>
+    dispatch(merchantDetailsRequest(data, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(AllHome);
 
@@ -329,11 +364,11 @@ const styles = StyleSheet.create({
     color: color._font_grey,
     fontSize: 18,
     // color: color._black,
-    fontWeight: '700',
-    textAlign: 'left',
-    lineHeight: 18
+    fontWeight: "700",
+    textAlign: "left",
+    lineHeight: 18,
   },
   rating: {
     // paddingVertical:20
-  }
+  },
 });

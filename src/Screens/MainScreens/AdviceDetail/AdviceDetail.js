@@ -44,7 +44,6 @@ const AdviceDetail = (props) => {
   const [imgChng, setImgChng] = useState('false')
   const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
   dispatch = useDispatch()
-console.log('----------------------result',result);
   const likeImage = () => {
     return (
       <CustomIcon

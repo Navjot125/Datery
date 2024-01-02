@@ -232,12 +232,24 @@ const HomeSearchResult = (props) => {
 
       style={{ justifyContent: 'center', marginTop: 15, }}
       onPress={() => {
+        // let param = {
+        //   endpoint: API_URL.fetchSingleService,
+        //   serviceId: { serviceId: item._id },
+        //   navigation: () => navigation.navigate("ListingDetail")
+        // }
+        // props.merchantDetailsRequest(param) 
         let param = {
           endpoint: API_URL.fetchSingleService,
-          serviceId: { serviceId: item._id },
-          navigation: () => navigation.navigate("ListingDetail")
-        }
-        props.merchantDetailsRequest(param)
+          serviceId: { serviceId: item?._id },
+          userToken: props?.state?.loginReducer?.userToken
+          ? props?.state?.loginReducer?.userToken
+          : props.state?.signupReducer?.signupSucessData?.Usertoken,
+          navigation: () => navigation.navigate("ListingDetail", item),
+          cb: (data) => {
+            navigation.navigate("ListingDetail", item = data);
+          },
+        };
+        props.merchantDetailsRequest(param);
       }}
     >
       <View style={{

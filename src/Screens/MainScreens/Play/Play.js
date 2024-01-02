@@ -22,7 +22,11 @@ import All from "./All";
 import { connect, useDispatch, useSelector } from "react-redux";
 import CommonList from "../Home/CommonList";
 import { API_URL } from "../../../Constants/Config";
-import { playDetailsRequest, playRequest, playfavouriteListRequest } from "../../../modules/play/actions";
+import {
+  playDetailsRequest,
+  playRequest,
+  playfavouriteListRequest,
+} from "../../../modules/play/actions";
 import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
@@ -30,62 +34,66 @@ import { roleRequest } from "../../../modules/Role/actions";
 import axiosClient from "../../../Utils/ApiClient";
 import { useFocusEffect } from "@react-navigation/native";
 
-
-let page = 1
+let page = 1;
 
 const Play = (props) => {
   const navigation = useNavigation();
-  const dispatch = useDispatch()
-  const userCity = props?.state?.profileReducer?.datingData?.userProfile?.locationAddress
-  const userCords = null
+  const dispatch = useDispatch();
+  const userCity =
+    props?.state?.profileReducer?.datingData?.userProfile?.locationAddress;
+  const userCords = null;
   const [modalVisible, setModalVisible] = useState(false);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState("");
   const [error, setError] = useState(false);
-  const [geoCityName, setGeoCityName] = useState('');
-  const [geoCityShortName, setGeoCityShortName] = useState('');
+  const [geoCityName, setGeoCityName] = useState("");
+  const [geoCityShortName, setGeoCityShortName] = useState("");
   // let [text, setText] = useState('');
-  const [text, setText] = useState('');
-  let [loc, setLoc] = useState('');
+  const [text, setText] = useState("");
+  let [loc, setLoc] = useState("");
   // const [result, setResult] = useState(data[0]);
-  const [selectedItemIndex, setSelectedItemIndex] = useState('1');
+  const [selectedItemIndex, setSelectedItemIndex] = useState("1");
   const [selectedItem, setSelectedItem] = useState("");
   // const [result, setResult] = useState(data[0]);
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
-  const [loader, setLoader] = useState(true)
-  const { userToken, loginData } = useSelector(state => state.loginReducer)
-  const { Usertoken, signupSucessData } = useSelector(state => state.signupReducer)
+  const [loader, setLoader] = useState(true);
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
 
   useFocusEffect(
     React.useCallback(() => {
-      onLoad()
+      onLoad();
     }, [])
   );
 
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.fetchAllGame,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
       id: {
-        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData))
-  }
+    dispatch(playRequest(apiData));
+  };
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      onLoad()
-    })
+      onLoad();
+    });
     let timeout = setTimeout(() => {
-      setLoader(false)
-    }, 3000)
+      setLoader(false);
+    }, 3000);
     return () => {
-      if (timeout) clearTimeout(timeout)
-    }
-  }, [])
+      if (timeout) clearTimeout(timeout);
+    };
+  }, []);
 
   // const getApiRes = (item) => {
   //   console.log('ITTTTTT', item)
@@ -105,43 +113,54 @@ const Play = (props) => {
   //   // props.LearnAllRequest(params)
   // }
 
-  useEffect(()=>{
-    getSortRes(selectedItem, selectedItemIndex)
-  },[selectedItem, selectedItemIndex])
+  useEffect(() => {
+    getSortRes(selectedItem, selectedItemIndex);
+  }, [selectedItem, selectedItemIndex]);
 
   const getSortRes = (sortItem, allItem) => {
-    console.log('Isss', sortItem, allItem)
-    console.log("selecteditem ", selectedItem)
+    console.log("Isss", sortItem, allItem);
+    console.log("selecteditem ", selectedItem);
     try {
       // let query = `?category=${item.id == "2" ? "Q%26A" : item.id == '3' ? "Physical" :
       //   item.id == '4' ? "Solo" : ""}`
       let params = {
-        
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-      props.state?.signupReducer?.signupSucessData?.Usertoken,
-        endpoint: sortData[sortItem-1]?.name ? `${allItem == "1" ?API_URL.fetchAllGame : `${API_URL?.fetchAllGame}?category=${String(allData[allItem-1]?.title).replace('&','%26')}`}&labels=${sortData[sortItem-1]?.name}`:
-        `${allItem == "1" ?API_URL.fetchAllGame : `${API_URL?.fetchAllGame}?category=${String(allData[allItem-1]?.title).replace('&','%26')}`}`,
+        userToken: props?.state?.loginReducer?.userToken
+          ? props?.state?.loginReducer?.userToken
+          : props.state?.signupReducer?.signupSucessData?.Usertoken,
+        endpoint: sortData[sortItem - 1]?.name
+          ? `${
+              allItem == "1"
+                ? API_URL.fetchAllGame
+                : `${API_URL?.fetchAllGame}?category=${String(
+                    allData[allItem - 1]?.title
+                  ).replace("&", "%26")}`
+            }&labels=${sortData[sortItem - 1]?.name}`
+          : `${
+              allItem == "1"
+                ? API_URL.fetchAllGame
+                : `${API_URL?.fetchAllGame}?category=${String(
+                    allData[allItem - 1]?.title
+                  ).replace("&", "%26")}`
+            }`,
 
         // endpoint: `${allItem == "1" ?API_URL.fetchAllGame : `${API_URL?.fetchAllGame}?category=${String(allData[allItem-1]?.title).replace('&','%26')}`}&labels=${sortData[sortItem-1]?.name}`,
         // labels: allData.filter(val => val.id === selectedItemIndex)[0].title,
         // sortby: allData[selectedItem - 1]?.name || ""
       };
-      dispatch(playRequest(params))
-      console.log("PssP+++", params)
+      dispatch(playRequest(params));
+      console.log("PssP+++", params);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
     // dispatch(playRequest(params))
-
-  }
-
+  };
 
   const allData = [
     { id: "1", title: "All" },
     { id: "2", title: "Q&A" },
     { id: "3", title: "Physical" },
     { id: "4", title: "Solo" },
-  ]
+  ];
 
   const sortData = [
     { _id: 1, name: "Marriage" },
@@ -149,25 +168,36 @@ const Play = (props) => {
     { _id: 3, name: "Support" },
     { _id: 4, name: "Love" },
     { _id: 5, name: "Conflict" },
-
-  ]
+  ];
 
   const renderAllItem = ({ item, index }) => {
     return (
       <View style={{}}>
-        <Pressable style={{
-          paddingHorizontal: 10, paddingVertical: 20, marginHorizontal: 20, borderBottomWidth: 2, borderBottomColor: selectedItemIndex === item.id ? color._primary_orange : 'white'
-        }}
+        <Pressable
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 20,
+            marginHorizontal: 20,
+            borderBottomWidth: 2,
+            borderBottomColor:
+              selectedItemIndex === item.id ? color._primary_orange : "white",
+          }}
           onPress={() => {
             setSelectedItemIndex(item.id);
           }}
         >
-          <Text style={{ fontSize: 14, fontWeight: "600", color: selectedItemIndex === item.id ? color._black : '#1C1A17' }}>
+          <Text
+            style={{
+              fontSize: 14,
+              fontWeight: "600",
+              color: selectedItemIndex === item.id ? color._black : "#1C1A17",
+            }}
+          >
             {item.title}
           </Text>
         </Pressable>
       </View>
-    )
+    );
   };
 
   const renderSortItem = ({ item, index }) => {
@@ -176,8 +206,8 @@ const Play = (props) => {
         style={{
           // marginHorizontal: 20,
           // marginBottom: 32,
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
           // marginHorizontal: 5
           // marginRight:15
           // marginTop: 22,
@@ -188,7 +218,8 @@ const Play = (props) => {
           style={{
             borderWidth: 2,
             backgroundColor: "#FFF",
-            borderColor: selectedItem === (index + 1) ? color._black : color._dusty_white,
+            borderColor:
+              selectedItem === index + 1 ? color._black : color._dusty_white,
             // height: 40,
             // paddingHorizontal: 26,
             // marginHorizontal: 30,
@@ -196,17 +227,25 @@ const Play = (props) => {
             paddingVertical: 9,
             borderRadius: 18,
             justifyContent: "center",
-            alignItems: 'center',
+            alignItems: "center",
             marginHorizontal: 8,
-            backgroundColor: selectedItem === (index + 1) ? color._black : "#FFFF"
+            backgroundColor:
+              selectedItem === index + 1 ? color._black : "#FFFF",
           }}
           onPress={() => {
-            setSelectedItem(item._id)
-       
+            setSelectedItem(item._id);
+
             // props.setFilter(item.name), console.log('hello', item.name);
           }}
         >
-          <Text style={{ color: selectedItem === (index + 1) ? "#FFFF" : color._black, fontFamily: fonts.MEDIUM, fontSize: 16, lineHeight: 18 }}>
+          <Text
+            style={{
+              color: selectedItem === index + 1 ? "#FFFF" : color._black,
+              fontFamily: fonts.MEDIUM,
+              fontSize: 16,
+              lineHeight: 18,
+            }}
+          >
             {item.name}
           </Text>
         </TouchableOpacity>
@@ -214,24 +253,34 @@ const Play = (props) => {
     );
   };
   const endReached = () => {
-    page += 1
+    page += 1;
     let params = {
       endpoint: API_URL.fetchAllServices,
-      coordinates: tempCords ? tempCords : userCords[0] !== undefined ? userCords : null,
-      gametype: allData.filter(val => val.id === selectedItemIndex)[0].id == "2" ? "Dating" : allData.filter(val => val.id === selectedItemIndex)[0].id == '3' ? "Relationship" :
-        allData.filter(val => val.id === selectedItemIndex)[0].id == '4' ? "Counsellors" : null,
+      coordinates: tempCords
+        ? tempCords
+        : userCords[0] !== undefined
+        ? userCords
+        : null,
+      gametype:
+        allData.filter((val) => val.id === selectedItemIndex)[0].id == "2"
+          ? "Dating"
+          : allData.filter((val) => val.id === selectedItemIndex)[0].id == "3"
+          ? "Relationship"
+          : allData.filter((val) => val.id === selectedItemIndex)[0].id == "4"
+          ? "Counsellors"
+          : null,
       sortby: sortData[selectedItem - 1]?.name || "",
-      offset: page
+      offset: page,
     };
-    dispatch(LearnAllRequest(params))
-  }
+    dispatch(LearnAllRequest(params));
+  };
 
   const search = () => {
     return (
       <View>
         <Searchbar
           placeholder="Games to play "
-          placeholderTextColor={'grey'}
+          placeholderTextColor={"grey"}
           fontSize={16}
           onChangeText={onChangeSearch}
           // value={searchQuery}
@@ -240,7 +289,7 @@ const Play = (props) => {
             backgroundColor: "#F8F7FA",
             height: 40,
             width: 316,
-            borderRadius: 8
+            borderRadius: 8,
           }}
           inputStyle={{
             fontFamily: fonts.REGULAR,
@@ -262,47 +311,58 @@ const Play = (props) => {
           flexDirection: "row",
           justifyContent: "space-between",
           // justifyContent:'center',
-          alignItems: 'center',
+          alignItems: "center",
           marginHorizontal: 20,
-          marginTop: 10
-        }}>
+          marginTop: 10,
+        }}
+      >
         <View>{search()}</View>
         <TouchableOpacity
           activeOpacity={0.9}
-
-          onPress={() => { navigation.navigate("FavoritesGames") }} >
+          onPress={() => {
+            navigation.navigate("FavoritesGames");
+          }}
+        >
           <Image
-            style={{ height: 20, width: 22, resizeMode: 'contain', tintColor: color._black }}
+            style={{
+              height: 20,
+              width: 22,
+              resizeMode: "contain",
+              tintColor: color._black,
+            }}
             source={require("../../../assets/images/Heart.png")}
           />
         </TouchableOpacity>
       </View>
-      <CommonList
-        data={allData}
-        renderItem={renderAllItem}
-      />
-      <View style={[styles.mainView, loader && {
-        justifyContent: "center"
-      }]}>
-        {loader ? <ActivityIndicator color={color._primary_orange} size={'large'} /> :
-          (
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              bounces={false}
-              alwaysBounceVertical={false}
-              overScrollMode="never"
+      <CommonList data={allData} renderItem={renderAllItem} />
+      <View
+        style={[
+          styles.mainView,
+          loader && {
+            justifyContent: "center",
+          },
+        ]}
+      >
+        {loader ? (
+          <ActivityIndicator color={color._primary_orange} size={"large"} />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+            alwaysBounceVertical={false}
+            overScrollMode="never"
             // contentContainerStyle={{marginHorizontal:20}}
+          >
+            <View
+              style={{
+                // flexDirection: "row",
+                // marginTop: 8,
+                // left:-10
+                // backgroundColor: 'red',
+                marginHorizontal: 12,
+              }}
             >
-              <View
-                style={{
-                  // flexDirection: "row",
-                  // marginTop: 8,
-                  // left:-10
-                  // backgroundColor: 'red',
-                  marginHorizontal: 12
-                }}
-              >
-                {/* <View style={{ justifyContent: "center", alignItems: 'center' }}>
+              {/* <View style={{ justifyContent: "center", alignItems: 'center' }}>
                   <TouchableOpacity
                     activeOpacity={0.9}
 
@@ -321,38 +381,31 @@ const Play = (props) => {
                   </TouchableOpacity>
                 </View> */}
 
-                {/* <View style={{ paddingRight: 20 }}> */}
-                <CommonList
-                  data={sortData}
-                  renderItem={renderSortItem}
-                />
-                {/* </View> */}
+              {/* <View style={{ paddingRight: 20 }}> */}
+              <CommonList data={sortData} renderItem={renderSortItem} />
+              {/* </View> */}
+            </View>
 
-              </View>
-
-              {
-                <All setFilter={setFilter} endReached={endReached} />
-              }
-            </ScrollView>
-          )}
+            {<All setFilter={setFilter} endReached={endReached} />}
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   roleRequest: (data) => dispatch(roleRequest(data)),
-  setAnswer: (data, navigation) =>
-    dispatch(setAnswer(data, navigation)),
-  removeAnswer: (data, navigation) =>
-    dispatch(removeAnswer(data, navigation)),
+  setAnswer: (data, navigation) => dispatch(setAnswer(data, navigation)),
+  removeAnswer: (data, navigation) => dispatch(removeAnswer(data, navigation)),
   setLoader: (data) => dispatch(setLoader(data)),
   playRequest: (data) => dispatch(playRequest(data)),
-  playDetailsRequest: (data, navigation) => dispatch(playDetailsRequest(data, navigation)),
+  playDetailsRequest: (data, navigation) =>
+    dispatch(playDetailsRequest(data, navigation)),
   playfavouriteListRequest: (data) => dispatch(playfavouriteListRequest(data)),
   CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
