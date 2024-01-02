@@ -1,6 +1,5 @@
 import { put, takeLatest } from "redux-saga/effects";
 import {
-  FAVOURITELIST_REQUESTED,
   FAVOURITE_REQUESTED,
   LEARNALLDETAILS_REQUESTED,
   LEARNALL_REQUESTED,
@@ -9,7 +8,6 @@ import {
   LEARN_REMOVE_FAVOURITE_REQUESTED,
   MERCHANTDETAILS_REQUESTED,
   MERCHANT_REQUESTED,
-  REMOVE_FAVOURITE_REQUESTED,
 } from "./types";
 import {
   merchantSuccess,
@@ -17,7 +15,6 @@ import {
   merchantDetailsSuccess,
   merchantDetailsFail,
   favouriteListFail,
-  favouriteListSuccess,
   removeFavouriteSuccess,
   removeFavouriteFail,
   LearnAllFail,

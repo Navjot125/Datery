@@ -39,9 +39,9 @@ function* onMerchantRequest({ data }) {
         offset: data?.offset,
         priceRange: data?.priceRange,
         // rating: data?.rating ? data?.rating : ""
-        rating: data?.rating || null
+        rating: data?.rating || null,
         // rating: 4,
-        // distance: data?.distance ? data?.distance : "",
+        distance: data?.distance ? data?.distance : "",
       },
       {
         headers: {
@@ -183,12 +183,13 @@ function* onFavouriteListRequest({ navigation }) {
       return;
     });
   if (res) {
-    // console.log(res.data, '....');
     if (res?.data?.status) {
+      console.log(res?.data, '======------------....');
       yield put(setLoader(false));
       // yield put(merchantDetailsSuccess(res?.data?.data));
       yield put(favouriteListSuccess(res?.data?.data));
       navigation.navigation();
+      // navigation?.callBack()
       // console.log(res.data, ' message from saga merchant details');
     } else {
       yield put(setLoader(false));
@@ -205,6 +206,7 @@ function* onFavouriteListRequest({ navigation }) {
 }
 
 function* onRemoveFavouriteRequest({ navigation }) {
+  // console.log(navigation,'[][][][][][][]');
   // yield put(setLoader(true));
   // console.log(navigation, 'navigation ---------------request of remove from favourites');
   let res = yield axiosClient
@@ -217,12 +219,12 @@ function* onRemoveFavouriteRequest({ navigation }) {
       return;
     });
   if (res) {
-    console.log(res.data, "....");
+    console.log(res.data, "....onRemoveFavouriteRequest");
     if (res?.data?.status) {
-      // yield put(setLoader(false));
+      // yield put(setLoader(false)); 
       // yield put(merchantDetailsSuccess(res?.data?.data));
       yield put(removeFavouriteSuccess(navigation.data.serviceId));
-      navigation.callBack();
+      navigation?.callBack();
       // showAlertSuccess(res.data.message)
       // console.log(res.data, ' message from saga remove Favourite merchant');
     } else {

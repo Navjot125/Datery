@@ -12,55 +12,70 @@ import fonts from "../../../Constants/Fonts";
 import color from "../../../Constants/Color";
 import * as Atom from "../../../Components/atoms";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import LocationIcon from "react-native-vector-icons/Entypo";
 import styles from "./FavoriteHomeStyles";
-import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView } from "react-native-swipe-list-view";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
 import { BackHeader } from "../../../Components/molecules";
 import DropShadow from "react-native-drop-shadow";
-import { favouriteListRequest, removeFavouriteRequest, removeGuestFavouriteRequest } from "../../../modules/Merchants/actions";
+import {
+  favouriteListRequest,
+  removeFavouriteRequest,
+  removeGuestFavouriteRequest,
+} from "../../../modules/Merchants/actions";
 import { API_URL } from "../../../Constants/Config";
 import { ActivityIndicator } from "react-native-paper";
 import { showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
 
 const FavoriteHome = (props) => {
-  const route = useRoute()
-  const { param } = route.params || { param: {} }
-  const role = props.state.roleReducer.role.id
+  const route = useRoute();
+  const { param } = route.params || { param: {} };
+  const [favParam, setFavParam] = useState(param);
+  const role = props.state.roleReducer.role.id;
   const navigation = useNavigation();
-  const dispatch = useDispatch()
-  const [data, setData] = useState(props.state.merchantReducer?.favourites)
+  const dispatch = useDispatch();
+  const [data, setData] = useState(props.state.merchantReducer?.favourites);
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
   // console.log(JSON.stringify(props.state.merchantReducer?.favourites,null,2))
   useEffect(() => {
-    setData(role == 1 ? props.state.merchantReducer.favouritesGuest : props.state.merchantReducer?.favourites);
-  }, [role])
+    setData(
+      role == 1
+        ? props.state.merchantReducer.favouritesGuest
+        : props.state.merchantReducer?.favourites
+    );
+  }, [role]);
 
+  useEffect(() => {
+    setData(props.state.merchantReducer?.favourites);
+  }, [props.state.merchantReducer?.favourites]);
   const handleDelete = (id) => {
     // setData((prevData) => prevData.filter((item) => item.id !== id));
     let params = {
       endpoint: API_URL.deleteFavorite,
       data: {
         serviceId: id,
-        userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id,
+        userId: props.state?.loginReducer?.loginData?._id
+          ? props.state?.loginReducer?.loginData?._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
       callBack: () => {
-        dispatch(favouriteListRequest(param))
-        showAlertSuccess(`Item removed from your favourite list`)
-      }
-
-    }
+        dispatch(favouriteListRequest(param));
+        showAlertSuccess(`Item removed from your favourite list`);
+      },
+    };
     let serviceId = {
-      serviceId: id
-    }
-    role == 2 ?
-      props.removeFavouriteRequest(params) :
-      props.removeGuestFavouriteRequest(serviceId)
-    // console.log('sfsf',id);
+      serviceId: id,
+    };
+    role == 2
+      ? props.removeFavouriteRequest(params)
+      : props.removeGuestFavouriteRequest(serviceId);
   };
   const renderItem = ({ item }) => {
     return (
@@ -68,7 +83,6 @@ const FavoriteHome = (props) => {
         <DropShadow style={styles.shadowProp}>
           <TouchableOpacity
             activeOpacity={0.9}
-
             onPress={() => navigation.navigate("ListingDetail")}
           >
             <View style={styles.card}>
@@ -80,7 +94,9 @@ const FavoriteHome = (props) => {
                   // padding: 13,
                   // resizeMode: 'contain',
                 }}
-                source={{ uri: `http://54.92.82.16:3001/data/${item.providerfile}` }}
+                source={{
+                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
+                }}
               />
               <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Text
@@ -107,17 +123,17 @@ const FavoriteHome = (props) => {
                     }}
                   >
                     {item.providerlocationAddress}{" "}
-                    <Text>
-                      {item?.Distance.toFixed(2)} mi
-                    </Text>
+                    <Text>{item?.Distance.toFixed(2)} mi</Text>
                   </Text>
                 </View>
-                <View style={{
-                  flexDirection: "row", flexWrap: 'wrap',
-                  marginTop: 9,
-                }}>
-
-                  {item.averageRating != 0 ?
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    marginTop: 9,
+                  }}
+                >
+                  {item.averageRating != 0 ? (
                     <>
                       <Text
                         style={{
@@ -134,11 +150,12 @@ const FavoriteHome = (props) => {
                         currentRating={Math.round(item.averageRating)}
                       />
                     </>
-                    : <Atom.Rating
+                  ) : (
+                    <Atom.Rating
                       // currentRating={Math.round(item.rating)}
                       currentRating={Math.round(item.averageRating)}
                     />
-                  }
+                  )}
                   <Text
                     style={{
                       fontFamily: fonts.REGULAR,
@@ -148,7 +165,7 @@ const FavoriteHome = (props) => {
                   >
                     {" "}
                     {/* {item.ratingCount}{" "}Ratings */}
-                    {item.ratingCount}{" "}Ratings
+                    {item.ratingCount} Ratings
                   </Text>
                 </View>
 
@@ -162,7 +179,8 @@ const FavoriteHome = (props) => {
                   }}
                 >
                   {/* Starting at ${item.price} */}
-                  Starting at  <Text
+                  Starting at{" "}
+                  <Text
                     style={{
                       // marginTop: 9,
                       // marginBottom: 14,
@@ -174,14 +192,13 @@ const FavoriteHome = (props) => {
                     ${item.price}
                   </Text>
                 </Text>
-
               </View>
             </View>
           </TouchableOpacity>
         </DropShadow>
       </View>
     );
-  }
+  };
   const renderHiddenItem = (dataItem) => (
     <View style={styles.rowBack}>
       <TouchableOpacity
@@ -189,28 +206,31 @@ const FavoriteHome = (props) => {
         style={styles.actionButton}
         onPress={() => handleDelete(dataItem.item.serviceId)}
       >
-        <Image style={{ height: 20, width: 20 }} source={require('../../../assets/images/deleteCard.png')} />
+        <Image
+          style={{ height: 20, width: 20 }}
+          source={require("../../../assets/images/deleteCard.png")}
+        />
       </TouchableOpacity>
     </View>
   );
   return (
     <View style={{ flex: 1, backgroundColor: color._white }}>
-      {
-        props.state.loaderReducer?.loader &&
-        <View style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 3,
-        }}>
-          <ActivityIndicator
-            size="large" color={color._primary_orange} />
+      {props.state.loaderReducer?.loader && (
+        <View
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 3,
+          }}
+        >
+          <ActivityIndicator size="large" color={color._primary_orange} />
         </View>
-      }
+      )}
       <View
         style={{
           flex: 1,
@@ -225,38 +245,44 @@ const FavoriteHome = (props) => {
           renderItem={showList}
           showsVerticalScrollIndicator={false}
         /> */}
-        {
-          data?.length > 0 ?
-            <SwipeListView
-              data={data}
-              renderItem={renderItem}
-              ItemSeparatorComponent={() => {
-                return <View style={{ height: 40 }} />
-              }}
-              renderHiddenItem={renderHiddenItem}
-              rightOpenValue={-55} // adjust this value based on your item width
-            /> :
-            <Text style={{
+        {data?.length > 0 ? (
+          <SwipeListView
+            data={data}
+            renderItem={renderItem}
+            ItemSeparatorComponent={() => {
+              return <View style={{ height: 40 }} />;
+            }}
+            renderHiddenItem={renderHiddenItem}
+            rightOpenValue={-55} // adjust this value based on your item width
+          />
+        ) : (
+          <Text
+            style={{
               flex: 1,
               alignSelf: "center",
               top: "40%",
               fontFamily: fonts.BOLD,
               color: "#1F2937",
               fontSize: 17,
-            }}>Your favourite list is empty</Text>
-        }
+            }}
+          >
+            Your favourite list is empty
+          </Text>
+        )}
       </View>
     </View>
   );
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  removeFavouriteRequest: (navigation) => dispatch(removeFavouriteRequest(navigation)),
-  removeGuestFavouriteRequest: (data) => dispatch(removeGuestFavouriteRequest(data))
+  removeFavouriteRequest: (navigation) =>
+    dispatch(removeFavouriteRequest(navigation)),
+  removeGuestFavouriteRequest: (data) =>
+    dispatch(removeGuestFavouriteRequest(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(FavoriteHome);

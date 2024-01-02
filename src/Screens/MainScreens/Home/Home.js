@@ -30,6 +30,7 @@ import Arts from "./Arts";
 import MapIcon from "react-native-vector-icons/Feather";
 import LocationIcon from "react-native-vector-icons/Entypo";
 import CartIcon from "react-native-vector-icons/AntDesign";
+import DatePicker from "react-native-date-picker";
 import {
   useFocusEffect,
   useIsFocused,
@@ -81,6 +82,8 @@ const Home = (props) => {
   const [geoCityShortName, setGeoCityShortName] = useState("");
   // let [text, setText] = useState('');
   const [text, setText] = useState("");
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState(new Date());
   let [loc, setLoc] = useState("");
   const [isExpanded, setIsExpanded] = useState(null);
   const { merchants, totalMerchant } = useSelector(
@@ -410,17 +413,12 @@ const Home = (props) => {
     );
     if (mainitemIncludedIdx !== -1) {
       arr.splice(mainitemIncludedIdx, 1);
-      // arr.push({
-      //   title:mainItem.title,
-      //   sortyBy: subItem.title
-      // })
     }
     arr.push({
       title: mainItem?.title,
       sortyBy: indexMain === 4 || 5 ? subItem?.key : subItem?.title,
       value: subItem?.value || "",
     });
-    // console.log("arr", arr);
     setSelectedFilters(arr);
   };
   const renderBody = (item, index) => {
@@ -428,41 +426,42 @@ const Home = (props) => {
       <View style={{}}>
         {item.body.map((i, idx) => {
           let isItemSelected =
-            selectedFilter.findIndex(
-              (subItem) =>
-                index == 3
-                  ? i?.value?.higherPrice === subItem?.value?.higherPrice
-                  : index == 5
-                  ? i?.key === subItem?.sortyBy
-                  : i?.value === subItem?.value
-              // index == 5 ? i?.id === idx :
-              // index == 5 ? i?.key === subItem?.sortBy :
-              // i?.mainTitle === subItem?.title
-              // i?.title === subItem.sortyBy
-              // console.log(i, subItem, "------",idx )
+            selectedFilter.findIndex((subItem) =>
+              index == 3
+                ? i?.value?.higherPrice === subItem?.value?.higherPrice
+                : index == 5
+                ? i?.key === subItem?.sortyBy
+                : i?.value === subItem?.value
             ) !== -1
               ? true
               : false;
-
           return (
             <TouchableOpacity
               onPress={() => {
+                // item?.body[1]?.title == i?.title
+                //   ? setOpen(true)
+                //   : setOpen(false);
+                // console.log(item?.body[1]?.title, '----', i?.title,'================')
                 applyFilter(item, index, i, idx);
-                // console.log(
-                //   "item---",
-                //   item,
-                //   "index------",
-                //   index,
-                //   "i-----",
-                //   i,
-                //   "idx-----",
-                //   idx
-                // );
                 // setIsExpanded(i.title)
               }}
               style={styles.rdioBttnCntnr}
             >
               <Text style={styles.rdioTxt}>{i?.title}</Text>
+              {/* {item?.body[1]?.title === i?.title ? (
+                open ? (
+                  <View
+                    style={{
+                      width: "60%",
+                      right: "40%",
+                      top: 20,
+                      // backgroundColor:'red',
+                    }}
+                  >
+                    <DatePicker date={date} onDateChange={setDate} />
+                  </View>
+                ) : null
+              ) : null} */}
               <CustomIcon
                 type={"Fontisto"}
                 name={isItemSelected ? "radio-btn-active" : "radio-btn-passive"}

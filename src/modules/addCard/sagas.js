@@ -9,7 +9,6 @@ import {
 } from "./types";
 import {
   favouriteListFail,
-  favouriteListSuccess,
   removeFavouriteSuccess,
   removeFavouriteFail,
   CardAllFail,

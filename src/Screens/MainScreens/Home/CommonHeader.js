@@ -190,7 +190,7 @@ const CommonHeader = (props) => {
                     role == 2 ?
                         dispatch(favouriteListRequest(param)) : navigation.navigate('FavoriteHome')
                 }}
-            >
+            > 
                 <Image
                     style={{ height: 16, width: 20, tintColor: color._black, resizeMode: 'contain' }}
                     source={require("../../../assets/images/Heart.png")}
