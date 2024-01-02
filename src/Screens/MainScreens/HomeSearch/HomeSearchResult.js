@@ -105,7 +105,7 @@ const HomeSearchResult = (props) => {
           justifyContent: 'center',
           tintColor: color._primary_orange
         }}
-          resizeMode='center'
+          resizeMode='contain'
         />
       </View>
     );
