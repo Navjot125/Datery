@@ -39,7 +39,7 @@ function* onMerchantRequest({ data }) {
         offset: data?.offset,
         priceRange: data?.priceRange,
         // rating: data?.rating ? data?.rating : ""
-        rating: data?.rating || ""
+        rating: data?.rating || null
         // rating: 4,
         // distance: data?.distance ? data?.distance : "",
       },

@@ -97,31 +97,37 @@ const Home = (props) => {
           title: "Food - Any Cusine",
           key: "",
           value: "Food - Any Cusine",
+          mainTitle: "Category",
         },
         {
           title: "All",
           key: "",
           value: "All",
+          mainTitle: "Category",
         },
         {
           title: "Food",
           key: "",
           value: "Food",
+          mainTitle: "Category",
         },
         {
           title: "Arts",
           key: "",
+          mainTitle: "Category",
           value: "Arts",
         },
         {
           title: "Adventurous",
           key: "",
           value: "Adventurous",
+          mainTitle: "Category",
         },
         {
           title: "Sports",
           key: "",
           value: "Sports",
+          mainTitle: "Category",
         },
       ],
       img: Images.upImage,
@@ -135,26 +141,31 @@ const Home = (props) => {
           title: "Relevance",
           key: "",
           value: "Relevance",
+          mainTitle: "Sort By",
         },
         {
           title: "Price: Low to High",
           key: "",
           value: "PriceLowToHigh",
+          mainTitle: "Sort By",
         },
         {
           title: "Price: High to Low",
           key: "",
           value: "PriceHighToLow",
+          mainTitle: "Sort By",
         },
         {
           title: "Distance",
           key: "",
           value: "Distance",
+          mainTitle: "Sort By",
         },
         {
           title: "Rating",
           key: "",
           value: "Rating",
+          mainTitle: "Sort By",
         },
       ],
       img: Images.upImage,
@@ -168,11 +179,13 @@ const Home = (props) => {
           title: "Anytime",
           key: "",
           value: "Anytime",
+          mainTitle: "Availability",
         },
         {
           title: "Select a date",
           key: "",
           value: "Select a date",
+          mainTitle: "Availability",
           //
         },
       ],
@@ -186,6 +199,7 @@ const Home = (props) => {
         {
           title: "Any Price",
           key: "",
+          mainTitle: "Price",
         },
         {
           title: "$0 - $80",
@@ -194,6 +208,7 @@ const Home = (props) => {
             lowerPrice: 0,
             higherPrice: 80,
           },
+          mainTitle: "Price",
         },
         {
           title: "$80 - $120",
@@ -202,6 +217,7 @@ const Home = (props) => {
             lowerPrice: 80,
             higherPrice: 120,
           },
+          mainTitle: "Price",
         },
         {
           title: "$120 - $160",
@@ -210,6 +226,7 @@ const Home = (props) => {
             lowerPrice: 120,
             higherPrice: 160,
           },
+          mainTitle: "Price",
         },
         {
           title: "$160 - $200",
@@ -218,6 +235,7 @@ const Home = (props) => {
             lowerPrice: 160,
             higherPrice: 200,
           },
+          mainTitle: "Price",
         },
         {
           title: "$200 - $250",
@@ -226,6 +244,7 @@ const Home = (props) => {
             lowerPrice: 200,
             higherPrice: 250,
           },
+          mainTitle: "Price",
         },
         {
           title: "$250 - $300",
@@ -234,11 +253,22 @@ const Home = (props) => {
             lowerPrice: 250,
             higherPrice: 300,
           },
+          mainTitle: "Price",
         },
         {
           title: "$300+",
           key: "",
-          value: "300+",
+          value:
+            //  "300+",
+            {
+              lowerPrice: 300,
+              higherPrice: 999999,
+            },
+          // value: {
+          //   lowerPrice: "300+",
+          // higherPrice:""
+          // },
+          mainTitle: "Price",
         },
       ],
       img: Images.upImage,
@@ -252,31 +282,37 @@ const Home = (props) => {
           title: "Any Distance",
           key: "",
           value: "Any Distance",
+          mainTitle: "Distance",
         },
         {
           title: "Remote / Virtual",
-          key: "",
+          key: "Remote",
           value: "Remote / Virtual",
+          mainTitle: "Distance",
         },
         {
           title: "Within 20 mi",
-          key: "",
+          key: "20",
           value: "Within 20 mi",
+          mainTitle: "Distance",
         },
         {
           title: "Within 50 mi",
-          key: "",
+          key: "50",
           value: "Within 50 mi",
+          mainTitle: "Distance",
         },
         {
           title: "Within 100 mi",
-          key: "",
+          key: "100",
           value: "Within 100 mi",
+          mainTitle: "Distance",
         },
         {
           title: "Within 250 mi",
-          key: "",
+          key: "250",
           value: "Within 250 mi",
+          mainTitle: "Distance",
         },
       ],
       img: Images.upImage,
@@ -290,31 +326,43 @@ const Home = (props) => {
           title: "All",
           key: "",
           value: "All",
+          mainTitle: "Rating",
+          id: 0,
         },
         {
           title: "Unrated",
           key: 0,
           value: "Unrated",
+          mainTitle: "Rating",
+          id: 1,
         },
         {
           title: ["★", "★", "★", "★", "☆", "& up"],
           key: 4,
           value: ["★", "★", "★", "★", "☆", "& up"],
+          mainTitle: "Rating",
+          id: 2,
         },
         {
           title: ["★", "★", "★", "☆", "☆", "& up"],
           key: 3,
           value: ["★", "★", "★", "☆", "☆", "& up"],
+          mainTitle: "Rating",
+          id: 3,
         },
         {
           title: ["★", "★", "☆", "☆", "☆", "& up"],
           key: 2,
           value: ["★", "★", "☆", "☆", "☆", "& up"],
+          mainTitle: "Rating",
+          id: 4,
         },
         {
           title: ["★", "☆", "☆", "☆", "☆", "& up"],
           key: 1,
           value: ["★", "☆", "☆", "☆", "☆", "& up"],
+          mainTitle: "Rating",
+          id: 5,
         },
       ],
       img: Images.upImage,
@@ -356,7 +404,6 @@ const Home = (props) => {
   );
 
   const applyFilter = (mainItem, indexMain, subItem, idxItem) => {
-    // console.log(subItem?.title, "mainItem?.title-------------", subItem?.key);
     let arr = [...selectedFilter];
     let mainitemIncludedIdx = arr.findIndex(
       (i) => i?.title === mainItem?.title
@@ -370,20 +417,29 @@ const Home = (props) => {
     }
     arr.push({
       title: mainItem?.title,
-      sortyBy: indexMain === 5 ? subItem?.key : subItem?.title,
+      sortyBy: indexMain === 4 || 5 ? subItem?.key : subItem?.title,
       value: subItem?.value || "",
     });
-    console.log("arr", arr);
+    // console.log("arr", arr);
     setSelectedFilters(arr);
   };
-
   const renderBody = (item, index) => {
     return (
       <View style={{}}>
         {item.body.map((i, idx) => {
           let isItemSelected =
             selectedFilter.findIndex(
-              (subItem) => i?.title === subItem.sortyBy
+              (subItem) =>
+                index == 3
+                  ? i?.value?.higherPrice === subItem?.value?.higherPrice
+                  : index == 5
+                  ? i?.key === subItem?.sortyBy
+                  : i?.value === subItem?.value
+              // index == 5 ? i?.id === idx :
+              // index == 5 ? i?.key === subItem?.sortBy :
+              // i?.mainTitle === subItem?.title
+              // i?.title === subItem.sortyBy
+              // console.log(i, subItem, "------",idx )
             ) !== -1
               ? true
               : false;
@@ -392,7 +448,16 @@ const Home = (props) => {
             <TouchableOpacity
               onPress={() => {
                 applyFilter(item, index, i, idx);
-                // console.log(item, index, i, idx,'item, index, i, idx');
+                // console.log(
+                //   "item---",
+                //   item,
+                //   "index------",
+                //   index,
+                //   "i-----",
+                //   i,
+                //   "idx-----",
+                //   idx
+                // );
                 // setIsExpanded(i.title)
               }}
               style={styles.rdioBttnCntnr}
@@ -633,7 +698,8 @@ const Home = (props) => {
       category: item?.title || null,
       sortby: getFilterValue("Sort By")?.value,
       priceRange: getFilterValue("Price")?.value,
-      rating:getFilterValue("Rating")?.sortyBy,
+      rating: getFilterValue("Rating")?.sortyBy,
+      distance: getFilterValue("Distance")?.sortyBy,
       offset: page,
     };
     // console.log('param of fetchAllSerrvices', params, null, 2)
