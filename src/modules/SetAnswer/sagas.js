@@ -57,7 +57,7 @@ function* onDemoRequest({ data }) {
 // }
 
 function* onAnswerRequest({ data, navigation }) {
-  // console.log(data, 'data', navigation, 'navigation --------------- onAnswerRequest');
+  console.log(data, 'data', navigation, 'navigation --------------- onAnswerRequest');
   // yield put(setLoader(true));
   let res = yield axiosClient
     .post(navigation.endpoint, data,
@@ -76,7 +76,7 @@ function* onAnswerRequest({ data, navigation }) {
     });
   if (res) {
     yield put(setLoader(false));
-    // console.log(res.data, '....response of api onAnswerRequest');
+    console.log(res.data, '....response of api onAnswerRequest');
     if (res?.data?.status) {
       // yield put(answerSuccess(res.data.UserData));
       yield put(answerSuccess(res.data));
@@ -90,12 +90,12 @@ function* onAnswerRequest({ data, navigation }) {
       // yield call(datingProfileRequest(params));
       // yield put(loginSuccess(res.data));
       // showAlert(res.data.message);
-      // console.log(res.data.message, ' message from saga login onAnswerRequest ');
+      console.log(res.data, ' message from saga login onAnswerRequest ');
       navigation.navigation();
     } else {
       yield put(answerFail());
       // showAlert(res.data.message);
-      // console.log(res.data.message, 'fail at onAnswerRequest');
+      console.log(res.data, 'fail at onAnswerRequest');
     }
   } else {
     yield put(setLoader(false));

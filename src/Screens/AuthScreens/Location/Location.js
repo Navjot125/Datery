@@ -157,7 +157,8 @@ const Location = (props) => {
         </View>
         <Atom.Button
           onPress={() => {
-            insertData()
+            // insertData()
+            navigation.navigate("Root", { screen: "Home" });
           }}
           containerStyle={{
             marginBottom: "8%"

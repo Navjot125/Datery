@@ -1,8 +1,8 @@
 // import styles from './EmptyCartPopUpStyle';
-import Modal from 'react-native-modal';
+import Modal from "react-native-modal";
 // import * as resources from '../../../resources';
 // import * as Atoms from '../../atoms';
-import color from '../../../Constants/Color';
+import color from "../../../Constants/Color";
 import React, { useState } from "react";
 import * as Atom from "../../atoms";
 import {
@@ -22,7 +22,7 @@ import Cross from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 
-export const EmptyCartPopUp = props => {
+export const EmptyCartPopUp = (props) => {
   const [modalVisible, setModalVisible] = React.useState(false);
 
   const {
@@ -70,7 +70,7 @@ export const EmptyCartPopUp = props => {
             height: 92,
             alignSelf: "center",
             justifyContent: "center",
-            tintColor: color._primary_orange
+            tintColor: color._primary_orange,
           }}
         />
         <Text style={styles.orangeText}>Your cart is empty</Text>
@@ -188,4 +188,3 @@ const styles = StyleSheet.create({
   },
 });
 export default EmptyCartPopUp;
-

@@ -87,7 +87,7 @@ function* onCartListRequest({ data }) {
       return;
     });
   if (res) {
-    // console.log(res.data, '....');
+    console.log(res.data, '....');
     if (res?.data?.status) {
       // yield put(setLoader(false));
       yield put(CartListSuccess(res?.data?.data));
@@ -112,7 +112,8 @@ function* onRemoveItemFromCartRequest({ data }) {
   yield put(setLoader(true));
   // console.log(data, 'navigation ---------------request for cart list');
   let res = yield axiosClient
-    .post(data.endpoint, data._id)
+    // .post(data.endpoint, data._id)
+    .post(data.endpoint, "657947e597300470e6c56a3f")
     .then(function (response) {
       return response;
     })

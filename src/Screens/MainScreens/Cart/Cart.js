@@ -30,7 +30,6 @@ const Cart = (props) => {
     <View style={styles.modalContent}>
       <TouchableOpacity
             activeOpacity={0.9}
-
         onPress={() => {
           if (onRequestClose !== undefined) {
             setModalVisible(!modalVisible);

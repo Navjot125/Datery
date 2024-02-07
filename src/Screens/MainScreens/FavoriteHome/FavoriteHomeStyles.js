@@ -53,6 +53,17 @@ const styles = StyleSheet.create({
     textAlign: "justify",
     lineHeight: 18,
   },
+  button: {
+    backgroundColor: color._primary_orange,
+    paddingHorizontal: 17,
+    justifyContent: "center",
+    // marginTop: 18,
+    paddingVertical: 15,
+    marginVertical: 10,
+
+    // height: 48,
+    borderRadius: 12,
+  },
   item: {
     backgroundColor: "#F6F6F6",
     paddingHorizontal: 17,
@@ -68,10 +79,10 @@ const styles = StyleSheet.create({
     color: "#333333",
   },
   shadowProp: {
-    // shadowColor: "rgba(0, 0, 0, 0.05)",
+    shadowColor: "rgba(0, 0, 0, 0.05)",
     shadowOffset: { width: 0, height: 0 },
-    // shadowOpacity: 1,
-    // shadowRadius: 6,
+    shadowOpacity: 1,
+    shadowRadius: 6,
   },
   cardView: {
     // marginTop: 18,
@@ -94,40 +105,39 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     // padding: 10,
     flexDirection: "row",
-    alignItems: 'center'
+    alignItems: "center",
   },
   row: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   rowBack: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
     // backgroundColor: 'red',
     // paddingVertical:100
     // paddingHorizontal: 6,
   },
   actionButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 67,
     paddingHorizontal: 20,
     // marginTop: -60,
     backgroundColor: color._primary_orange,
     borderRadius: 15,
 
-
     // width: 65,
     // height: '80%',
   },
   buttonText: {
-    color: '#ffffff',
+    color: "#ffffff",
   },
 });
 export default styles;

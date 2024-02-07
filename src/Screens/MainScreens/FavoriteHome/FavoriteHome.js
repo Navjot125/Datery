@@ -39,10 +39,13 @@ const FavoriteHome = (props) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [data, setData] = useState(props.state.merchantReducer?.favourites);
+  const [checked, setChecked] = React.useState(true);
+  const [checkedId, setCheckedId] = React.useState();
   const { userToken, loginData } = useSelector((state) => state.loginReducer);
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
+  const [isEditMode, setIsEditMode] = useState(false);
   // console.log(JSON.stringify(props.state.merchantReducer?.favourites,null,2))
   useEffect(() => {
     setData(
@@ -76,6 +79,161 @@ const FavoriteHome = (props) => {
     role == 2
       ? props.removeFavouriteRequest(params)
       : props.removeGuestFavouriteRequest(serviceId);
+  };
+
+  //   <Atom.CheckBox
+  //   label={item.title}
+  //   containerStyle={{}}
+  //   // checkValue = {typeOfDatesBool}
+  //   // checkValue ={checkValue}
+  //   checkValue={item.checked}
+  //   labelStyle={styles.labelStyle}
+  //   onPress={() => onPressChange(item)}
+  //   status={checked ? 'checked' : 'unchecked'}
+  // // status={types[0] == item.title ? 'checked' : 'unchecked'}
+  // />
+  console.log("checkedId", checkedId);
+  const renderItemEdit = ({ item }) => {
+    const onPressChange = (item) => {
+      item?.serviceId == checkedId
+        ? setCheckedId()
+        : setCheckedId(item?.serviceId);
+    };
+    return (
+      <View
+        style={[
+          styles.cardView,
+          {
+            flexDirection: "row",
+          },
+        ]}
+      >
+        <Atom.CheckBox
+          // label={item?.title}
+          containerStyle={{}}
+          // checkValue = {typeOfDatesBool}
+          // checkValue ={checkValue}
+          checkValue={item?.checked}
+          labelStyle={styles.labelStyle}
+          onPress={() => onPressChange(item)}
+          status={checked ? "checked" : "unchecked"}
+          // status={types[0] == item.title ? 'checked' : 'unchecked'}
+        />
+        <DropShadow style={[styles.shadowProp, { flex: 1, marginHorizontal:12 }]}>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            onPress={() => navigation.navigate("ListingDetail")}
+          >
+            <View style={[styles.card]}>
+              <Image
+                style={{
+                  height: 100,
+                  width: 100,
+                  borderRadius: 6,
+                  // padding: 13,
+                  // resizeMode: 'contain',
+                }}
+                source={{
+                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
+                }}
+              />
+              <View style={{ flex: 1, paddingHorizontal: 10 }}>
+                <Text
+                  style={{
+                    fontFamily: fonts.BOLD,
+                    color: color._black,
+                    fontSize: 15,
+                  }}
+                >
+                  {item.providerName}{" "}
+                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: 9,
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: fonts.MEDIUM,
+                      color: color._black,
+                      fontSize: 11,
+                    }}
+                  >
+                    {item.providerlocationAddress}{" "}
+                    <Text>{item?.Distance.toFixed(2)} mi</Text>
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    marginTop: 9,
+                  }}
+                >
+                  {item.averageRating != 0 ? (
+                    <>
+                      <Text
+                        style={{
+                          fontFamily: fonts.REGULAR,
+                          color: color._black,
+                          fontSize: 13,
+                        }}
+                      >
+                        {item.averageRating}{" "}
+                      </Text>
+                      <Atom.Rating
+                        // currentRating={Math.round(item.rating)}
+                        currentRating={Math.round(item.averageRating)}
+                      />
+                    </>
+                  ) : (
+                    <Atom.Rating
+                      // currentRating={Math.round(item.rating)}
+                      currentRating={Math.round(item.averageRating)}
+                    />
+                  )}
+                  <Text
+                    style={{
+                      fontFamily: fonts.REGULAR,
+                      color: color._black,
+                      fontSize: 13,
+                    }}
+                  >
+                    {" "}
+                    {item.ratingCount} Ratings
+                  </Text>
+                </View>
+
+                <Text
+                  style={{
+                    // marginTop: 9,
+                    // marginBottom: 13,
+                    fontFamily: fonts.SEMI_BOLD,
+                    color: color._border_orange,
+                    fontSize: 13,
+                  }}
+                >
+                  Starting at{" "}
+                  <Text
+                    style={{
+                      // marginTop: 9,
+                      // marginBottom: 14,
+                      fontFamily: fonts.BOLD,
+                      color: color._border_orange,
+                      fontSize: 20,
+                    }}
+                  >
+                    ${item?.price}
+                  </Text>
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </DropShadow>
+      </View>
+    );
   };
   const renderItem = ({ item }) => {
     return (
@@ -239,23 +397,81 @@ const FavoriteHome = (props) => {
         }}
       >
         <BackHeader title="Favorites" />
+        <Text
+          onPress={() => {
+            setIsEditMode(!isEditMode);
+          }}
+          style={{
+            right: 20,
+            position: "absolute",
+            top: 20,
+            color: color._primary_orange,
+          }}
+        >
+          Edit
+        </Text>
         {/* <FlatList
           data={dataList}
           keyExtractor={(item) => item.id}
           renderItem={showList}
           showsVerticalScrollIndicator={false}
         /> */}
+        {/* isEditMode, */}
         {data?.length > 0 ? (
-          <SwipeListView
-            data={data}
-            renderItem={renderItem}
-            ItemSeparatorComponent={() => {
-              return <View style={{ height: 40 }} />;
-            }}
-            renderHiddenItem={renderHiddenItem}
-            rightOpenValue={-55} // adjust this value based on your item width
-          />
+          isEditMode ? (
+            <>
+              <FlatList
+                data={data}
+                keyExtractor={(item) => item.id}
+                renderItem={renderItemEdit}
+                showsVerticalScrollIndicator={false}
+              />
+              <TouchableOpacity
+                activeOpacity={0.9}
+                style={[
+                  styles.button,
+                  {
+                    backgroundColor: !checkedId
+                      ? "#DCDDE0"
+                      : color._primary_orange,
+                    borderRadius: 40,
+                  },
+                ]}
+                // onPress={() => setModalVisible(true)}
+              >
+                <Text
+                  style={[
+                    styles.title,
+                    {
+                      textAlign: "center",
+                      color: "white",
+                      fontSize: 16,
+                      fontWeight: 600,
+                    },
+                  ]}
+                >
+                  {"REMOVE SELECTED ITEMS"}
+                </Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <FlatList
+              data={data}
+              keyExtractor={(item) => item.id}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+            />
+          )
         ) : (
+          // <SwipeListView
+          //   data={data}
+          //   renderItem={renderItem}
+          //   ItemSeparatorComponent={() => {
+          //     return <View style={{ height: 40 }} />;
+          //   }}
+          //   renderHiddenItem={renderHiddenItem}
+          //   rightOpenValue={-55} // adjust this value based on your item width
+          // />
           <Text
             style={{
               flex: 1,

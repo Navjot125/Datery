@@ -27,7 +27,7 @@ const Done = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
         <Image
-          resizeMode="cover"
+          resizeMode="center"
           source={require("../../../assets/images/Datery.png")}
           style={{
             width: wp(35),
@@ -54,12 +54,13 @@ const Done = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setAnswer: (data, navigation) => dispatch(setAnswer(data, navigation)),
-  answerRequest: (data, navigation) => dispatch(answerRequest(data, navigation))
+  answerRequest: (data, navigation) =>
+    dispatch(answerRequest(data, navigation)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Done);

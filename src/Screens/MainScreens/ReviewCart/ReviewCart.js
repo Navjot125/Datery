@@ -126,7 +126,7 @@ const ReviewCart = (props) => {
     //         itemId: { itemId: item.itemId }
     //       }
     //       role == 1 ? props.removeFromCartGuestRequest(param) :
-    //         props.removeItemFromCartRequest(param)
+    //         props.removeItemFromCartRequest(param) 
     //     }
     //     else {
     //       return {

@@ -940,7 +940,7 @@ const Home = (props) => {
               </View>
 
               <View style={{ alignItems: "center", marginTop: 20 }}>
-                <CommonCrousal />
+                {/* <CommonCrousal /> */}
               </View>
               <AllHome
                 page={page}

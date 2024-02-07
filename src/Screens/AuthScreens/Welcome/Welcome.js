@@ -36,7 +36,7 @@ const Welcome = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
         <Image
-          resizeMode="cover"
+          resizeMode="center"
           source={LOGO_ORANGE}
           style={styles.logoImage}
         />
@@ -64,13 +64,14 @@ const Welcome = (props) => {
             </Text>
             <TouchableOpacity
               activeOpacity={0.9}
-
               onPress={() => {
                 props.setUserId({
-                  userId: props?.state?.loginReducer?.loginData?._id ? props?.state?.loginReducer?.loginData?._id :
-                    props?.state?.signupReducer?.signupSucessData?.UserData?._id
-                })
-                navigation.navigate('Age')
+                  userId: props?.state?.loginReducer?.loginData?._id
+                    ? props?.state?.loginReducer?.loginData?._id
+                    : props?.state?.signupReducer?.signupSucessData?.UserData
+                        ?._id,
+                });
+                navigation.navigate("Age");
               }}
               style={styles.buttonStyle}
             >
@@ -80,18 +81,18 @@ const Welcome = (props) => {
               activeOpacity={0.9}
               onPress={() => {
                 const token = userToken ? userToken : Usertoken;
-                let data = { sortby: 'Price' }
+                let data = { sortby: "Price" };
                 let params = {
                   endpoint: API_URL.fetchAllServices,
                   coordinates: null,
                   serviceType: null,
-                  token
+                  token,
                 };
-                props.merchantRequest(data, params)
+                props.merchantRequest(data, params);
                 navigation.reset({
                   index: 0,
-                  routes: [{ name: 'Root', params: { screen: 'Home' } }],
-                })
+                  routes: [{ name: "Root", params: { screen: "Home" } }],
+                });
                 // navigation.navigate('Root', {
                 //   screen: 'Home',
                 //   // params: { elapsedTime: elapsedTimeInSeconds }
@@ -99,7 +100,14 @@ const Welcome = (props) => {
                 // navigation.navigate("HomeTab", { screen: "Home" })
               }}
             >
-              <Text style={styles.orangeText}>Skip</Text>
+              <Text
+                onPress={() => {
+                  navigation.navigate("Location");
+                }}
+                style={styles.orangeText}
+              >
+                Skip
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -109,14 +117,15 @@ const Welcome = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   questionRequest: (data, navigation) =>
     dispatch(questionRequest(data, navigation)),
   setUserId: (data) => dispatch(setUserId(data)),
-  merchantRequest: (data, navigation) => dispatch(merchantRequest(data, navigation)),
+  merchantRequest: (data, navigation) =>
+    dispatch(merchantRequest(data, navigation)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Welcome);
