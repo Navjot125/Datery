@@ -88,7 +88,7 @@ export const HomeNavigator = (props) => {
   // });
   const role = useSelector((state) => state.roleReducer.role);
 
-// console.log('role',role?.id);
+  // console.log('role',role?.id);
   return (
     <Tab.Navigator
       // initialRouteName={
@@ -253,7 +253,6 @@ export const HomeNavigator = (props) => {
           ),
         })}
       />
-
       <Tab.Screen
         name={"PlayTab"}
         component={PlayStack}
@@ -268,8 +267,12 @@ export const HomeNavigator = (props) => {
                 size={20}
               /> */}
               <Image
-                source={focused ? Images.playImage : Images.playCardImage}
-                style={{ height: 25, width: 25 }}
+                source={require("../assets/images/play.png")}
+                style={{
+                  height: 25,
+                  width: 25,
+                  tintColor: focused ? color._black : color._gray,
+                }}
               />
               <Text
                 style={[
@@ -532,20 +535,20 @@ const ProfileStack = () => {
   const role = useSelector((state) => state.roleReducer.role);
   return (
     <Stack.Navigator>
-      {
-        role?.id == 2 ? 
+      {role?.id == 2 ? (
         <Stack.Screen
-        name={"ProfileScreen"}
-        component={ProfileScreen}
-        options={{ headerShown: false, gestureEnabled: false }}
-      /> : 
-      <Stack.Screen
-        options={{ headerShown: false, gestureEnabled: false }}
-        name="ProfileGuestUser"
-        component={ProfileGuestUser}
+          name={"ProfileScreen"}
+          component={ProfileScreen}
+          options={{ headerShown: false, gestureEnabled: false }}
         />
-      }
-        {/* <Stack.Screen
+      ) : (
+        <Stack.Screen
+          options={{ headerShown: false, gestureEnabled: false }}
+          name="ProfileGuestUser"
+          component={ProfileGuestUser}
+        />
+      )}
+      {/* <Stack.Screen
           options={{ headerShown: false, gestureEnabled: false }}
           name="DatingProfile"
           component={DatingProfile}
