@@ -42,7 +42,7 @@ function* onAboutComfilityRequest({ navigation }) {
 
 function* onDatingProfileRequest({ navigation }) {
   // yield put(setLoader(true));
-  console.log(navigation, 'navigation++++++ --------------- ');
+  // console.log(navigation, 'navigation++++++ --------------- ');
   try {
     let res = yield axiosClient
       .post(navigation.endpoint, navigation.id,
@@ -87,7 +87,7 @@ function* onDatingProfileRequest({ navigation }) {
 
 function* onUpdateProfileRequest({ data }) {
   yield put(setLoader(true));
-  console.log(data, 'navigation --------------- ', "onUpdateProfileRequest",);
+  // console.log(data, 'navigation --------------- ', "onUpdateProfileRequest",);
   // let formdata = FormData
   // data.updateDatingData.forEach(element => {
   //   // formdata.apply(element)

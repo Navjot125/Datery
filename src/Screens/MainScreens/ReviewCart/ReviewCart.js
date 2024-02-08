@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import styles from "./ReviewCartStyles";
@@ -15,6 +15,7 @@ import color from "../../../Constants/Color";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import Plus from "react-native-vector-icons/Entypo";
 import Minus from "react-native-vector-icons/Entypo";
+import moment from "moment";
 import AppleLogo from "react-native-vector-icons/AntDesign";
 import DropShadow from "react-native-drop-shadow";
 import { BackHeader } from "../../../Components/molecules";
@@ -24,15 +25,20 @@ import { ActivityIndicator, RadioButton } from "react-native-paper";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { connect, useSelector } from "react-redux";
 import * as PopUp from "../../../Components/models";
-import * as  Models from "../../../Components/models";
+import * as Models from "../../../Components/models";
 import { roleRequest } from "../../../modules/Role/actions";
 import { API_URL } from "../../../Constants/Config";
-import { CartListRequest, removeFromCartGuestRequest, removeItemFromCartRequest } from "../../../modules/Cart/actions";
+import {
+  CartListRequest,
+  removeFromCartGuestRequest,
+  removeItemFromCartRequest,
+} from "../../../modules/Cart/actions";
 import axiosClient from "../../../Utils/ApiClient";
-import { showAlertError, showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import {
+  showAlertError,
+  showAlertSuccess,
+} from "../../../Common/Functions/CommonFunctions";
 import LocationIcon from "react-native-vector-icons/Entypo";
-
-
 
 const dataArray = [
   {
@@ -47,12 +53,17 @@ const dataArray = [
   },
 ];
 const ReviewCart = (props) => {
-  const isFocused = useIsFocused()
-  const role = props.state.roleReducer.role.id
+  const isFocused = useIsFocused();
+  const role = props.state.roleReducer.role.id;
   const navigation = useNavigation();
   const [checked, setChecked] = React.useState("first");
-  const [cartList, setCartList] = React.useState(role == 1 ? props.state?.cartReducer?.cartList
-    : role == 2 ? props.state?.cartReducer?.cartListUser : null);
+  const [cartList, setCartList] = React.useState(
+    role == 1
+      ? props.state?.cartReducer?.cartList
+      : role == 2
+      ? props.state?.cartReducer?.cartListUser
+      : null
+  );
   const [modalVisibleSuccess, setModalVisibleSuccess] = React.useState(false);
   const [modalVisibleFailed, setModalVisibleFailed] = React.useState(false);
   const [modalVisibleAvailablity, setModalVisibleAvailablity] =
@@ -60,9 +71,14 @@ const ReviewCart = (props) => {
   const [selectedDate, setSelectedDate] = React.useState("");
 
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [counter, setCounter] = React.useState(props.state.cartReducer.cartList);
-  const { userToken, loginData } = useSelector(state => state.loginReducer)
-  const { Usertoken, signupSucessData } = useSelector(state => state.signupReducer)
+  const [alertmodal, setAlertModal] = React.useState(false);
+  const [counter, setCounter] = React.useState(
+    props.state.cartReducer.cartList
+  );
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
   const [selectedTime, setSelectedTime] = React.useState("");
 
   const [cardDetails, setCardDetails] = useState({
@@ -70,34 +86,41 @@ const ReviewCart = (props) => {
     city: "",
     state: "",
     ZipCode: "",
-    Dietary: ""
+    Dietary: "",
   });
 
   const handleChange = (name, value) => {
     setCardDetails({ ...cardDetails, [name]: value });
   };
 
-
-
   useEffect(() => {
-    console.log('CART+++++', cartList)
+    // console.log("CART+++++", cartList?.cartItem);
     // console.log(props.state?.cartReducer?.cartListUser, '------------');
 
-    setCartList(role == 1 ? props.state?.cartReducer?.cartList
-      : role == 2 ? props.state?.cartReducer?.cartListUser : null)
-  }, [role == 1 ? props?.state?.cartReducer?.cartList : props?.state?.cartReducer?.cartListUser])
+    setCartList(
+      role == 1
+        ? props.state?.cartReducer?.cartList
+        : role == 2
+        ? props.state?.cartReducer?.cartListUser
+        : null
+    );
+  }, [
+    role == 1
+      ? props?.state?.cartReducer?.cartList
+      : props?.state?.cartReducer?.cartListUser,
+  ]);
 
   const incrementCounter = (item) => {
-    let arr = [...cartList.cartItem.documents]
-    let cartTotal = cartList.cartItem.totalPrice
+    let arr = [...cartList.cartItem.documents];
+    let cartTotal = cartList.cartItem.totalPrice;
     arr.map((dataItem, idx) => {
       // console.log(dataItem.itemId === item.itemId)
       if (dataItem.itemId === item.itemId) {
         arr[idx] = {
           ...dataItem,
-          quantity: dataItem.quantity + 1
+          quantity: dataItem.quantity + 1,
         };
-        cartTotal += dataItem.itemPrice
+        cartTotal += dataItem.itemPrice;
       }
       // arr[idx] = dataItem;
     });
@@ -106,9 +129,9 @@ const ReviewCart = (props) => {
       cartItem: {
         ...cartList.cartItem,
         documents: arr,
-        totalPrice: cartTotal
-      }
-    }
+        totalPrice: cartTotal,
+      },
+    };
     setCartList(obj);
   };
 
@@ -126,7 +149,7 @@ const ReviewCart = (props) => {
     //         itemId: { itemId: item.itemId }
     //       }
     //       role == 1 ? props.removeFromCartGuestRequest(param) :
-    //         props.removeItemFromCartRequest(param) 
+    //         props.removeItemFromCartRequest(param)
     //     }
     //     else {
     //       return {
@@ -139,21 +162,20 @@ const ReviewCart = (props) => {
     //   return dataItem;
     // });
     // setCartList(updatedData);
-    let arr = [...cartList.cartItem.documents]
-    let cartTotal = cartList.cartItem.totalPrice
+    let arr = [...cartList.cartItem.documents];
+    let cartTotal = cartList.cartItem.totalPrice;
     arr.map((dataItem, idx) => {
       // console.log(dataItem.itemId === item.itemId)
       if (dataItem.itemId === item.itemId) {
         if (dataItem.quantity > 1) {
           arr[idx] = {
             ...dataItem,
-            quantity: dataItem.quantity - 1
+            quantity: dataItem.quantity - 1,
           };
+        } else {
+          arr.splice(idx, 1);
         }
-        else {
-          arr.splice(idx, 1)
-        }
-        cartTotal -= dataItem.itemPrice
+        cartTotal -= dataItem.itemPrice;
       }
       // arr[idx] = dataItem;
     });
@@ -162,43 +184,41 @@ const ReviewCart = (props) => {
       cartItem: {
         ...cartList.cartItem,
         documents: arr,
-        totalPrice: cartTotal
-      }
-    }
+        totalPrice: cartTotal,
+      },
+    };
     setCartList(obj);
   };
 
   const handleRequestReservation = async () => {
     try {
-      const token = userToken ? userToken :
-        Usertoken
+      const token = userToken ? userToken : Usertoken;
       const res = await axiosClient.post(API_URL.requestForReservation, {
         date: selectedDate,
         bookingId: purchase[0].bookingId,
         time: selectedTime.title,
-        token
-      })
+        token,
+      });
       // console.log(token)
       // console.log(res.data)
-      if (res.data.status)
-        setModalVisible(!modalVisible);
-      showAlertSuccess(res.data.message)
-
+      if (res.data.status) setModalVisible(!modalVisible);
+      showAlertSuccess(res.data.message);
     } catch (error) {
       // console.log(error)
-      showAlertError(error)
+      showAlertError(error);
     }
-
-  }
-
+  };
 
   const ShowTextInput = (props) => {
     return (
       <View style={styles.summaryView}>
-        <DropShadow >
+        <DropShadow>
           <View style={[styles.card]}>
             <Text style={styles.leftTitle}>{props.leftTitle}</Text>
-            <Text style={styles.leftTitle}>{props.dollar}{props.rightTitle}</Text>
+            <Text style={styles.leftTitle}>
+              {props.dollar}
+              {props.rightTitle}
+            </Text>
           </View>
         </DropShadow>
       </View>
@@ -206,7 +226,6 @@ const ReviewCart = (props) => {
   };
 
   const handlePay = async () => {
-
     // const backendDateString = cartList.cartItem.documents[0].date;
 
     // // Create a Date object from the backend date string
@@ -221,41 +240,43 @@ const ReviewCart = (props) => {
 
     // console.log(formattedDate, "FFFFF");
     try {
-      const res = await axiosClient.post(API_URL.pay, {
-        cardId: cartList?.cardDetatil?._id,
-        amount: cartList?.cartItem?.totalPrice,
-        serviceId: cartList?.cartItem?.documents[0]?.serviceId,
-        menu: JSON.stringify([
-          {
-            "serviceId": cartList?.cartItem?.documents[0]?.serviceId,
-            "itemId": cartList?.cartItem?.documents[0]?.itemId,
-            "quantity": cartList?.cartItem?.documents[0]?.quantity,
-            "date": cartList?.cartItem?.documents[0]?.date,
-            "time": cartList?.cartItem?.documents[0]?.time
-            // "date": "2023-08-21T08:52:13.483+00:00"
-          }
-        ]),
-        customer: cartList?.cardDetatil?.customerId
-      }, {
-        headers: {
-          Authorization: userToken ? userToken :
-            Usertoken
+      const res = await axiosClient.post(
+        API_URL.pay,
+        {
+          cardId: cartList?.cardDetatil?._id,
+          amount: cartList?.cartItem?.totalPrice,
+          serviceId: cartList?.cartItem?.documents[0]?.serviceId,
+          menu: JSON.stringify([
+            {
+              serviceId: cartList?.cartItem?.documents[0]?.serviceId,
+              itemId: cartList?.cartItem?.documents[0]?.itemId,
+              quantity: cartList?.cartItem?.documents[0]?.quantity,
+              date: cartList?.cartItem?.documents[0]?.date,
+              time: cartList?.cartItem?.documents[0]?.time,
+              // "date": "2023-08-21T08:52:13.483+00:00"
+            },
+          ]),
+          customer: cartList?.cardDetatil?.customerId,
+        },
+        {
+          headers: {
+            Authorization: userToken ? userToken : Usertoken,
+          },
         }
-      })
+      );
       // console.log(res.data)
       if (res.data.status) {
-        setModalVisibleSuccess(false)
-        navigation.navigate("HomeTab", { screen: "Home" })
-        showAlertSuccess('Paid successfully')
+        setModalVisibleSuccess(false);
+        navigation.navigate("HomeTab", { screen: "Home" });
+        showAlertSuccess("Paid successfully");
       }
       // setUserReview(res.data.data)
     } catch (error) {
-      setModalVisibleFailed(true)
-      showAlertError(error)
+      setModalVisibleFailed(true);
+      showAlertError(error);
       // console.log("ERR", error)
     }
-  }
-
+  };
 
   const onPlaceOrder = () => {
     //Modal for successful purchase
@@ -271,30 +292,61 @@ const ReviewCart = (props) => {
   const showData = ({ item }) => {
     // console.log('IIII_____', item)
     return (
-      <View style={styles.cardView}>
+      <View style={[styles.cardView]}>
         <View style={[styles.card]}>
           <Image
-            source={{ uri: `http://54.92.82.16:3001/data/${item?.providerimages}` }}
-            style={{ height: 95, width: 110, borderRadius: 6, resizeMode: 'cover' }}
+            source={{
+              uri: `http://54.92.82.16:3001/data/${item?.providerimages}`,
+            }}
+            style={{
+              height: 95,
+              width: 110,
+              borderRadius: 6,
+              resizeMode: "cover",
+            }}
           />
           <View
             style={{
               flex: 1,
-              marginHorizontal: 5
+              marginHorizontal: 5,
               // padding: 15,
               // width: "80%",
             }}
           >
             <Text style={styles.textTitle}>{item.serviceName}</Text>
-            <Text style={styles.textBetween}> {item.providerName}</Text>
-            <Text style={styles.orangeText}>${role == 1 ? item?.servicePrice : item?.itemPrice}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <LocationIcon
+                name="location-pin"
+                size={15}
+                color={color._primary_orange}
+              />
+              <Text style={{ fontSize: 12 }}>Dallas, TX</Text>
+              <Image
+                style={{ height: 15, width: 15, marginHorizontal: 5 }}
+                source={require("../../../assets/images/travel.png")}
+              />
+              <Text style={{ fontSize: 12 }}>Travels to You</Text>
+            </View>
+            {/* <Text style={styles.textBetween}> {item.providerName}</Text> */}
+            <Text style={styles.orangeText}>
+              ${role == 1 ? item?.servicePrice : item?.itemPrice}
+            </Text>
             <TouchableOpacity
               activeOpacity={0.9}
-              onPress={() => setModalVisible(true)} style={styles.mediaType}>
-              <Text style={styles.mediaType2}>{"  "}
-                <Icon name={"calendar-alt"} size={11} color={color._primary_orange} />{"  "}
+              onPress={() => setModalVisible(true)}
+              style={styles.mediaType}
+            >
+              <Text style={[styles.mediaType2, { color: "white" }]}>
+                {"  "}
+                <Icon
+                  name={"calendar-alt"}
+                  size={11}
+                  color={color._dusty_white}
+                />
+                {"  "}
                 {/* {item.schedule} */}
-                {selectedDate ? selectedDate : "Buy Now, Book Later"} {selectedTime ? selectedTime.title : ""}
+                {moment(item?.createdAt).format("ddd, MMM Do [at] h:mm A")}
+                {/* {selectedDate ? selectedDate : "Buy Now, Book Later"} {selectedTime ? selectedTime.title : ""} */}
               </Text>
             </TouchableOpacity>
             {/* <View style={{ flexDirection: "row", }}>
@@ -318,34 +370,40 @@ const ReviewCart = (props) => {
             </View> */}
           </View>
         </View>
-        <View style={{ flexDirection: "row", alignItems: 'center' }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginVertical: 5,
+          }}
+        >
           <LocationIcon
             name="location-pin"
             size={18}
             color={color._primary_orange}
-          // style={{backgroundColor:'red'}}
+            // style={{backgroundColor:'red'}}
           />
           <Text style={styles.textLoc}>Desired Activity Location</Text>
         </View>
         <View style={{ flex: 1, marginTop: 10 }}>
-          <Text style={styles.headings}>
-            Address
-          </Text>
+          <Text style={styles.headings}>Address</Text>
           <Atom.TextInputSimple
             textFieldStyle={styles.textField}
             value={cardDetails.adress}
-            name={'adress'}
-            onChangeText={(value) => handleChange('adress', value)}
+            name={"adress"}
+            onChangeText={(value) => handleChange("adress", value)}
           />
           <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
               <View style={{ flex: 0.4 }}>
                 <Text style={styles.headings}>city</Text>
                 <Atom.TextInputSimple
                   value={cardDetails.city}
                   textFieldStyle={styles.textField}
                   // textFieldStyle={{ height: 48, width: 156 }}
-                  onChangeText={(value) => handleChange('city', value)}
+                  onChangeText={(value) => handleChange("city", value)}
                 />
               </View>
               <View style={{ flex: 0.2 }}>
@@ -354,8 +412,7 @@ const ReviewCart = (props) => {
                   value={cardDetails.state}
                   textFieldStyle={styles.textField}
                   // textFieldStyle={{ height: 48, width: 70 }}
-                  onChangeText={(value) => handleChange('state', value)}
-
+                  onChangeText={(value) => handleChange("state", value)}
                 />
               </View>
               <View style={{ flex: 0.35 }}>
@@ -365,30 +422,35 @@ const ReviewCart = (props) => {
                   textFieldStyle={styles.textField}
                   // textFieldStyle={{ height: 48, width: 70 }}
                   value={cardDetails.ZipCode}
-                  onChangeText={(value) => handleChange('Zip Code', value)}
+                  onChangeText={(value) => handleChange("Zip Code", value)}
                 />
                 {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
               </View>
             </View>
-            <Text style={[styles.headings, { fontSize: 14, marginVertical: 10 }]}>
-              Notes
-            </Text>
-            <Text style={styles.headings}>
-              Dietary Restrictions
-            </Text>
+            <Text style={styles.headings}>Accommodations / Restrictions</Text>
             <Atom.TextInputSimple
               textFieldStyle={styles.textField}
               value={cardDetails.Dietary}
-              name={'Dietary'}
-              onChangeText={(value) => handleChange('Dietary', value)}
+              name={"Dietary"}
+              onChangeText={(value) => handleChange("Dietary", value)}
             />
-
           </View>
-
-
-
         </View>
-
+        <TouchableOpacity
+          onPress={() => {
+            setAlertModal(true);
+          }}
+        >
+          <Text
+            style={{
+              alignSelf: "flex-end",
+              color: color._primary_orange,
+              margin: 10,
+            }}
+          >
+            Remove
+          </Text>
+        </TouchableOpacity>
         {/* </DropShadow> */}
       </View>
     );
@@ -422,175 +484,273 @@ const ReviewCart = (props) => {
     );
   };
 
-
-
   return (
     // console.log(cartList, "CCCC"),
-    < SafeAreaView style={styles.scrollView} >
+    <SafeAreaView style={styles.scrollView}>
       <View style={{ marginVertical: 15, marginHorizontal: 5 }}>
         <BackHeader title={"Review Your Order"} />
       </View>
-      {
-        props.state.loaderReducer?.loader &&
-        <View style={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          top: 0,
-          bottom: 0,
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 3,
-        }}>
-          <ActivityIndicator
-            size="large" color={color._primary_orange} />
+      {props.state.loaderReducer?.loader && (
+        <View
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 3,
+          }}
+        >
+          <ActivityIndicator size="large" color={color._primary_orange} />
         </View>
-      }
-      {
-        cartList?.cartItem && cartList?.cartItem?.documents?.length !== 0 ?
-          <View style={styles.mainView}>
-            <ScrollView
-              bounces={false}
-              alwaysBounceVertical={false}
-              overScrollMode="never"
-              style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-              <FlatList
-                data={cartList.cartItem.documents}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={{ flexGrow: 1 }}
-                renderItem={showData}
+      )}
+      {cartList?.cartItem && cartList?.cartItem?.documents?.length !== 0 ? (
+        <View style={styles.mainView}>
+          <ScrollView
+            bounces={false}
+            alwaysBounceVertical={false}
+            overScrollMode="never"
+            style={{ flex: 1 }}
+            showsVerticalScrollIndicator={false}
+          >
+            <FlatList
+              data={cartList.cartItem.documents}
+              keyExtractor={(item) => item.id}
+              contentContainerStyle={{ flexGrow: 1 }}
+              renderItem={showData}
+            />
+            <Text style={styles.summaryTitle}>Order Summary</Text>
+            <View
+              style={{
+                backgroundColor: color._white,
+                elevation: 2,
+                borderRadius: 10,
+                marginHorizontal: 2,
+                marginVertical: 10,
+              }}
+            >
+              <ShowTextInput
+                leftTitle={"Total Price"}
+                dollar={"$"}
+                rightTitle={cartList.cartItem.totalPrice}
               />
-              <Text style={styles.summaryTitle}>Order Summary</Text>
-              <View style={{ backgroundColor: color._white, elevation: 2, borderRadius: 10, marginHorizontal: 2, marginVertical: 10 }}>
-                <ShowTextInput leftTitle={"Total Price"} dollar={"$"} rightTitle={cartList.cartItem.totalPrice} />
-              </View>
-              <Text style={styles.summaryTitle}>Payment Method</Text>
-              <View style={{ marginTop: 5 }}>
-                {
-                  <DropShadow style={styles.shadowProp}>
-                    <View style={role == 1 ? [styles.cards, { backgroundColor: color._lightGray }] : styles.cards}>
+            </View>
+            <Text style={styles.summaryTitle}>Payment Method</Text>
+            <View style={{ marginTop: 5 }}>
+              {
+                <DropShadow style={styles.shadowProp}>
+                  <View
+                    style={
+                      role == 1
+                        ? [
+                            styles.cards,
+                            {
+                              backgroundColor: color._lightGray,
+                            },
+                          ]
+                        : styles.cards
+                    }
+                  >
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        // paddingHorizontal: 10,
+                      }}
+                    >
                       <View
                         style={{
                           flexDirection: "row",
+                          justifyContent: "center",
                           alignItems: "center",
-                          justifyContent: 'space-between',
-                          // paddingHorizontal: 10
                         }}
                       >
-                        <View style={{ flexDirection: "row" }}>
-                          <RadioButton
-                            disabled={role == 1 ? true : false}
-                            value="first"
-                            uncheckedColor="#CFCFCF"
-                            color={checked === "first" ? color._primary_orange : color._grey_1}
-                            status={checked === "first" ? "checked" : "checked"}
-                            onPress={() => setChecked("first")}
-                          />
+                        {/* <RadioButton
+                          disabled={role == 1 ? true : false}
+                          value="first"
+                          uncheckedColor="#CFCFCF"
+                          color={
+                            checked === "first"
+                              ? color._primary_orange
+                              : color._grey_1
+                          }
+                          status={checked === "first" ? "checked" : "checked"}
+                          onPress={() => setChecked("first")}
+                        /> */}
+                        <TouchableOpacity onPress={() => setChecked("first")}>
                           <Image
-                            source={require("../../../assets/images/Card.png")}
-                            style={{ height: 32, width: 32 }}
+                            style={{
+                              height: 20,
+                              width: 20,
+                              margin: 10,
+                            }}
+                            source={
+                              checked === "first"
+                                ? require("../../../assets/images/checked.png")
+                                : require("../../../assets/images/uncheck.png")
+                            }
                           />
-                          <Text style={styles.cardText}>
-                            Debit Card / Credit Card
-                          </Text>
-                        </View>
-                        <Text
-                          style={{
-                            color: color._border_orange,
-                            fontFamily: fonts.REGULAR,
-                            fontSize: 11,
-                            right: 10
-                          }}
-                          onPress={() => navigation.navigate("SelectCards")}
-                        >
-                          Change
-                        </Text>
-                      </View>
-                      {
-                        role == 1 ?
-                          <Atom.Button
-                            title={"Sign in to complete purchase"}
-                            onPress={() => { navigation.navigate('Login') }}
-                          /> : null
-                      }
-                      <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <RadioButton
-                          disabled={role == 1 ? true : false}
-                          value="second"
-                          status={checked === "second" ? "checked" : "checked"}
-                          uncheckedColor="#CFCFCF"
-                          color={checked === "second" ? color._primary_orange : color._grey_1}
-                          onPress={() => setChecked("second")}
-                        />
-                        <AppleLogo name={"apple1"} size={20} color={color._black} />
-                        <Text style={styles.cardText}>Apple Pay</Text>
-                      </View>
-                      <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <RadioButton
-                          disabled={role == 1 ? true : false}
-                          value="third"
-                          uncheckedColor="#CFCFCF"
-                          color={checked === "third" ? color._primary_orange : color._grey_1}
-                          status={checked === "third" ? "checked" : "checked"}
-                          onPress={() => setChecked("third")}
-                        />
+                        </TouchableOpacity>
                         <Image
-                          source={require("../../../assets/images/paypal.png")}
-                          style={{ height: 20, width: 20 }}
+                          source={require("../../../assets/images/Card.png")}
+                          style={{ height: 32, width: 32 }}
                         />
-                        <Text style={styles.cardText}>PayPal</Text>
+                        <Text style={styles.cardText}>5555</Text>
                       </View>
+                      <Text
+                        style={{
+                          color: color._primary_orange,
+                          fontFamily: fonts.REGULAR,
+                          fontSize: 11,
+                          right: 10,
+                        }}
+                        onPress={() => navigation.navigate("SelectCards")}
+                      >
+                        Change
+                      </Text>
                     </View>
-                  </DropShadow>}
-                <Text style={styles.terms}>
-                  By continuing, you agree to Comfilitiy’s
-                  <Text style={{ color: color._font_orange }}> Terms of Service </Text>
-                  and acknowledge Comfility’s
-                  <Text onPress={() => { }} style={{ color: color._font_orange }}>
-                    {" "}
-                    Privacy Policy{" "}
-                  </Text>
+                    {role == 1 ? (
+                      <Atom.Button
+                        title={"Sign in to complete purchase"}
+                        onPress={() => {
+                          navigation.navigate("Login");
+                        }}
+                      />
+                    ) : null}
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      {/* <RadioButton
+                        disabled={role == 1 ? true : false}
+                        value="second"
+                        status={checked === "second" ? "checked" : "checked"}
+                        uncheckedColor="#CFCFCF"
+                        color={
+                          checked === "second"
+                            ? color._primary_orange
+                            : color._grey_1
+                        }
+                        onPress={() => setChecked("second")}
+                      /> */}
+                      <TouchableOpacity onPress={() => setChecked("second")}>
+                        <Image
+                          style={{
+                            height: 20,
+                            width: 20,
+                            margin: 10,
+                          }}
+                          source={
+                            checked === "second"
+                              ? require("../../../assets/images/checked.png")
+                              : require("../../../assets/images/uncheck.png")
+                          }
+                        />
+                      </TouchableOpacity>
+                      <AppleLogo
+                        name={"apple1"}
+                        size={20}
+                        color={color._black}
+                      />
+                      <Text style={styles.cardText}>Apple Pay</Text>
+                    </View>
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      {/* <RadioButton
+                        disabled={role == 1 ? true : false}
+                        value="third"
+                        uncheckedColor="#CFCFCF"
+                        color={
+                          checked === "third"
+                            ? color._primary_orange
+                            : color._grey_1
+                        }
+                        status={checked === "third" ? "checked" : "checked"}
+                        onPress={() => setChecked("third")}
+                      /> */}
+                      <TouchableOpacity onPress={() => setChecked("third")}>
+                        <Image
+                          style={{
+                            height: 20,
+                            width: 20,
+                            margin: 10,
+                          }}
+                          source={
+                            checked === "third"
+                              ? require("../../../assets/images/checked.png")
+                              : require("../../../assets/images/uncheck.png")
+                          }
+                        />
+                      </TouchableOpacity>
+                      <Image
+                        source={require("../../../assets/images/paypal.png")}
+                        style={{ height: 20, width: 20 }}
+                      />
+                      <Text style={styles.cardText}>PayPal</Text>
+                    </View>
+                  </View>
+                </DropShadow>
+              }
+              <Text style={styles.terms}>
+                By continuing, you agree to Datery’s
+                <Text style={{ color: color._font_orange }}>
+                  {" "}
+                  Terms of Service{" "}
                 </Text>
-              </View>
-            </ScrollView>
-            {/* <Text style={styles.terms}>
-              By continuing, you agree to Comfilitiy’s
+                and acknowledge Datery’s
+                <Text onPress={() => {}} style={{ color: color._font_orange }}>
+                  {" "}
+                  Privacy Policy{" "}
+                </Text>
+              </Text>
+            </View>
+          </ScrollView>
+          {/* <Text style={styles.terms}>
+              By continuing, you agree to Datery’s
               <Text style={{ color: color._font_orange }}> Terms of Service </Text>
-              and acknowledge Comfility’s
+              and acknowledge Datery’s
               <Text onPress={() => { }} style={{ color: color._font_orange }}>
                 {" "}
                 Privacy Policy{" "}
               </Text>
             </Text> */}
-            <Atom.Button
-              title={"PLACE YOUR ORDER"}
-              onPress={() => onPlaceOrder()}
-              containerStyle={role == 1 ? {
-                marginVertical: 10, backgroundColor: color._lightGray,
-                borderRadius: 100,
-              }
-                : { marginBottom: 20 }}
-            />
-          </View>
-          : null
-      }
+          <Atom.Button
+            title={"PLACE YOUR ORDER"}
+            onPress={() => onPlaceOrder()}
+            containerStyle={
+              role == 1
+                ? {
+                    marginVertical: 10,
+                    backgroundColor: color._lightGray,
+                    borderRadius: 100,
+                  }
+                : { marginBottom: 20 }
+            }
+          />
+        </View>
+      ) : null}
       <Model.CommonPopUp
         isVisible={modalVisibleSuccess}
         title="Purchase Complete"
         titleTxt={{ fontSize: 24, color: color._black }}
         discription="Thank you for shopping with us!"
         descriptionTxt={styles.description}
-        btnTxt="Review Activity"
+        // btnTxt="Review Activity"
+        btnTxt="View Your Reservations "
         secondBtnTxt="Continue Shopping"
         // onPress={() => { setModalVisible(true) }}
-        onPress={() => { 
+        onPress={() => {
           // navigation.navigate('PurchasedActivity'),
-           setModalVisibleSuccess(false)}}
+          setModalVisibleSuccess(false);
+        }}
         onSecondPress={() => {
-          handlePay()
+          handlePay();
         }}
         onRequestClose={() => {
-          setModalVisibleSuccess(false)
+          setModalVisibleSuccess(false);
         }}
       />
       <Model.CommonPopUp
@@ -615,6 +775,24 @@ const ReviewCart = (props) => {
         btnTxt="Back to Cart"
         onPress={() => setModalVisibleFailed(false)}
       />
+      <Model.ConfirmationPopUp
+        isVisible={alertmodal}
+        discription={"Are you sure you want to delete this item?"}
+        descriptionTxt={{
+          padding: 20,
+          fontFamily: fonts.MEDIUM,
+          fontSize: 16,
+          color: color._black,
+          textAlign: "center",
+        }}
+        onPressNo={() => {
+          setAlertModal(!alertmodal);
+        }}
+        onPressYes={() => {
+          // handleDelete(props.route.params.uId?._id)
+          setAlertModal(!alertmodal);
+        }}
+      />
       <PopUp.SlideUpPopUp
         isVisible={modalVisible}
         setSelected={setSelectedDate}
@@ -635,19 +813,21 @@ const ReviewCart = (props) => {
           // setModalVisible(!modalVisible);
         }}
       />
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   roleRequest: (data) => dispatch(roleRequest(data)),
   CartListRequest: (data) => dispatch(CartListRequest(data)),
-  removeItemFromCartRequest: (data) => dispatch(removeItemFromCartRequest(data)),
-  removeFromCartGuestRequest: (data) => dispatch(removeFromCartGuestRequest(data)),
+  removeItemFromCartRequest: (data) =>
+    dispatch(removeItemFromCartRequest(data)),
+  removeFromCartGuestRequest: (data) =>
+    dispatch(removeFromCartGuestRequest(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ReviewCart);

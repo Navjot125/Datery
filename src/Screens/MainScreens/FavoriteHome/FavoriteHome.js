@@ -119,7 +119,9 @@ const FavoriteHome = (props) => {
           status={checked ? "checked" : "unchecked"}
           // status={types[0] == item.title ? 'checked' : 'unchecked'}
         />
-        <DropShadow style={[styles.shadowProp, { flex: 1, marginHorizontal:12 }]}>
+        <DropShadow
+          style={[styles.shadowProp, { flex: 1, marginHorizontal: 12 }]}
+        >
           <TouchableOpacity
             activeOpacity={0.9}
             onPress={() => navigation.navigate("ListingDetail")}

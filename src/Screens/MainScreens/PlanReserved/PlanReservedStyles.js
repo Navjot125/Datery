@@ -51,9 +51,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   card: {
-    backgroundColor: color._dusty_white,
+    // backgroundColor: color._dusty_white,
     borderRadius: 10,
-    paddingVertical: 10,
     marginTop: 10
     // padding:5
   },

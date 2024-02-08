@@ -22,12 +22,17 @@ const styles = StyleSheet.create({
     // borderRadius: 10,
     // shadowColor: color._grey_1,
     marginHorizontal: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     flex: 1,
     elevation: 2,
     borderRadius: 8,
     marginVertical: 5,
-    padding: 5
+    padding: 10,
+    shadowColor: "rgba(0, 0, 0, 0.15)",
+    shadowOffset: { width: 3, height: 3 },
+    shadowOpacity: 0.6,
+    shadowRadius: 6,
+    marginBottom: 15,
     // backgroundColor:"red",
     // marginHorizontal: 20,
     // flex:1
@@ -85,21 +90,21 @@ const styles = StyleSheet.create({
     color: color._black,
     fontFamily: fonts.BOLD,
     fontSize: 10,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     // paddingVertical: 5,
     // width: 122,
     // textAlign: "center",
   },
   mediaType: {
-    borderRadius: 8,
-    backgroundColor: color._dusty_white,
+    borderRadius: 5,
+    backgroundColor: color._primary_orange,
     // color: color._white,
     // fontFamily: fonts.BOLD,
     // fontSize: 10,
-    alignSelf: 'flex-start',
-    paddingVertical: 5,
-    // paddingHorizontal: 15,
-    marginTop: 5
+    alignSelf: "flex-start",
+    paddingVertical: 7,
+    paddingHorizontal: 7,
+    marginTop: 5,
     // width: 122,
     // textAlign: "center",
     // flex: 0.5
@@ -115,7 +120,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.BOLD,
     fontSize: 12,
     color: color._font_grey,
-    lineHeight: 18
+    lineHeight: 18,
     // marginHorizontal: 10
     // width: 203,
   },
@@ -125,15 +130,15 @@ const styles = StyleSheet.create({
     color: color._font_grey,
     // top: 2,
     alignSelf: "flex-start",
-    fontWeight: '600',
-    lineHeight: 21
+    fontWeight: "600",
+    lineHeight: 21,
   },
   lastText: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     flex: 1,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   leftTitle: {
     fontFamily: fonts.MEDIUM,
@@ -145,7 +150,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.BOLD,
     fontSize: 15,
     color: color._border_orange,
-    marginVertical: 5
+    marginVertical: 5,
   },
   textModal: {
     fontFamily: fonts.SEMI_BOLD,
@@ -206,8 +211,8 @@ const styles = StyleSheet.create({
     color: color._font_grey,
     // top: 2,
     alignSelf: "flex-start",
-    fontWeight: '600',
-    lineHeight: 21
+    fontWeight: "600",
+    lineHeight: 21,
     // textAlign: 'left'
     // paddingRight:-20
   },
@@ -224,7 +229,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.SEMI_BOLD,
     fontSize: 12,
     color: color._black,
-    fontWeight: "600"
+    fontWeight: "600",
+    marginBottom: 5,
     // marginBottom: 13,
   },
 });

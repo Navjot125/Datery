@@ -41,7 +41,7 @@ const Welcome = (props) => {
           style={styles.logoImage}
         />
         <Text style={styles.mainHeading}>Hello!</Text>
-        <Text style={styles.headings}>Thank you for joining Comfility.</Text>
+        <Text style={styles.headings}>Thank you for joining Datery.</Text>
         <Text style={styles.heading2}>
           We are here to help you succeed in the ever-changing dating world.
         </Text>
@@ -54,7 +54,7 @@ const Welcome = (props) => {
         >
           <Text style={styles.textStyle}>
             No matter your relationship status, age, background, or dating
-            history, Comfility is here for you!
+            history, Datery is here for you!
           </Text>
 
           <View style={{ alignItems: "center" }}>

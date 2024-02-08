@@ -5,7 +5,7 @@ import {
   StyleSheet,
   View,
   FlatList,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import Modal from "react-native-modal";
 import { Calendar, LocaleConfig } from "react-native-calendars";
@@ -14,6 +14,7 @@ import color from "../../../Constants/Color";
 import Cross from "react-native-vector-icons/AntDesign";
 import * as Atom from "../../../Components/atoms";
 import { useNavigation } from "@react-navigation/native";
+import { Image } from "react-native";
 // import { ScrollView } from "react-native-gesture-handler";
 
 const timeShown = [
@@ -33,10 +34,21 @@ const timeShown = [
 export const SlideUpPopUp = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
-
   const [daystring, setdaystring] = React.useState("");
 
-  const { isVisible, onRequestClose, onRef, onPress, selected, setSelected, onPressCancel, setSelectedTime, selectedTime, cancelTitle } = props;
+  const {
+    isVisible,
+    onRequestClose,
+    onRef,
+    onPress,
+    selected,
+    setSelected,
+    onPressCancel,
+    setSelectedTime,
+    selectedTime,
+    cancelTitle,
+    buttonText,
+  } = props;
 
   React.useEffect(() => {
     setModalVisible(isVisible);
@@ -46,11 +58,9 @@ export const SlideUpPopUp = (props) => {
     return (
       <TouchableOpacity
         activeOpacity={0.9}
-
         style={{
           flex: 1,
           alignItems: "center",
-
         }}
         onPress={() => {
           setSelectedTime(item);
@@ -64,20 +74,16 @@ export const SlideUpPopUp = (props) => {
   };
 
   const renderModalContent = () => (
-
-
     <View style={styles.modalContent}>
       <ScrollView
         bounces={false}
         alwaysBounceVertical={false}
         overScrollMode="never"
         showsVerticalScrollIndicator={false}
-
       >
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <TouchableOpacity
             activeOpacity={0.9}
-
             onPress={() => {
               if (onRequestClose !== undefined) {
                 setModalVisible(!modalVisible);
@@ -85,12 +91,15 @@ export const SlideUpPopUp = (props) => {
               }
             }}
           >
-            <Cross name={"closecircleo"} size={22} color={color._primary_orange} />
+            <Cross
+              name={"closecircleo"}
+              size={22}
+              color={color._primary_orange}
+            />
           </TouchableOpacity>
           <Text style={styles.textTitle}>Select Date</Text>
           <TouchableOpacity
             activeOpacity={0.9}
-
             onPress={() => {
               if (onRequestClose !== undefined) {
                 setModalVisible(!modalVisible);
@@ -142,18 +151,45 @@ export const SlideUpPopUp = (props) => {
             numColumns={4}
           />
         </View>
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={() => onPressCancel()} >
-          <Text style={styles.cancel}>{props.cancelTitle}</Text>
-        </TouchableOpacity>
-        <Atom.Button onPress={() => onPress(selected)} title={"DONE"} />
+        <View
+          style={{
+            justifyContent: "center",
+            alignSelf: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text>Type</Text>
+          <View
+            style={{
+              flexDirection: "row",
+              backgroundColor: color._primary_orange,
+              borderRadius: 10,
+              padding: 5,
+              marginVertical: 5,
+            }}
+          >
+            <Image
+              style={{ height: 15, width: 15, marginHorizontal: 5 }}
+              source={require("../../../assets/images/wtravel.png")}
+            />
+            <Text style={{ fontSize: 12, color: "white" }}>Travels to You</Text>
+          </View>
+        </View>
+        {props?.cancelTitle && (
+          <TouchableOpacity activeOpacity={0.9} onPress={() => onPressCancel()}>
+            <Text style={styles.cancel}>{props?.cancelTitle}</Text>
+          </TouchableOpacity>
+        )}
+        <Atom.Button
+          onPress={() => onPress(selected)}
+          title={buttonText ? buttonText : "DONE"}
+        />
       </ScrollView>
     </View>
   );
 
   return (
-    <View >
+    <View>
       <Modal
         isVisible={modalVisible}
         style={styles.bottomModal}
@@ -186,7 +222,7 @@ const styles = StyleSheet.create({
     // alignItems: "center",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    height: '70%',
+    height: "70%",
   },
   bottomModal: {
     justifyContent: "flex-end",

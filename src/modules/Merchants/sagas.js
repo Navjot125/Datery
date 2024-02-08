@@ -27,7 +27,7 @@ import { setLoader } from "../Loader/actions";
 
 function* onMerchantRequest({ data }) {
   // yield put(setLoader(true));
-  console.log(data, "hiiiiå0----------------------");
+  // console.log(data, "hiiiiå0----------------------");
   try {
     let res = yield axiosClient.post(
       data.endpoint,
@@ -54,10 +54,10 @@ function* onMerchantRequest({ data }) {
       // console.log(res.data?.data[0], "------------------res");
       if (res?.data?.status) {
         // yield put(setLoader(false));
-        console.log(
-          "res?.data?.data-------------------------------------------------------",
-          res?.data?.data
-        );
+        // console.log(
+        //   "res?.data?.data--------------------",
+        //   res?.data?.data
+        // );
         // console.log(res.data.data, ' message from saga merchant onMerchantRequest');
         yield put(merchantSuccess(res?.data?.data, data));
         // if(res?.data?.data?.lenght > 0){
@@ -184,7 +184,7 @@ function* onFavouriteListRequest({ navigation }) {
     });
   if (res) {
     if (res?.data?.status) {
-      console.log(res?.data, '======------------....');
+      console.log(res?.data, "======------------....");
       yield put(setLoader(false));
       // yield put(merchantDetailsSuccess(res?.data?.data));
       yield put(favouriteListSuccess(res?.data?.data));
@@ -221,7 +221,7 @@ function* onRemoveFavouriteRequest({ navigation }) {
   if (res) {
     console.log(res.data, "....onRemoveFavouriteRequest");
     if (res?.data?.status) {
-      // yield put(setLoader(false)); 
+      // yield put(setLoader(false));
       // yield put(merchantDetailsSuccess(res?.data?.data));
       yield put(removeFavouriteSuccess(navigation.data.serviceId));
       navigation?.callBack();

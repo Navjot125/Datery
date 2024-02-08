@@ -19,7 +19,8 @@ import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
 const EmailPreference = (props) => {
   const navigation = useNavigation();
-  const [modalVisibleAvailablity, setModalVisibleAvailablity] = React.useState(false);
+  const [modalVisibleAvailablity, setModalVisibleAvailablity] =
+    React.useState(false);
   const onPlaceOrder = () => {
     setModalVisibleAvailablity("true");
   };
@@ -29,7 +30,7 @@ const EmailPreference = (props) => {
         <BackHeader title={"Email Preferences"} />
         <View style={{ flex: 1 }}>
           <Text style={styles.header}>Email Address</Text>
-          <Text style={styles.textinputStyle}>comfility@gmail.com</Text>
+          <Text style={styles.textinputStyle}>Datery@gmail.com</Text>
           <Text style={styles.header}>Marketing Emails</Text>
           <Text style={styles.textinputStyle}>
             Opt in to our emails to receive the latest updates on dating
@@ -75,8 +76,10 @@ const EmailPreference = (props) => {
         // middleContent={middleContentCardDecline()}
         middleContentStyle={{ paddingTop: 19 }}
         btnTxt="BACK TO PROFILE"
-        onPress={() => {setModalVisibleAvailablity(false), navigation.goBack()}}
-      /> 
+        onPress={() => {
+          setModalVisibleAvailablity(false), navigation.goBack();
+        }}
+      />
     </SafeAreaView>
   );
 };

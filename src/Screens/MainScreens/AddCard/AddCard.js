@@ -208,7 +208,7 @@ const AddCard = (props) => {
           >
             <Text style={styles.headings}>Name on Card</Text>
             <Atom.TextInputSimple
-              textFieldStyle={styles.textField}
+              textFieldStyle={[styles.textField,]}
               value={cardDetails.name}
               name={"name"}
               onChangeText={(value) => handleChange("name", value)}
@@ -236,10 +236,10 @@ const AddCard = (props) => {
                 >
                   <Atom.TextInputSimple
                     value={cardDetails.expiryMonth}
-                    textFieldStyle={{ height: 48, width: 70 }}
+                    textFieldStyle={{ height: 48, width: 150 }}
                     onChangeText={(value) => handleChange("expiryMonth", value)}
                   />
-                  <View style={{ left: 10 }}>
+                  {/* <View style={{ left: 10 }}>
                     <Atom.TextInputSimple
                       value={cardDetails.expiryYear}
                       textFieldStyle={{ height: 48, width: 70 }}
@@ -247,7 +247,7 @@ const AddCard = (props) => {
                         handleChange("expiryYear", value)
                       }
                     />
-                  </View>
+                  </View> */}
                 </View>
               </View>
               <View>

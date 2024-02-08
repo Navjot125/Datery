@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.BOLD,
     fontSize: 14,
     color: color._black,
-    fontWeight: '700'
+    fontWeight: "700",
     // lineHeight: 36,
     // marginTop: 5
   },
@@ -52,11 +52,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: color._font_grey,
     // lineHeight: 21,
-    fontWeight: '700',
+    fontWeight: "700",
     // marginHorizontal:20
     // textAlign: 'left'
     // alignSelf:'flex-start'
-
   },
   orangeTitle: {
     marginTop: 14,
@@ -91,7 +90,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 17,
     justifyContent: "center",
     // marginTop: 18,
-    paddingVertical: 15,
+    paddingVertical: 20,
     marginVertical: 10,
 
     // height: 48,
@@ -103,7 +102,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: color._font_white,
     // textAlign: 'center',
-    fontWeight: '800'
+    fontWeight: "800",
     // left: 10
   },
 
@@ -137,8 +136,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: color._font_grey,
     marginBottom: 6,
-    fontWeight: '700',
-    lineHeight: 18
+    fontWeight: "700",
+    lineHeight: 18,
   },
   date: {
     fontFamily: fonts.MEDIUM,

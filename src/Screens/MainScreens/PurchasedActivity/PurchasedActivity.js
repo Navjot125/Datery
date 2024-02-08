@@ -9,7 +9,7 @@ import {
   Alert,
   ActivityIndicator,
   Modal,
-  ScrollView
+  ScrollView,
 } from "react-native";
 // import { ScrollView } from "react-native-virtualized-view";
 import React, { useEffect, useState } from "react";
@@ -17,7 +17,7 @@ import styles from "./PurchasedActivityStyles";
 import { Searchbar, TextInput } from "react-native-paper";
 import fonts from "../../../Constants/Fonts";
 import color from "../../../Constants/Color";
-
+import moment from "moment";
 import DropShadow from "react-native-drop-shadow";
 import { BackHeader } from "../../../Components/molecules";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
@@ -30,18 +30,22 @@ import { API_URL } from "../../../Constants/Config";
 import axiosClient from "../../../Utils/ApiClient";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import { InteractionManager } from "react-native";
-import { showAlertError, showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import {
+  showAlertError,
+  showAlertSuccess,
+} from "../../../Common/Functions/CommonFunctions";
 import { REQUIRED_ERROR_MESSAGE } from "../../../Constants/ErrorMessages";
-import { ReviewAllRequest, ReviewremoveFavouriteRequest, ReviewremoveGuestFavouriteRequest } from "../../../modules/userReview/actions";
+import {
+  ReviewAllRequest,
+  ReviewremoveFavouriteRequest,
+  ReviewremoveGuestFavouriteRequest,
+} from "../../../modules/userReview/actions";
 import * as Atoms from "../../../Components/atoms";
 import base from "../../../Constants/CommonStyle";
 import * as Model from "../../../Components/models";
 import * as Atom from "../../../Components/atoms";
 import LocationIcon from "react-native-vector-icons/Entypo";
-
-
-
-
+import { merchantDetailsRequest } from "../../../modules/Merchants/actions";
 
 const PurchasedActivity = (props) => {
   // console.log(props.route.params)
@@ -49,19 +53,22 @@ const PurchasedActivity = (props) => {
   // const [item, setResults] = useState(data[0]);
   const [modalVisible, setModalVisible] = useState(false);
   const navigation = useNavigation();
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
   const [selectedDate, setSelectedDate] = React.useState("");
   const [selectedTime, setSelectedTime] = React.useState("");
-  const role = props.state.roleReducer.role.id
-  const { userToken, loginData } = useSelector(state => state.loginReducer)
-  const { Usertoken, signupSucessData } = useSelector(state => state.signupReducer)
-  const [purchase, setPurchase] = useState()
-  const [loader, setLoader] = useState(true)
-  const [reserveData, setReserveData] = useState()
-  const dispatch = useDispatch()
-  const [ratingVal, setRatingVal] = useState(0)
+  const role = props.state.roleReducer.role.id;
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
+  const [purchase, setPurchase] = useState();
+  const [loader, setLoader] = useState(true);
+  const [reserveData, setReserveData] = useState();
+  const dispatch = useDispatch();
+  const [ratingVal, setRatingVal] = useState(0);
   const [showModal, setShowModal] = useState(false);
-  const [modalVisibleAvailablity, setModalVisibleAvailablity] = React.useState(false);
+  const [modalVisibleAvailablity, setModalVisibleAvailablity] =
+    React.useState(false);
   const [updateModal, setUpdateModal] = React.useState(false);
 
   // const [cardDetails, setCardDetails] = useState({
@@ -76,20 +83,17 @@ const PurchasedActivity = (props) => {
   //   setCardDetails({ ...cardDetails, [name]: value });
   // };
 
-
-
-
   // const [purchase, setActiveItem] = useState({})
   const [review, setReview] = useState({
     title: "",
-    summary: '',
+    summary: "",
     rating: ratingVal,
     img: null,
     adress: "",
     city: "",
     state: "",
     ZipCode: "",
-    Dietary: ""
+    Dietary: "",
   });
   const [state, setState] = useState({
     setDefault: false,
@@ -106,29 +110,29 @@ const PurchasedActivity = (props) => {
     try {
       // console.log('hii')
       // Create a card token using react-native-stripe-sdk
-      const token = userToken ? userToken :
-        Usertoken
+      const token = userToken ? userToken : Usertoken;
       const data = {
-        userId: loginData._id ? loginData._id :
-          signupSucessData?.UserData?._id,
+        userId: loginData._id ? loginData._id : signupSucessData?.UserData?._id,
         serviceId: reserveData[0].providerId,
         title: review.title,
         rating: ratingVal,
         summary: review.summary,
-        file: review.img
-      }
+        file: review.img,
+      };
       // if (!data.default) delete data.default
       // setLoader(false);
       const callback = (res) => {
         // navigation.goBack()
         // let arr = [res.data, ...listData]
         // arr.push(res.data)
-        console.log(res, 'res.data')
+        console.log(res, "res.data");
         // setListData(arr)
-        setShowModal(false)
+        setShowModal(false);
         // setLoader(false)
-      }
-      dispatch(ReviewAllRequest({ data, callback, token, endpoint: API_URL.addReview, }))
+      };
+      dispatch(
+        ReviewAllRequest({ data, callback, token, endpoint: API_URL.addReview })
+      );
       // setReview({
       //   name: "",
       //   cardNumber: '',
@@ -145,59 +149,52 @@ const PurchasedActivity = (props) => {
   };
 
   const onPlaceOrder = () => {
-    setModalVisibleAvailablity("true")
-    handleResponse()
+    setModalVisibleAvailablity("true");
+    handleResponse();
   };
 
   const handlePurchase = async () => {
     try {
-      let query = `?bookedItemId=${props.route.params.bId}`
+      let query = `?bookedItemId=${props.route.params.bId}`;
       const res = await axiosClient.get(API_URL.purchasedActivity + query, {
         headers: {
-          Authorization: userToken ? userToken :
-            Usertoken
-        }
-      })
+          Authorization: userToken ? userToken : Usertoken,
+        },
+      });
       // console.log(res.data.cartItem._id, userToken)
-      if (res.data.status)
-        setReserveData(res.data.cartItem)
+      if (res.data.status) setReserveData(res.data.cartItem);
     } catch (error) {
       // console.log("ERR", error)
     }
-  }
+  };
 
   const handleRequestReservation = async () => {
     try {
-      const token = userToken ? userToken :
-        Usertoken
+      const token = userToken ? userToken : Usertoken;
 
       const res = await axiosClient.post(API_URL.requestForReservation, {
         date: selectedDate,
         bookingId: reserveData[0]?.bookingId,
         time: selectedTime?.title,
-        token
-      })
+        token,
+      });
       // console.log(token)
       // console.log(res.data)
-      if (res.data.status)
-        setModalVisible(!modalVisible);
-      showAlertSuccess(res.data.message)
-
+      if (res.data.status) setModalVisible(!modalVisible);
+      showAlertSuccess(res.data.message);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       // showAlertError(error)
     }
-
-  }
+  };
 
   const onDeelte = async (param) => {
     // console.log('hi')
     const res = await axiosClient
       .post(param.endpoint, param.data, {
-        headers:
-        {
-          'Authorization': param?.token,
-        }
+        headers: {
+          Authorization: param?.token,
+        },
       })
       .then(function (response) {
         return response;
@@ -211,12 +208,12 @@ const PurchasedActivity = (props) => {
       if (res?.data?.status) {
         // await dispatch(setLoader(false));
         // await dispatch(merchantDetailsSuccess(res?.data?.data));
-        let arr = [...reserveData]
-        arr = arr.filter(item => item.bookingId !== param.data.bookingId)
-        setReserveData(arr)
+        let arr = [...reserveData];
+        arr = arr.filter((item) => item.bookingId !== param.data.bookingId);
+        setReserveData(arr);
         setModalVisible(!modalVisible);
-        showAlertSuccess('Reservation Cancelled')
-        navigation.goBack()
+        showAlertSuccess("Reservation Cancelled");
+        navigation.goBack();
 
         // console.log(res.data, ' message from saga remove Favourite merchant');
       } else {
@@ -229,48 +226,43 @@ const PurchasedActivity = (props) => {
       // showAlert(res.data.message)
       // console.log(REQUIRED_ERROR_MESSAGE);
     }
-  }
+  };
 
   const handleDelete = (id) => {
     // console.log(purchase[0].bookingId, "IIDDDDd");
     // setData((prevData) => prevData.filter((item) => item.id !== id));
-    const token = userToken ? userToken :
-      Usertoken
+    const token = userToken ? userToken : Usertoken;
     let param = {
       endpoint: API_URL.cancelReservation,
       data: {
         bookingId: reserveData[0].bookingId,
       },
-      token
-    }
+      token,
+    };
 
     let bookingId = {
-      bookingId: reserveData[0].bookingId
-    }
-    role == 2 ?
-      onDeelte(param)
-      :
-      props.ReviewremoveGuestFavouriteRequest(bookingId)
+      bookingId: reserveData[0].bookingId,
+    };
+    role == 2
+      ? onDeelte(param)
+      : props.ReviewremoveGuestFavouriteRequest(bookingId);
 
     setTimeout(() => {
-      handlePurchase()
-    }, 250)
+      handlePurchase();
+    }, 250);
   };
-
-
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
-      handlePurchase()
-    })
+      handlePurchase();
+    });
     let timeout = setTimeout(() => {
-      setLoader(false)
-    }, 3000)
+      setLoader(false);
+    }, 3000);
     return () => {
-      if (timeout) clearTimeout(timeout)
-    }
-  }, [isFocused])
-
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [isFocused]);
 
   const onPress = (page, prop) => {
     navigation.navigate(page, prop);
@@ -278,9 +270,7 @@ const PurchasedActivity = (props) => {
 
   const centerImage = () => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-      >
+      <TouchableOpacity activeOpacity={0.9}>
         {/* <Image
           style={{ height: 39, width: 53, resizeMode: "contain" }}
           source={require("../../../assets/images/orange_hearts.png")}
@@ -290,10 +280,7 @@ const PurchasedActivity = (props) => {
   };
   const rightImage = () => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-
-      >
+      <TouchableOpacity activeOpacity={0.9}>
         <Image
           style={{ height: 16, width: 16, tintColor: color._black }}
           source={require("../../../assets/images/Share.png")}
@@ -310,7 +297,9 @@ const PurchasedActivity = (props) => {
     return (
       <>
         <Image
-          source={{ uri: `http://54.92.82.16:3001/data/${item?.providerImage}` }}
+          source={{
+            uri: `http://54.92.82.16:3001/data/${item?.providerImage}`,
+          }}
           style={{
             height: 196,
             width: "100%",
@@ -319,23 +308,65 @@ const PurchasedActivity = (props) => {
           }}
         />
         <View style={{ marginHorizontal: 20, marginBottom: 27 }}>
-
           <Text style={styles.boldName}>{item.providerName}</Text>
           <Text style={styles.orangeTitle}>{item.serviceName}</Text>
-
+          <View
+            style={{
+              flexDirection: "row",
+              borderRadius: 10,
+              padding: 5,
+              marginVertical: 5,
+              alignSelf: "flex-start",
+            }}
+          >
+            <Image
+              style={{ height: 15, width: 15, marginHorizontal: 5 }}
+              source={require("../../../assets/images/travel.png")}
+            />
+            <Text style={{ fontSize: 12 }}>Travels to You</Text>
+          </View>
+          <View style={{ flexDirection: "row", marginVertical: 10 }}>
+            <Icon
+              name={"calendar-alt"}
+              size={15}
+              color={color._primary_orange}
+            />
+            <Text style={{ marginLeft: 10 }}>
+              {moment(new Date()).format("ddd, MMM Do [at] h:mm A")}
+            </Text>
+          </View>
           <TouchableOpacity
             activeOpacity={0.9}
-
-            style={styles.item} onPress={() => {
-              setShowModal(!showModal)
+            style={styles.item}
+            onPress={() => {
+              let param = {
+                endpoint: "fetchSingleService",
+                serviceId: { serviceId: "64f1719333e81ab3540ad4b3" },
+                navigation: () => navigation.navigate("ListingDetail", item),
+                cb: (data) => {
+                  navigation.navigate("ListingDetail", (item = data));
+                },
+                userToken:
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ4MmYwMDAwYTE2MzJiYzhiM2UwYjVjIiwiaWF0IjoxNzA3MzAyNTc4LCJleHAiOjE3MDc3MzQ1Nzh9.1IQR2I4convngvybsSWLtzoi4v0G7AeixegY7_G2FuA",
+              };
+              props.merchantDetailsRequest(param);
+            }}
+          >
+            <Text style={styles.title}>Merchant Profile</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.9}
+            style={styles.item}
+            onPress={() => {
+              setShowModal(!showModal);
               // navigation.navigate("WriteReview")
-            }} >
+            }}
+          >
             <Text style={styles.title}>Write a Review</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             activeOpacity={0.9}
-
             style={styles.item}
             onPress={() => setModalVisible(true)}
           >
@@ -346,7 +377,8 @@ const PurchasedActivity = (props) => {
                 color={color._border_orange}
               />
               <Text style={[styles.title, { left: 20 }]}>
-                {selectedDate ? selectedDate : "Availability"} {selectedTime ? selectedTime.title : ""}
+                {selectedDate ? selectedDate : "Availability"}{" "}
+                {selectedTime ? selectedTime.title : ""}
               </Text>
             </View>
           </TouchableOpacity>
@@ -359,13 +391,12 @@ const PurchasedActivity = (props) => {
           </TouchableOpacity>
 
           <Text style={styles.boldText}>Preparation</Text>
-          <Text style={[styles.lightText, { color: 'black' }]}>
+          <Text style={[styles.lightText, { color: "black" }]}>
             Insert infomation for the customer to prepare for your services.{" "}
           </Text>
 
           <TouchableOpacity
             activeOpacity={0.9}
-
             style={styles.item}
             onPress={() => navigation.navigate("CustomerSupport")}
           >
@@ -383,42 +414,56 @@ const PurchasedActivity = (props) => {
               marginVertical: 20,
             }}
           >
-            <Text style={{ fontSize: 24, fontWeight: "400", color: color._black, textAlign: 'center' }}>
+            <Text
+              style={{
+                fontSize: 24,
+                fontWeight: "400",
+                color: color._black,
+                textAlign: "center",
+              }}
+            >
               456789
             </Text>
             {/* <QRCode value="456789"  linearGradient /> */}
           </View>
-
         </View>
-        <Text style={[styles.boldText, { marginHorizontal: 20 }]}>Location</Text>
-        <View style={{ flexDirection: "row", alignItems: 'center', marginHorizontal: 15 }}>
+        <Text style={[styles.boldText, { marginHorizontal: 20 }]}>
+          Location
+        </Text>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            marginHorizontal: 15,
+          }}
+        >
           <LocationIcon
             name="location-pin"
             size={18}
             color={color._primary_orange}
-          // style={{backgroundColor:'red'}}
+            // style={{backgroundColor:'red'}}
           />
           <Text style={styles.textLoc}>Desired Activity Location</Text>
         </View>
         <View style={{ flex: 1, marginTop: 10, marginHorizontal: 20 }}>
-          <Text style={styles.headings2}>
-            Address
-          </Text>
+          <Text style={styles.headings2}>Address</Text>
           <Atom.TextInputSimple
             textFieldStyle={styles.textField}
             value={review.adress}
-            name={'adress'}
-            onChangeText={(value) => handleChange('adress', value)}
+            name={"adress"}
+            onChangeText={(value) => handleChange("adress", value)}
           />
           <View style={{ flex: 1 }}>
-            <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
+            <View
+              style={{ flexDirection: "row", justifyContent: "space-between" }}
+            >
               <View style={{ flex: 0.4 }}>
                 <Text style={styles.headings2}>city</Text>
                 <Atom.TextInputSimple
                   value={review.city}
                   textFieldStyle={styles.textField}
                   // textFieldStyle={{ height: 48, width: 156 }}
-                  onChangeText={(value) => handleChange('city', value)}
+                  onChangeText={(value) => handleChange("city", value)}
                 />
               </View>
               <View style={{ flex: 0.2 }}>
@@ -427,8 +472,7 @@ const PurchasedActivity = (props) => {
                   value={review.state}
                   textFieldStyle={styles.textField}
                   // textFieldStyle={{ height: 48, width: 70 }}
-                  onChangeText={(value) => handleChange('state', value)}
-
+                  onChangeText={(value) => handleChange("state", value)}
                 />
               </View>
               <View style={{ flex: 0.35 }}>
@@ -438,33 +482,34 @@ const PurchasedActivity = (props) => {
                   textFieldStyle={styles.textField}
                   // textFieldStyle={{ height: 48, width: 70 }}
                   value={review.ZipCode}
-                  onChangeText={(value) => handleChange('Zip Code', value)}
+                  onChangeText={(value) => handleChange("Zip Code", value)}
                 />
                 {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
               </View>
             </View>
-            <Text style={[styles.headings2, { fontSize: 18, marginVertical: 10 }]}>
+            <Text
+              style={[styles.headings2, { fontSize: 18, marginVertical: 10 }]}
+            >
               Notes
             </Text>
-            <Text style={styles.headings2}>
-              Dietary Restrictions
-            </Text>
+            <Text style={styles.headings2}>Dietary Restrictions</Text>
             <Atom.TextInputSimple
               textFieldStyle={styles.textField}
               value={review.Dietary}
-              name={'Dietary'}
-              onChangeText={(value) => handleChange('Dietary', value)}
+              name={"Dietary"}
+              onChangeText={(value) => handleChange("Dietary", value)}
             />
           </View>
-          <TouchableOpacity style={{justifyContent:'center', alignItems:'center',}}
-          onPress={()=>{
-            setUpdateModal(true)
-          }}
+          <TouchableOpacity
+            style={{ justifyContent: "center", alignItems: "center" }}
+            onPress={() => {
+              setUpdateModal(true);
+            }}
           >
-            <Text style={{color:"#5F9EA0"}} >Update Activity Details</Text>
+            <Text style={{ color: "#5F9EA0" }}>Update Activity Details</Text>
           </TouchableOpacity>
           <View style={{ marginVertical: 10 }}>
-            <Text style={styles.boldText}>Fine Print</Text >
+            <Text style={styles.boldText}>Fine Print</Text>
             <Text style={styles.lastText}>
               Merchant is solely responsible to purchasers for the care and
               quality of the advertised goods and services.
@@ -506,7 +551,6 @@ const PurchasedActivity = (props) => {
             quality of the advertised goods and services.
           </Text>
         </View> */}
-
       </>
     );
   };
@@ -522,25 +566,33 @@ const PurchasedActivity = (props) => {
           rightStyl={{ height: 16, width: 16 }}
         />
       </View>
-      <View style={[styles.mainView, loader && {
-        justifyContent: "center"
-      }]}>
-        {loader ? <ActivityIndicator color={color._primary_orange} size={'large'} /> :
-          (
-            <FlatList
-              data={reserveData}
-              keyExtractor={(item) => item.id}
-              renderItem={showData}
-            />
-          )}
+      <View
+        style={[
+          styles.mainView,
+          loader && {
+            justifyContent: "center",
+          },
+        ]}
+      >
+        {loader ? (
+          <ActivityIndicator color={color._primary_orange} size={"large"} />
+        ) : (
+          <FlatList
+            data={reserveData}
+            keyExtractor={(item) => item.id}
+            renderItem={showData}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </View>
       <Modal
-        animationType={'slide'}
+        animationType={"slide"}
         transparent={false}
         visible={showModal}
         onRequestClose={() => {
           // console.log('Modal has been closed.');
-        }}>
+        }}
+      >
         {/*All views of Modal*/}
         {/*Animation can be slide, slide, none*/}
         <View style={styles.safeView}>
@@ -551,13 +603,13 @@ const PurchasedActivity = (props) => {
                 style={[
                   base.horizontal,
                   styles.header,
-                  { position: 'absolute', left: 0 },
+                  { position: "absolute", left: 0 },
                 ]}
                 onPress={() => {
                   setShowModal(!showModal);
-                }
-                }>
-                <Icon name={'angle-left'} size={24} color={color._black} />
+                }}
+              >
+                <Icon name={"angle-left"} size={24} color={color._black} />
                 {/* <Icon name={'arrowleft'} size={24} color={color._black} /> */}
               </TouchableOpacity>
               <Text style={styles.title3}>{"Review"}</Text>
@@ -566,7 +618,9 @@ const PurchasedActivity = (props) => {
               bounces={false}
               alwaysBounceVertical={false}
               overScrollMode="never"
-              showsVerticalScrollIndicator={false} style={styles.scrollView2}>
+              showsVerticalScrollIndicator={false}
+              style={styles.scrollView2}
+            >
               <Text style={styles.headings}>Rating</Text>
               {/* <Text> 4 </Text> */}
               <View style={{ flexDirection: "row" }}>
@@ -580,7 +634,7 @@ const PurchasedActivity = (props) => {
               <TextInput
                 style={styles.input}
                 value={review && review?.title}
-                onChangeText={(value) => handleChange('title', value)}
+                onChangeText={(value) => handleChange("title", value)}
                 placeholderTextColor={"#505050"}
                 placeholder="Sed ut perspiciatis unde omnis iste natus"
               />
@@ -588,7 +642,7 @@ const PurchasedActivity = (props) => {
               <TextInput
                 style={styles.input}
                 value={review && review?.summary}
-                onChangeText={(value) => handleChange('summary', value)}
+                onChangeText={(value) => handleChange("summary", value)}
                 placeholderTextColor={"#505050"}
                 placeholder="The experience was amazing. My husband and I loved the outcome of the meal."
                 multiline
@@ -606,7 +660,9 @@ const PurchasedActivity = (props) => {
                   justifyContent: "space-between",
                 }}
               >
-                <Text style={[styles.noteText, { marginBottom: 25 }]}>( Maximum of four images )</Text>
+                <Text style={[styles.noteText, { marginBottom: 25 }]}>
+                  ( Maximum of four images )
+                </Text>
                 {/* {selectedImages()} */}
                 <Atoms.Button
                   title="SUBMIT REVIEW"
@@ -616,7 +672,6 @@ const PurchasedActivity = (props) => {
             </ScrollView>
           </View>
         </View>
-
       </Modal>
 
       <Model.CommonPopUp
@@ -628,7 +683,9 @@ const PurchasedActivity = (props) => {
         // middleContent={middleContentCardDecline()}
         middleContentStyle={{ paddingTop: 19 }}
         btnTxt={"BACK TO ACTIVITY"}
-        onPress={() => { setModalVisibleAvailablity(false) }}
+        onPress={() => {
+          setModalVisibleAvailablity(false);
+        }}
       />
       <Model.CommonPopUp
         isVisible={updateModal}
@@ -639,7 +696,9 @@ const PurchasedActivity = (props) => {
         // middleContent={middleContentCardDecline()}
         middleContentStyle={{ paddingTop: 19 }}
         btnTxt={"BACK TO ACTIVITY"}
-        onPress={() => { setUpdateModal(false) }}
+        onPress={() => {
+          setUpdateModal(false);
+        }}
       />
 
       <PopUp.SlideUpPopUp
@@ -652,25 +711,29 @@ const PurchasedActivity = (props) => {
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
-        onPress={() => { handleRequestReservation() }}
-
+        onPress={() => {
+          handleRequestReservation();
+        }}
         onPressCancel={() => {
-          handleDelete()
+          handleDelete();
           // setModalVisible(!modalVisible);
         }}
-
       />
     </SafeAreaView>
   );
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  ReviewremoveFavouriteRequest: (navigation) => dispatch(ReviewremoveFavouriteRequest(navigation)),
-  ReviewremoveGuestFavouriteRequest: (data) => dispatch(ReviewremoveGuestFavouriteRequest(data))
+  ReviewremoveFavouriteRequest: (navigation) =>
+    dispatch(ReviewremoveFavouriteRequest(navigation)),
+  ReviewremoveGuestFavouriteRequest: (data) =>
+    dispatch(ReviewremoveGuestFavouriteRequest(data)),
+  merchantDetailsRequest: (data, navigation) =>
+    dispatch(merchantDetailsRequest(data, navigation)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PurchasedActivity);

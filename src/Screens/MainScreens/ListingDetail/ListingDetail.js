@@ -61,7 +61,12 @@ import {
 import CustomIcon from "../../../assets/CustomIcon";
 import ReviewTab from "../ReviewTab/ReviewTab";
 import base from "../../../Constants/CommonStyle";
-import { LearnfavouriteListRequest, LearnfavouriteRequest, LearnremoveFavouriteRequest, LearnremoveGuestFavouriteRequest } from "../../../modules/learn/actions";
+import {
+  LearnfavouriteListRequest,
+  LearnfavouriteRequest,
+  LearnremoveFavouriteRequest,
+  LearnremoveGuestFavouriteRequest,
+} from "../../../modules/learn/actions";
 import { playRequest } from "../../../modules/play/actions";
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
@@ -171,7 +176,7 @@ let readio = [
   },
 ];
 const ListingDetail = (props) => {
-  console.log('props.route.params',props.route.params);
+  console.log("props.route.params", props.route.params);
   const role = props.state.roleReducer.role.id;
   const dataa = props.route.params;
   const [result, setResults] = useState(props.route.params);
@@ -188,7 +193,7 @@ const ListingDetail = (props) => {
   const navigation = useNavigation();
   const [isFavorite, setIsFavorite] = useState(props.route.params?.isFavorite);
   // console.log('props.route?.params?.item', pro ps.route?.params?.item);
-  dispatch = useDispatch()
+  dispatch = useDispatch();
   const onPress = (page) => {
     navigation.navigate(page);
   };
@@ -215,7 +220,43 @@ const ListingDetail = (props) => {
       })
     );
   };
-  
+  const handleAddToCart = () => {
+    let values = {
+      userId: props.state?.loginReducer?.loginData?._id
+        ? props.state?.loginReducer?.loginData?._id
+        : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+      serviceId: result._id,
+      itemId: selectedValue,
+      quantity: counter,
+      time: selectedTime.title,
+      date: selectedDate,
+    };
+    let valuesGuest = {
+      serviceId: result._id,
+      itemId: selectedValue,
+      quantity: counter,
+      serviceName: selectedValueName,
+      servicePrice: selectedValuePrice,
+      providerName: result.title,
+      providerimages: result.image,
+    };
+    let param = {
+      endpoint: API_URL.addItemToCart,
+      navigation: () => {
+        navigation.navigate("ReviewCart");
+        // props.state.roleReducer.role.id == 2 ? navigation.navigate("ReviewCart") :  navigation.navigate("ReviewCart")
+      },
+    };
+    {
+      selectedValue
+        ? props.state.roleReducer.role.id == 2
+          ? props.addToCartRequest(values, param)
+          : !existingId(selectedValue)
+          ? props.addToCartGuestRequest(valuesGuest, param)
+          : showAlertError(`Item already exist in your cart`)
+        : showAlert(`Please choose category before adding to cart`, 4000);
+    }
+  };
   const handleDelete = (id) => {
     // console.log(id, "IIDDDDd");
     // setData((prevData) => prevData.filter((item) => item.id !== id));
@@ -234,7 +275,7 @@ const ListingDetail = (props) => {
     role == 2
       ? props.LearnremoveFavouriteRequest(param)
       : props.LearnremoveGuestFavouriteRequest(serviceId);
-      setIsFavorite(!isFavorite)
+    setIsFavorite(!isFavorite);
     showAlertSuccess(`Item removed from your favourite list`);
     setTimeout(() => {
       handleFavListing();
@@ -245,16 +286,18 @@ const ListingDetail = (props) => {
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.fetchAllLearn,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
       id: {
-        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData))  
-    console.log("APPPPPPPP2-----", apiData)
-  }
+    dispatch(playRequest(apiData));
+    console.log("APPPPPPPP2-----", apiData);
+  };
 
   const centerImage = () => {
     // return (
@@ -310,8 +353,8 @@ const ListingDetail = (props) => {
         color={isFavorite ? color._primary_orange : null}
         onPress={async () => {
           if (!isFavorite) {
-            onLoad()
-            console.log('yes is favorite 2');
+            onLoad();
+            console.log("yes is favorite 2");
             let param = {
               endpoint: API_URL.favoritiesInsert,
               id: {
@@ -322,16 +365,14 @@ const ListingDetail = (props) => {
               },
             };
             if (role == 2) {
-              console.log('role is 2 2');
+              console.log("role is 2 2");
               await props.LearnfavouriteRequest(param);
-              setIsFavorite(!isFavorite)
+              setIsFavorite(!isFavorite);
             } else if (existingFavourite(result?._id)) {
               showAlertError(`Item already exist in your favourite list`);
             } else showAlertError(`Please login to add favourites`);
           } else {
-            onLoad(),
-            console.log('not in favorite'),
-            handleDelete(result?._id);
+            onLoad(), console.log("not in favorite"), handleDelete(result?._id);
           }
         }}
       />
@@ -756,45 +797,35 @@ const ListingDetail = (props) => {
                       >
                         ${item.price}
                       </Text>
-                      {/* {
-                        selectedValue === item._id ?
-                          <View style={{ flexDirection: "row", marginVertical: 10 }}>
-                            <TouchableOpacity
-                              activeOpacity={0.9}
-
-                              onPress={() => decrementCounter()}>
-                              <View style={styles.buttons}>
-                                <Minus name="minus" size={14} color={color._white} />
-                              </View>
-                            </TouchableOpacity>
-                            <Text style={styles.counterText}>{counter}</Text>
-                            <TouchableOpacity
-                              activeOpacity={0.9}
-
-                              style={styles.buttons}
-                              onPress={() => incrementCounter()}
-                            >
-                              <Plus name="plus" size={14} color={color._white} />
-                            </TouchableOpacity>
-                          </View>
-                          : null
-                      } */}
                     </>
                   ))}
                 </RadioButton.Group>
-              </View>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                style={styles.item}
-                onPress={() => setModalVisible(true)}
-              
-              >
-                <Text style={[styles.title, { textAlign: "center" }]}>
-                  {"BOOK NOW"}
-                </Text>
-              </TouchableOpacity>
+                {/* {
+                    selectedValue === item._id ?
+                      <View style={{ flexDirection: "row", marginVertical: 10 }}>
+                        <TouchableOpacity
+                          activeOpacity={0.9}
 
-              <TouchableOpacity
+                          onPress={() => decrementCounter()}>
+                          <View style={styles.buttons}>
+                            <Minus name="minus" size={14} color={color._white} />
+                          </View>
+                        </TouchableOpacity>
+                        <Text style={styles.counterText}>{counter}</Text>
+                        <TouchableOpacity
+                          activeOpacity={0.9}
+
+                          style={styles.buttons}
+                          onPress={() => incrementCounter()}
+                        >
+                          <Plus name="plus" size={14} color={color._white} />
+                        </TouchableOpacity>
+                      </View>
+                      : null
+                  } */}
+              </View>
+
+              {/* <TouchableOpacity
                 activeOpacity={0.9}
                 style={[styles.item, { backgroundColor: color._dusty_white }]}
                 onPress={() => {
@@ -861,7 +892,7 @@ const ListingDetail = (props) => {
                     {selectedTime ? selectedTime.title : ""}
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <Text style={styles.boldText}>
                 About
@@ -1013,7 +1044,7 @@ const ListingDetail = (props) => {
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                   <Text style={[styles.review, { color: color._font_grey }]}>
                     {" "}
-                    {result?.averageRating}{" "}
+                    {result?.averageRating.toFixed(2)}{" "}
                     {result?.ratingCount == 0 ? "Rating" : null}{" "}
                   </Text>
                   <Atom.Rating
@@ -1164,6 +1195,21 @@ const ListingDetail = (props) => {
             </View>
           </View>
         </ScrollView>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          style={[
+            styles.item,
+            {
+              borderRadius: 40,
+              marginHorizontal: 15,
+            },
+          ]}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={[styles.title, { textAlign: "center" }]}>
+            {"SELECT DATE & TIME"}
+          </Text>
+        </TouchableOpacity>
         {/* <View style={{ marginHorizontal: 20 }}>
           <Atom.Button
             title={"ADD TO CART"}
@@ -1182,15 +1228,22 @@ const ListingDetail = (props) => {
           setEmptyCart(!emptyCart);
         }}
       />
+      {console.log(
+        "selectedDate----",
+        selectedDate,
+        "modalVisible------",
+        modalVisible
+      )}
       <PopUp.SlideUpPopUp
         // isVisible={modalVisible}
         isVisible={modalVisible}
+        buttonText={"ADD TO CART"}
         setSelected={setSelectedDate}
         selected={selectedDate}
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}
         onPress={() => {
-          setModalVisible(!modalVisible);
+          setModalVisible(!modalVisible), handleAddToCart();
         }}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
@@ -1214,8 +1267,8 @@ const mapDispatchToProps = (dispatch) => ({
   guestFavouriteRequest: (data) => dispatch(guestFavouriteRequest(data)),
   LearnremoveFavouriteRequest: (navigation) =>
     dispatch(LearnremoveFavouriteRequest(navigation)),
-    LearnremoveGuestFavouriteRequest: (data) =>
-      dispatch(LearnremoveGuestFavouriteRequest(data)),
+  LearnremoveGuestFavouriteRequest: (data) =>
+    dispatch(LearnremoveGuestFavouriteRequest(data)),
   LearnfavouriteRequest: (data) => dispatch(LearnfavouriteRequest(data)),
 });
 

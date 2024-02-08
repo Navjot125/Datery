@@ -45,7 +45,7 @@ const Done = (props) => {
               navigation.navigate("Root", { screen: "Home" });
             }}
             containerStyle={{ width: 335, height: 61 }}
-            title={"Explore Comfility"}
+            title={"Explore Datery"}
           />
         </View>
       </View>

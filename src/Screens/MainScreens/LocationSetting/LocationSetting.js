@@ -26,7 +26,13 @@ const LocationSetting = (props) => {
         <View style={{ flex: 1, alignItems: "center" }}>
           <Image
             source={require("../../../assets/images/Location.png")}
-            style={{ width: 49, height: 65, marginBottom: 41, marginTop: 55,tintColor:color._primary_orange }}
+            style={{
+              width: 49,
+              height: 65,
+              marginBottom: 41,
+              marginTop: 55,
+              tintColor: color._primary_orange,
+            }}
           />
           <Text style={styles.orangeText}>
             Discover Exclusive Dating Activities Nearby
@@ -38,8 +44,8 @@ const LocationSetting = (props) => {
               {" "}
               Location {">"} While in use{" "}
             </Text>
-            to allow Comfility to send you push notifications about unique
-            dating activites nearby.
+            to allow Datery to send you push notifications about unique dating
+            activites nearby.
           </Text>
           <Text
             style={styles.orangeTextSmall}

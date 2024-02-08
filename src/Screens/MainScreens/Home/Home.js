@@ -584,8 +584,10 @@ const Home = (props) => {
         listData.filter((val) => val.id === selectedItemIndex)[0].id == "2"
           ? "Food"
           : listData.filter((val) => val.id === selectedItemIndex)[0].id == "3"
-          ? "Entertainment"
+          ? "Arts"
           : listData.filter((val) => val.id === selectedItemIndex)[0].id == "4"
+          ? "Entertainment"
+          : listData.filter((val) => val.id === selectedItemIndex)[0].id == "5"
           ? "Arts"
           : null,
       sortby: filterData[selectedItem - 1]?.name || "",
@@ -631,8 +633,9 @@ const Home = (props) => {
   const listData = [
     { id: "1", title: "All" },
     { id: "2", title: "Food" },
-    { id: "3", title: "Entertainment" },
-    { id: "4", title: "Arts" },
+    { id: "3", title: "Arts" },
+    { id: "4", title: "Entertainment" },
+    { id: "5", title: "Adventurous" },
   ];
 
   const filterData = [
@@ -722,9 +725,12 @@ const Home = (props) => {
             ? "Food"
             : listData.filter((val) => val.id === selectedItemIndex)[0].id ==
               "3"
-            ? "Entertainment"
+            ? "Arts"
             : listData.filter((val) => val.id === selectedItemIndex)[0].id ==
               "4"
+            ? "Entertainment"
+            : listData.filter((val) => val.id === selectedItemIndex)[0].id ==
+              "5"
             ? "Arts"
             : null,
         sortby: filterData[selectedItem - 1]?.name || "",

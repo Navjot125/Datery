@@ -37,25 +37,22 @@ const ProfileGuestUser = (props) => {
     },
     {
       id: "3",
-      title: "Join the Comfility Marketplace",
+      title: "Join the Datery Marketplace",
     },
     {
       id: "4",
-      title: "Rate & Review Comfility",
+      title: "Rate & Review Datery",
       // onPress: () => navigation.navigate("UserReviews"),
     },
     {
       id: "5",
-      title: "About Comfility",
+      title: "About Datery",
     },
   ];
   // props.roleRequest({ user: 'Guest', id: 1 })
 
   const Item = ({ title, onPress }) => (
-    <TouchableOpacity
-      activeOpacity={0.9}
-
-      style={styles.item} onPress={onPress}>
+    <TouchableOpacity activeOpacity={0.9} style={styles.item} onPress={onPress}>
       {/* <View style={styles.item}> */}
       <Text style={styles.title}>{title}</Text>
       {/* </View> */}
@@ -68,11 +65,12 @@ const ProfileGuestUser = (props) => {
         bounces={false}
         alwaysBounceVertical={false}
         overScrollMode="never"
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.scrollView}>
           <View style={styles.mainView}>
             <Image
-              resizeMode='contain'
+              resizeMode="contain"
               source={LOGO_ORANGE}
               style={{
                 width: wp(35),
@@ -80,7 +78,7 @@ const ProfileGuestUser = (props) => {
                 marginTop: 91,
               }}
             />
-            <Text style={styles.mainHeading}>Welcome to Comfility</Text>
+            <Text style={styles.mainHeading}>Welcome to Datery</Text>
             <Text style={styles.textHeading}>
               Where you can discover exclusive dates in your area
             </Text>
@@ -88,10 +86,12 @@ const ProfileGuestUser = (props) => {
             <TouchableOpacity
               activeOpacity={0.9}
               style={styles.signInButtonStyle}
-              onPress={() => navigation.reset({
-                index: 0,
-                routes: [{ name: "Login" }]
-              })}
+              onPress={() =>
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Login" }],
+                })
+              }
             >
               <Text style={styles.signInText}>SIGN IN OR SIGN UP</Text>
             </TouchableOpacity>
@@ -129,16 +129,16 @@ const ProfileGuestUser = (props) => {
           scrollEnabled={false}
         />
       </View> */}
-    </SafeAreaView >
+    </SafeAreaView>
   );
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  roleRequest: (data) => dispatch(roleRequest(data))
+  roleRequest: (data) => dispatch(roleRequest(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileGuestUser);

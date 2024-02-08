@@ -226,7 +226,7 @@ const SignUp = (props) => {
                       }}
                     >
                       {
-                        "Yes, I would like to received personalized Comfility emails with suggested dates."
+                        "Yes, I would like to received personalized Datery emails with suggested dates."
                       }
                     </Text>
                   </View>
