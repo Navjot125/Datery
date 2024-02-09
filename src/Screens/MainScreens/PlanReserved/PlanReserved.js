@@ -47,6 +47,7 @@ import {
 import moment from "moment";
 import axiosClient from "../../../Utils/ApiClient";
 import LocationIcon from "react-native-vector-icons/Entypo";
+import Login from "../../AuthScreens/Login/Login";
 
 const PlanReserved = (props) => {
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -151,7 +152,7 @@ const PlanReserved = (props) => {
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, [month, isFocused]);
+  }, [month, isFocused, role]);
 
   const showData = ({ item, index }) => {
     // console.log(item.records[0].time, "PPPP")
@@ -280,9 +281,11 @@ const PlanReserved = (props) => {
   };
   return (
     // props?.state?.roleReducer?.role?.id == 2 ? <PlanReservedGuest /> :
-    <SafeAreaView style={styles.scrollView}>
-      <View style={styles.mainView}>
-        {/* {!show && (
+
+    role == 2 ? (
+      <SafeAreaView style={styles.scrollView}>
+        <View style={styles.mainView}>
+          {/* {!show && (
           <View
             style={{
               flexDirection: "row",
@@ -337,7 +340,7 @@ const PlanReserved = (props) => {
             />
           </View>
         )} */}
-        {/* <Calendar
+          {/* <Calendar
           style={{
             marginTop: 31,
             marginBottom: 19,
@@ -389,28 +392,29 @@ const PlanReserved = (props) => {
           }}
           markedDates={arrayToObj()}
         /> */}
-
-        <View
-          style={[
-            styles.main,
-            loader && {
-              justifyContent: "center",
-            },
-          ]}
-        >
-          {loader ? (
-            <ActivityIndicator color={color._primary_orange} size={"large"} />
-          ) : (
-            <FlatList
-              data={[0]}
-              showsVerticalScrollIndicator={false}
-              renderItem={() => (
-                <>
-                  <Text style={[styles.textTitle, { marginTop: 10 }]}>
-                    Upcoming ({Object.keys(plan).length})
-                  </Text>
-                  {/* <Text style={styles.textTitle}>Selected Date</Text> */}
-                  {/* <TouchableOpacity
+          <View
+            style={[
+              styles.main,
+              loader && {
+                justifyContent: "center",
+              },
+            ]}
+          >
+            {loader ? (
+              <ActivityIndicator color={color._primary_orange} size={"large"} />
+            ) : (
+              <FlatList
+                data={[0]}
+                showsVerticalScrollIndicator={false}
+                renderItem={() => (
+                  <>
+                    {plan && Object.keys(plan).length > 0 && (
+                      <Text style={[styles.textTitle, { marginTop: 10 }]}>
+                        Upcoming ({Object.keys(plan).length})
+                      </Text>
+                    )}
+                    {/* <Text style={styles.textTitle}>Selected Date</Text> */}
+                    {/* <TouchableOpacity
                     style={[styles.card, { marginTop: 20 }]}
                     activeOpacity={0.9}
                     onPress={() => {
@@ -437,65 +441,68 @@ const PlanReserved = (props) => {
                       Book a Date
                     </Text>
                   </TouchableOpacity> */}
-                  {plan && Object.keys(plan).length > 0 ? (
-                    Object.keys(plan).map((month) => {
-                      // console.log(month)
-                      return (
-                        <>
-                          {/* <Text style={[styles.orangeText, { marginTop: 10 }]}>
+                    {plan && Object.keys(plan).length > 0 ? (
+                      Object.keys(plan).map((month) => {
+                        // console.log(month)
+                        return (
+                          <>
+                            {/* <Text style={[styles.orangeText, { marginTop: 10 }]}>
                             {month}
                           </Text> */}
-                          <FlatList
-                            scrollEnabled={false}
-                            data={plan[month]}
-                            ListEmptyComponent={emptyData}
-                            keyExtractor={(item) => item._id}
-                            renderItem={showData}
-                            showsVerticalScrollIndicator={false}
-                          />
-                        </>
-                      );
-                    })
-                  ) : (
-                    <>{emptyData()}</>
-                  )}
-                </>
-              )}
-            />
-          )}
+                            <FlatList
+                              scrollEnabled={false}
+                              data={plan[month]}
+                              ListEmptyComponent={emptyData}
+                              keyExtractor={(item) => item._id}
+                              renderItem={showData}
+                              showsVerticalScrollIndicator={false}
+                            />
+                          </>
+                        );
+                      })
+                    ) : (
+                      <>{emptyData()}</>
+                    )}
+                  </>
+                )}
+              />
+            )}
+          </View>
         </View>
-      </View>
-      <PopUp.SlideUpPopUp
-        cancelTitle={"Cancel this reservation"}
-        isVisible={modalVisible}
-        setSelected={setSelectedDate}
-        selected={selectedDate}
-        selectedTime={selectedTime}
-        setSelectedTime={setSelectedTime}
-        onPress={() => {
-          // onDone(date)
-          setModalVisible(!modalVisible);
-          // navigation.navigate("PurchasedActivity"),
-        }}
-        onRequestClose={(date) => {
-          setModalVisible(!modalVisible);
-        }}
-      />
-      <Model.CommonPopUp
-        isVisible={false}
-        // onRequestClose={() => { setModalVisibleAvailablity(false) }}
-        title="Plan Dates"
-        titleTxt={{ fontSize: 24 }}
-        discription="User account required to plan dates."
-        descriptionTxt={styles.description}
-        // middleContent={middleContentCardDecline()}
-        middleContentStyle={{ paddingTop: 19 }}
-        btnTxt={"SIGN IN"}
-        onPress={() => {
-          setModalVisibleAvailablity(false), navigation.navigate("Login");
-        }}
-      />
-    </SafeAreaView>
+        <PopUp.SlideUpPopUp
+          cancelTitle={"Cancel this reservation"}
+          isVisible={modalVisible}
+          setSelected={setSelectedDate}
+          selected={selectedDate}
+          selectedTime={selectedTime}
+          setSelectedTime={setSelectedTime}
+          onPress={() => {
+            // onDone(date)
+            setModalVisible(!modalVisible);
+            // navigation.navigate("PurchasedActivity"),
+          }}
+          onRequestClose={(date) => {
+            setModalVisible(!modalVisible);
+          }}
+        />
+        <Model.CommonPopUp
+          isVisible={false}
+          // onRequestClose={() => { setModalVisibleAvailablity(false) }}
+          title="Plan Dates"
+          titleTxt={{ fontSize: 24 }}
+          discription="User account required to plan dates."
+          descriptionTxt={styles.description}
+          // middleContent={middleContentCardDecline()}
+          middleContentStyle={{ paddingTop: 19 }}
+          btnTxt={"SIGN IN"}
+          onPress={() => {
+            setModalVisibleAvailablity(false), navigation.navigate("Login");
+          }}
+        />
+      </SafeAreaView>
+    ) : (
+      <Login />
+    )
   );
 };
 

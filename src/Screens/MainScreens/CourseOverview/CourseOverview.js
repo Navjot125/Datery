@@ -46,7 +46,10 @@ import {
   addToCartRequest,
 } from "../../../modules/Cart/actions";
 import CustomIcon from "../../../assets/CustomIcon";
-import { showAlertError, showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import {
+  showAlertError,
+  showAlertSuccess,
+} from "../../../Common/Functions/CommonFunctions";
 import { playRequest } from "../../../modules/play/actions";
 const data = [
   {
@@ -67,7 +70,7 @@ const CourseOverview = (props) => {
   const [controlsVisible, setControlsVisible] = useState(true);
   const [controlsTimeout, setControlsTimeout] = useState(null);
   const role = props.state.roleReducer.role.id;
-  const [result, setResult] = useState(props.route?.params);  
+  const [result, setResult] = useState(props.route?.params);
   const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
 
   const dispatch = useDispatch();
@@ -158,7 +161,7 @@ const CourseOverview = (props) => {
       />
     );
   };
-  
+
   const handleFavListing = () => {
     dispatch(
       LearnfavouriteListRequest({
@@ -185,7 +188,7 @@ const CourseOverview = (props) => {
     role == 2
       ? props.LearnremoveFavouriteRequest(param)
       : props.LearnremoveGuestFavouriteRequest(serviceId);
-      setIsFavorite(!isFavorite)
+    setIsFavorite(!isFavorite);
     showAlertSuccess(`Item removed from your favourite list`);
     setTimeout(() => {
       handleFavListing();
@@ -196,16 +199,18 @@ const CourseOverview = (props) => {
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.fetchAllLearn,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
       id: {
-        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData))  
-    console.log("APPPPPPPP2-----", apiData)
-  }
+    dispatch(playRequest(apiData));
+    // console.log("APPPPPPPP2-----", apiData)
+  };
   const centerImage = () => {
     return (
       <CustomIcon
@@ -215,8 +220,8 @@ const CourseOverview = (props) => {
         color={isFavorite ? color._primary_orange : null}
         onPress={async () => {
           if (!isFavorite) {
-            onLoad()
-            console.log('yes is favorite 2');
+            onLoad();
+            console.log("yes is favorite 2");
             let param = {
               endpoint: API_URL.favoritiesInsert,
               id: {
@@ -227,22 +232,20 @@ const CourseOverview = (props) => {
               },
             };
             if (role == 2) {
-              console.log('role is 2 2');
+              console.log("role is 2 2");
               await props.LearnfavouriteRequest(param);
-              setIsFavorite(!isFavorite)
+              setIsFavorite(!isFavorite);
             } else if (existingFavourite(result?._id)) {
               showAlertError(`Item already exist in your favourite list`);
             } else showAlertError(`Please login to add favourites`);
           } else {
-            onLoad(),
-            console.log('not in favorite'),
-            handleDelete(result?._id);
+            onLoad(), console.log("not in favorite"), handleDelete(result?._id);
           }
         }}
       />
     );
   };
-  console.log('isFavorite', isFavorite);
+  console.log("isFavorite", isFavorite);
   const shareImage = () => {
     return (
       <TouchableOpacity

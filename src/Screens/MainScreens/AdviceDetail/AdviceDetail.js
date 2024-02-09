@@ -136,7 +136,7 @@ const AdviceDetail = (props) => {
       },
     };
     dispatch(playRequest(apiData))  
-    console.log("APPPPPPPP2-----", apiData)
+    // console.log("APPPPPPPP2-----", apiData)
   }
 
   const centerImage = () => {

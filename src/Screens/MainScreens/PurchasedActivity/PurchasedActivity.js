@@ -364,7 +364,6 @@ const PurchasedActivity = (props) => {
           >
             <Text style={styles.title}>Write a Review</Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             activeOpacity={0.9}
             style={styles.item}
@@ -377,7 +376,7 @@ const PurchasedActivity = (props) => {
                 color={color._border_orange}
               />
               <Text style={[styles.title, { left: 20 }]}>
-                {selectedDate ? selectedDate : "Availability"}{" "}
+                {selectedDate ? selectedDate : "Reschedule"}{" "}
                 {selectedTime ? selectedTime.title : ""}
               </Text>
             </View>
@@ -390,10 +389,10 @@ const PurchasedActivity = (props) => {
             <Text style={styles.title}>Receipt</Text>
           </TouchableOpacity>
 
-          <Text style={styles.boldText}>Preparation</Text>
+          {/* <Text style={styles.boldText}>Preparation</Text>
           <Text style={[styles.lightText, { color: "black" }]}>
             Insert infomation for the customer to prepare for your services.{" "}
-          </Text>
+          </Text> */}
 
           <TouchableOpacity
             activeOpacity={0.9}
@@ -428,7 +427,7 @@ const PurchasedActivity = (props) => {
           </View>
         </View>
         <Text style={[styles.boldText, { marginHorizontal: 20 }]}>
-          Location
+          Activity Requests
         </Text>
         <View
           style={{
@@ -487,12 +486,12 @@ const PurchasedActivity = (props) => {
                 {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
               </View>
             </View>
-            <Text
+            {/* <Text
               style={[styles.headings2, { fontSize: 18, marginVertical: 10 }]}
             >
               Notes
-            </Text>
-            <Text style={styles.headings2}>Dietary Restrictions</Text>
+            </Text> */}
+            <Text style={styles.headings2}>Accommodations / Restrictions</Text>
             <Atom.TextInputSimple
               textFieldStyle={styles.textField}
               value={review.Dietary}
@@ -612,7 +611,7 @@ const PurchasedActivity = (props) => {
                 <Icon name={"angle-left"} size={24} color={color._black} />
                 {/* <Icon name={'arrowleft'} size={24} color={color._black} /> */}
               </TouchableOpacity>
-              <Text style={styles.title3}>{"Review"}</Text>
+              <Text style={styles.title3}>{"Write a Review"}</Text>
             </View>
             <ScrollView
               bounces={false}
@@ -631,22 +630,43 @@ const PurchasedActivity = (props) => {
                 />
               </View>
               <Text style={styles.headings}>Title</Text>
-              <TextInput
+              {/* <TextInput
                 style={styles.input}
                 value={review && review?.title}
                 onChangeText={(value) => handleChange("title", value)}
                 placeholderTextColor={"#505050"}
                 placeholder="Sed ut perspiciatis unde omnis iste natus"
-              />
+              /> */}
+                <Atom.TextInputSimple
+                  keyboardType={"numeric"}
+                  style={styles.input}
+                  textFieldStyle={styles.textField}
+                  // textFieldStyle={{ height: 48, width: 70 }} 
+                  placeholderTextColor={"#505050"}
+                placeholder="Sed ut perspiciatis unde omnis iste natus"
+                  value={review && review?.title}
+                  onChangeText={(value) => handleChange("title", value)}
+                />
+                {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
               <Text style={styles.headings}>Summary</Text>
-              <TextInput
+              {/* <TextInput
                 style={styles.input}
                 value={review && review?.summary}
                 onChangeText={(value) => handleChange("summary", value)}
                 placeholderTextColor={"#505050"}
                 placeholder="The experience was amazing. My husband and I loved the outcome of the meal."
                 multiline
-              />
+              /> */}
+              <Atom.TextInputSimple
+                  keyboardType={"numeric"}
+                  style={styles.input}
+                  textFieldStyle={styles.textField}
+                  value={review && review?.summary}
+                onChangeText={(value) => handleChange("summary", value)}
+                placeholderTextColor={"#505050"}
+                placeholder="The experience was amazing. My husband and I loved the outcome of the meal."
+                multiline
+                />
               <Text style={styles.headings}>Photos</Text>
               <View style={styles.uploadImage}>
                 <Image

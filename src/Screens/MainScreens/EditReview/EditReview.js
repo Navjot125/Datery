@@ -130,7 +130,7 @@ const EditReview = (props) => {
 
     setTimeout(() => {
       navigation.goBack();
-    }, 250)
+    }, 250);
     // console.log('sfsf',id);
   };
 
@@ -215,9 +215,7 @@ const EditReview = (props) => {
                 onPressYes={() => {}}
                 onPressNo={() => {}}
               /> */}
-              <Text style={styles.removeText}>
-                Remove Review
-              </Text>
+              <Text style={styles.removeText}>Remove Review</Text>
             </TouchableOpacity>
             <Atom.Button title="Update" onPress={() => onPlaceOrder()} />
           </View>
@@ -266,8 +264,8 @@ const EditReview = (props) => {
         onPressYes={() => {
           // console.log('nooo');
           // setModalVisibleSuccess(!modalVisibleSuccess),
-          handleDelete(props.route.params.uId?._id)
-            setModalVisible(!modalVisible);
+          handleDelete(props.route.params.uId?._id);
+          setModalVisible(!modalVisible);
         }}
       />
     </SafeAreaView>

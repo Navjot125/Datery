@@ -208,7 +208,7 @@ const AddCard = (props) => {
           >
             <Text style={styles.headings}>Name on Card</Text>
             <Atom.TextInputSimple
-              textFieldStyle={[styles.textField,]}
+              textFieldStyle={[styles.textField]}
               value={cardDetails.name}
               name={"name"}
               onChangeText={(value) => handleChange("name", value)}
@@ -235,7 +235,7 @@ const AddCard = (props) => {
                   style={{ flexDirection: "row", justifyContent: "flex-start" }}
                 >
                   <Atom.TextInputSimple
-                    value={cardDetails.expiryMonth}
+                    value={`${cardDetails.expiryMonth} / ${cardDetails.expiryYear}`}
                     textFieldStyle={{ height: 48, width: 150 }}
                     onChangeText={(value) => handleChange("expiryMonth", value)}
                   />
@@ -336,7 +336,7 @@ const AddCard = (props) => {
                   handlePayment();
                   setLoader(true);
                 }}
-                title={"SUBMIT"}
+                title={"SAVE"}
               />
             )}
             {/* fromOnboarding */}

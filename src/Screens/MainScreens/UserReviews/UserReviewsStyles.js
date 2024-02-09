@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   review: {
-    marginTop: 15,
+    // marginTop: 15,
     fontFamily: fonts.REGULAR,
     fontSize: 13,
     color: '#505050',

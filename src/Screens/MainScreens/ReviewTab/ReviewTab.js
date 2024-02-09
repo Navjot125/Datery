@@ -202,8 +202,6 @@ const ReviewTab = ({ dReview, setListData, listData }) => {
         Write a Review
       </Text>
 
-
-
       <Modal
         animationType={'slide'}
         transparent={false}

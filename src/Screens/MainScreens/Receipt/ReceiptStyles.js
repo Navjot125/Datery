@@ -35,12 +35,16 @@ const styles = StyleSheet.create({
   cardView: {
     // marginTop: 21,
     marginHorizontal: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     flex: 1,
     elevation: 2,
     borderRadius: 8,
     marginVertical: 5,
-    padding: 5
+    padding: 5,
+    shadowColor: "rgba(0, 0, 0, 0.05)",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 7,
   },
   summaryView: {
     // marginTop: 13,
@@ -49,8 +53,12 @@ const styles = StyleSheet.create({
     elevation: 2,
     borderRadius: 5,
     paddingVertical: 5,
-    backgroundColor: 'white'
+    backgroundColor: "white",
     // backgroundColor:'red'
+    shadowColor: "rgba(0, 0, 0, 0.05)",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 7,
   },
   textStyle: {
     color: "#000000",
@@ -65,7 +73,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    flex: 1
+    flex: 1,
     // padding: 13,
   },
 
@@ -74,7 +82,7 @@ const styles = StyleSheet.create({
     // shadowOffset: { width: -3, height: -3 },
     // shadowOpacity: 0.05,
     // shadowRadius: 3,
-    elevation: 5
+    elevation: 5,
   },
   mediaType: {
     borderRadius: 10,
@@ -83,11 +91,11 @@ const styles = StyleSheet.create({
     // fontFamily: fonts.BOLD,
     // fontSize: 10,
     paddingVertical: 5,
-    justifyContent: 'center',
-    alignSelf: 'flex-start',
+    justifyContent: "center",
+    alignSelf: "flex-start",
     flexDirection: "row",
-    alignItems: 'center',
-    paddingHorizontal: 5
+    alignItems: "center",
+    paddingHorizontal: 5,
     // width: 122,
     // textAlign: "center",
   },
@@ -101,17 +109,17 @@ const styles = StyleSheet.create({
     fontFamily: fonts.BOLD,
     fontSize: 12,
     color: color._font_grey,
-    fontWeight: '700',
-    lineHeight: 18
+    fontWeight: "700",
+    lineHeight: 18,
     // width: 203,
   },
   orangeText: {
     fontFamily: fonts.BOLD,
     fontSize: 14,
     color: color._black,
-    fontWeight: '600',
+    fontWeight: "600",
     lineHeight: 21,
-    letterSpacing: 1
+    letterSpacing: 1,
   },
   lastText: {
     flexDirection: "row",
@@ -123,14 +131,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#000000",
     paddingVertical: 10,
-    paddingHorizontal: 5
+    paddingHorizontal: 5,
   },
   summaryTitle: {
     fontFamily: fonts.BOLD,
     fontSize: 15,
     color: color._black,
-    fontWeight: '700',
-    lineHeight: 18
+    fontWeight: "700",
+    lineHeight: 18,
   },
   textField: {
     height: 40,
@@ -145,8 +153,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.SEMI_BOLD,
     fontSize: 12,
     color: color._black,
-    fontWeight: "600"
-    // marginBottom: 13,
+    fontWeight: "600",
+    marginBottom: 5,
   },
 });
 export default styles;

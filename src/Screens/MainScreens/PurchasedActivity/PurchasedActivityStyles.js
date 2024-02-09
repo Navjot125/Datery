@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#C4C4C4",
     lineHeight: 18,
-    marginVertical: 5
+    marginVertical: 5,
     // marginBottom: 18,
   },
   lastText: {
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: widthPercentageToDP(100 - 5),
-    height: 200
+    height: 200,
   },
   dateText: {
     color: color._black,
@@ -98,8 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     color: color._black,
     fontFamily: fonts.BOLD,
-    lineHeight: 15
-
+    lineHeight: 15,
   },
   selectedTextStyle: {
     fontSize: 12,
@@ -111,7 +110,7 @@ const styles = StyleSheet.create({
     // height: hp('100%'),
     // width: wp('100%'),
     backgroundColor: color._white,
-    marginTop:35
+    marginTop: 35,
   },
   scrollView2: {
     marginHorizontal: 6,
@@ -119,24 +118,24 @@ const styles = StyleSheet.create({
   },
   mainView2: {
     // flex: 1,
-    height: hp('100%'),
+    height: hp("100%"),
     marginTop: 19,
     marginHorizontal: 15,
   },
   viewTop: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   textHeading: {
     height: 24,
     fontFamily: fonts.SEMI_BOLD,
     fontSize: 16,
-    color: '#2F2729',
+    color: "#2F2729",
   },
   headings: {
     fontFamily: fonts.SEMI_BOLD,
     marginTop: 19,
-    // marginBottom: 13,
+    marginBottom: 5,
     fontSize: 12,
     lineHeight: 15,
     color: color._font_grey,
@@ -161,45 +160,45 @@ const styles = StyleSheet.create({
   date: {
     fontFamily: fonts.MEDIUM,
     fontSize: 12,
-    color: '#726A6A',
+    color: "#726A6A",
     marginTop: 6,
   },
   review2: {
     marginTop: 6.3,
     fontFamily: fonts.REGULAR,
     fontSize: 13,
-    color: '#505050',
+    color: "#505050",
     // marginBottom: 6.8,
   },
   uploadImage: {
     marginVertical: 14,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     height: 133,
-    borderStyle: 'dashed',
+    borderStyle: "dashed",
     borderWidth: 1,
     borderRadius: 16,
-    borderColor: '#AFAEB4',
+    borderColor: "#AFAEB4",
   },
   uploadText: {
     fontFamily: fonts.REGULAR,
     fontSize: 14,
-    color: '#AFAEB4',
+    color: "#AFAEB4",
     marginTop: 11,
   },
   removeText: {
     marginTop: 36,
     fontFamily: fonts.BOLD,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     fontSize: 14,
     color: color._primary_orange,
-    alignSelf: 'center',
+    alignSelf: "center",
     // marginBottom: 45,
   },
   noteText: {
     fontFamily: fonts.REGULAR,
     fontSize: 11,
-    color: '#505050',
+    color: "#505050",
     marginTop: 11,
   },
   selectedImage: {
@@ -207,7 +206,7 @@ const styles = StyleSheet.create({
     height: 120,
     borderWidth: 0.5,
     marginTop: 10,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   input: {
     borderColor: color._white,
@@ -215,8 +214,8 @@ const styles = StyleSheet.create({
     // height: 60,
     borderRadius: 10,
     // padding: 10,
-    color: 'black',
-    backgroundColor: color._white
+    color: "black",
+    backgroundColor: color._white,
   },
   title3: {
     color: color._font_Dark,
@@ -236,8 +235,8 @@ const styles = StyleSheet.create({
     fontFamily: fonts.SEMI_BOLD,
     fontSize: 12,
     color: color._black,
-    fontWeight: "600"
-    // marginBottom: 13,
+    fontWeight: "600",
+    marginBottom: 5,
   },
   textLoc: {
     fontFamily: fonts.SEMI_BOLD,
@@ -245,8 +244,8 @@ const styles = StyleSheet.create({
     color: color._font_grey,
     // top: 2,
     alignSelf: "flex-start",
-    fontWeight: '600',
-    lineHeight: 21
+    fontWeight: "600",
+    lineHeight: 21,
     // textAlign: 'left'
     // paddingRight:-20
   },

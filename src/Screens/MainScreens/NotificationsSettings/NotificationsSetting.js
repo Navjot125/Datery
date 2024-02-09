@@ -14,14 +14,15 @@ const NotificationsSetting = (props) => {
   const navigation = useNavigation();
   const [AnnouncementValue, setAnnouncementValue] = React.useState(false);
   const [RemindersValue, setRemindersValue] = React.useState(false);
-  const [modalVisibleAvailablity, setModalVisibleAvailablity] = React.useState(false);
+  const [modalVisibleAvailablity, setModalVisibleAvailablity] =
+    React.useState(false);
   const onPlaceOrder = () => {
     setModalVisibleAvailablity("true");
   };
   return (
     <SafeAreaView style={styles.scrollView}>
       <View style={styles.mainView}>
-        <BackHeader title={"Notifications"} />
+        <BackHeader title={"Push Notifications"} />
         <View style={{ flex: 1, marginTop: 30 }}>
           <View style={styles.viewStyle}>
             <Text style={styles.textinputStyle}>Announcements </Text>
@@ -84,7 +85,9 @@ const NotificationsSetting = (props) => {
         // middleContent={middleContentCardDecline()}
         middleContentStyle={{ paddingTop: 19 }}
         btnTxt="BACK TO PROFILE"
-        onPress={() => { setModalVisibleAvailablity(false), navigation.goBack() }}
+        onPress={() => {
+          setModalVisibleAvailablity(false), navigation.goBack();
+        }}
       />
     </SafeAreaView>
   );

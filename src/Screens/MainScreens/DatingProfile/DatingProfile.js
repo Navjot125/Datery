@@ -18,7 +18,10 @@ import * as Atom from "../../../Components/atoms";
 import * as Model from "../../../Components/models";
 import { useNavigation } from "@react-navigation/native";
 import { connect } from "react-redux";
-import { datingProfileRequest, updateProfileRequest } from "../../../modules/Profile/actions";
+import {
+  datingProfileRequest,
+  updateProfileRequest,
+} from "../../../modules/Profile/actions";
 import { API_URL } from "../../../Constants/Config";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import fonts from "../../../Constants/Fonts";
@@ -26,53 +29,84 @@ import { ActivityIndicator } from "react-native-paper";
 
 const DatingProfile = (props) => {
   const navigation = useNavigation();
-  const userName = props.state?.profileReducer?.datingData?.userName
-  const [modalVisibleAvailablity, setModalVisibleAvailablity] = React.useState(false);
+  const userName = props.state?.profileReducer?.datingData?.userName;
+  const [modalVisibleAvailablity, setModalVisibleAvailablity] =
+    React.useState(false);
   const [checked, setChecked] = React.useState(true);
   const [typeOfDatesBool, seTtypeOfDatesBool] = React.useState(true);
-  const [age, setAge] = useState(props.state?.profileReducer?.datingData?.userProfile?.age);
-  const [gender, setGender] = useState(props.state?.profileReducer?.datingData?.userProfile?.gender);
+  const [age, setAge] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.age
+  );
+  const [gender, setGender] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.gender
+  );
   // "currentRelationshipLength": "3 - 5 Years", Not
-  const [sexualOrientation, setSexualOrientation] = useState(props.state?.profileReducer?.datingData?.userProfile?.sexualOrientation);
-  const [relationshipStatus, setRelationshipStatus] = useState(props.state?.profileReducer?.datingData?.userProfile?.relationshipStatus);
-  const [anniversary, setAnniversary] = useState(props.state?.profileReducer?.datingData?.userProfile?.anniversary);
-  const [partnerBirthday, setPartnerBirthday] = useState(props.state?.profileReducer?.datingData?.userProfile?.PartnerBirthday);
-  const [longestRelationship, setLongestRelationship] = useState(props.state?.profileReducer?.datingData?.userProfile?.longestRelationshipLength);
-  const [dates, setDates] = useState(props.state?.profileReducer?.datingData?.userProfile?.howManyDates);
-  const [budget, setBudget] = useState(props.state?.profileReducer?.datingData?.userProfile?.budget);
-  const [kids, setKids] = useState(props.state?.profileReducer?.datingData?.userProfile?.kids);
-  const [city, setCity] = useState(props.state?.profileReducer?.datingData?.userProfile?.locationAddress);
-  const [datingCoach, setDatingCoach] = useState(props.state?.profileReducer?.datingData?.userProfile?.datingCoach);
+  const [sexualOrientation, setSexualOrientation] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.sexualOrientation
+  );
+  const [relationshipStatus, setRelationshipStatus] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.relationshipStatus
+  );
+  const [anniversary, setAnniversary] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.anniversary
+  );
+  const [partnerBirthday, setPartnerBirthday] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.PartnerBirthday
+  );
+  const [longestRelationship, setLongestRelationship] = useState(
+    props.state?.profileReducer?.datingData?.userProfile
+      ?.longestRelationshipLength
+  );
+  const [dates, setDates] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.howManyDates
+  );
+  const [budget, setBudget] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.budget
+  );
+  const [kids, setKids] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.kids
+  );
+  const [city, setCity] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.locationAddress
+  );
+  const [datingCoach, setDatingCoach] = useState(
+    props.state?.profileReducer?.datingData?.userProfile?.datingCoach
+  );
   const [updateDatingData, setUpdateDatingData] = useState({});
   const [dateActivities, setDateActivities] = useState([]);
   const [topics, setTopics] = useState([]);
-  const [loader, setLoader] = useState(true)
+  const [loader, setLoader] = useState(true);
   const role = props.state.roleReducer.role.id;
-  let types = props.state?.profileReducer?.datingData?.userProfile?.typeOfDates
-  let topicsFromReducer = props.state?.profileReducer?.datingData?.userProfile?.topic
-console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReducer?.datingData?.userProfile);
+  let types = props.state?.profileReducer?.datingData?.userProfile?.typeOfDates;
+  let topicsFromReducer =
+    props.state?.profileReducer?.datingData?.userProfile?.topic;
+  console.log(
+    ";props.state.loginReducer?.loginData._id",
+    props.state?.profileReducer?.datingData?.userProfile
+  );
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       setUpdateDatingData({
-        ...updateDatingData, userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
-      })
-      renderInitialValues()
-      renderInitialValuesOfTopics()
+        ...updateDatingData,
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+      });
+      renderInitialValues();
+      renderInitialValuesOfTopics();
       let timeout = setTimeout(() => {
-        setLoader(false)
-      }, 300)
+        setLoader(false);
+      }, 300);
       return () => {
-        if (timeout) clearTimeout(timeout)
-      }
-    })
-
-  }, [])
+        if (timeout) clearTimeout(timeout);
+      };
+    });
+  }, []);
 
   // ["Active & Adventurous", "Food & Drinks", "Entertainment"] types
   // console.log(props.state.profileReducer?.datingData?.userName, '[-==-==-==-=]');
-  let activities = []
-  let dataTopicsArray = []
+  let activities = [];
+  let dataTopicsArray = [];
   const [dateTopics, setDateTopics] = useState([
     {
       id: 1,
@@ -124,7 +158,7 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
       title: "Closure",
       checked: false,
     },
-  ])
+  ]);
   const [checkBoxArray, setCheckBoxArray] = useState([
     {
       id: 1,
@@ -170,27 +204,39 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
 
   const setLoc = (details) => {
     setUpdateDatingData({
-      ...updateDatingData, city: [{ locationName: details?.formatted_address }, { latlong: [details?.geometry?.location.lng, details?.geometry?.location.lat] },
-      { placeId: details?.place_id }]
-    })
-  }
+      ...updateDatingData,
+      city: [
+        { locationName: details?.formatted_address },
+        {
+          latlong: [
+            details?.geometry?.location.lng,
+            details?.geometry?.location.lat,
+          ],
+        },
+        { placeId: details?.place_id },
+      ],
+    });
+  };
   const onPlaceOrder = () => {
     function addObjectProperty(obj, dateActivities, topics) {
-      dateActivities?.length > 0 ?
-        obj.typeOfDates = dateActivities : obj
-      topics?.length > 0 ?
-        obj.topic = topics : obj
+      dateActivities?.length > 0 ? (obj.typeOfDates = dateActivities) : obj;
+      topics?.length > 0 ? (obj.topic = topics) : obj;
       return obj;
     }
-    const updatedObject = addObjectProperty(updateDatingData, dateActivities, topics);
+    const updatedObject = addObjectProperty(
+      updateDatingData,
+      dateActivities,
+      topics
+    );
     // console.log(updatedObject, 'updatedObject----------------------------');
     let data = {
       updateDatingData: updatedObject,
       endpoint: API_URL.editProfile,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
-    }
-    props.updateProfileRequest(data)
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
+    };
+    props.updateProfileRequest(data);
     setModalVisibleAvailablity(true);
   };
 
@@ -232,7 +278,6 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
     );
   };
 
-
   const ageData = [
     { value: "17 - 19", label: "17 - 19" },
     { value: "20 - 25", label: "20 - 25" },
@@ -250,15 +295,27 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" },
     { value: "Non-binary", label: "Non-binary" },
-    { value: "I do not identify with these options", label: "I do not identify with these options" },
+    {
+      value: "I do not identify with these options",
+      label: "I do not identify with these options",
+    },
   ];
 
   const SexualOrientationData = [
-    { value: "Exclusively attracted to women", label: "Exclusively attracted to women" },
+    {
+      value: "Exclusively attracted to women",
+      label: "Exclusively attracted to women",
+    },
     { value: "Mostly attracted to women", label: "Mostly attracted to women" },
-    { value: "Exclusively attracted to men", label: "Exclusively attracted to men" },
+    {
+      value: "Exclusively attracted to men",
+      label: "Exclusively attracted to men",
+    },
     { value: "Mostly attracted to men", label: "Mostly attracted to men" },
-    { value: "Equally attracted to men and women", label: "Equally attracted to men and women" },
+    {
+      value: "Equally attracted to men and women",
+      label: "Equally attracted to men and women",
+    },
     { value: "Asexual or non-sexual", label: "Asexual or non-sexual" },
   ];
   const RelationshipStatusData = [
@@ -316,7 +373,6 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
     { value: "Very Unlikely", label: "Very Unlikely" },
   ];
 
-
   const renderItem = ({ item, index }) => {
     return (
       <View style={{ flex: 1, marginTop: 24 }}>
@@ -328,26 +384,29 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
           checkValue={item.checked}
           labelStyle={styles.labelStyle}
           onPress={() => onPressChange(item)}
-          status={checked ? 'checked' : 'unchecked'}
-        // status={types[0] == item.title ? 'checked' : 'unchecked'}
+          status={checked ? "checked" : "unchecked"}
+          // status={types[0] == item.title ? 'checked' : 'unchecked'}
         />
       </View>
     );
   };
-   const onLoad = async () => {
+  const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.getProfile,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
       id: {
-        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    role == 2 ?
-      (props.datingProfileRequest(apiData), console.log('workinf')) : null
+    role == 2
+      ? (props.datingProfileRequest(apiData), console.log("workinf"))
+      : null;
     props.setLoader(false);
-  }
+  };
 
   const renderTopicsItem = ({ item }) => {
     return (
@@ -360,304 +419,372 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
           // onPress={(e) => console.log(e, 'njbh')}
           onPress={() => onPressChangeTopics(item)}
           // status={checked ? 'checked' : 'unchecked'}
-          status={checked ? 'checked' : 'unchecked'}
+          status={checked ? "checked" : "unchecked"}
         />
       </View>
     );
   };
 
   const onPressChange = (newData) => {
-    const newChecked = checkBoxArray.map(item => {
+    const newChecked = checkBoxArray.map((item) => {
       if (newData.title.includes(item.title)) {
         return {
           ...item,
-          checked: !item.checked
+          checked: !item.checked,
         };
       }
-      return item
+      return item;
     });
-    setCheckBoxArray(newChecked)
-    newChecked.map(e => {
+    setCheckBoxArray(newChecked);
+    newChecked.map((e) => {
       if (e.checked == true) {
-        activities.push(e.title)
-        setDateActivities(activities)
+        activities.push(e.title);
+        setDateActivities(activities);
       }
-    })
-  }
+    });
+  };
   const onPressChangeTopics = (newData) => {
-    const newChecked = dateTopics.map(item => {
+    const newChecked = dateTopics.map((item) => {
       if (newData.title.includes(item.title)) {
         return {
           ...item,
-          checked: !item.checked
+          checked: !item.checked,
         };
       }
-      return item
+      return item;
     });
-    setDateTopics(newChecked)
-    newChecked.map(e => {
+    setDateTopics(newChecked);
+    newChecked.map((e) => {
       if (e.checked == true) {
-        dataTopicsArray.push(e.title)
-        setTopics(dataTopicsArray)
+        dataTopicsArray.push(e.title);
+        setTopics(dataTopicsArray);
       }
-    })
-  }
-
+    });
+  };
 
   const renderInitialValues = () => {
-    const updatedCheckBoxArray = checkBoxArray.map(item => {
+    const updatedCheckBoxArray = checkBoxArray.map((item) => {
       if (types?.includes(item.title)) {
         return {
           ...item,
-          checked: true
+          checked: true,
         };
       }
       return item;
     });
     setCheckBoxArray(updatedCheckBoxArray);
-  }
+  };
   const renderInitialValuesOfTopics = () => {
-    const updatedTopicsArray = dateTopics.map(item => {
+    const updatedTopicsArray = dateTopics.map((item) => {
       if (topicsFromReducer?.includes(item.title)) {
         return {
           ...item,
-          checked: true
+          checked: true,
         };
       }
       return item;
     });
     setDateTopics(updatedTopicsArray);
-  }
-
+  };
 
   // console.log(props.state.profileReducer?.datingData?.userProfile?.locationAddress);
   return (
-    <SafeAreaView style={[styles.scrollView, loader && {
-      justifyContent: "center"
-    }]}>
-      {loader ? <ActivityIndicator color={color._primary_orange} size={'large'} /> :
-        (
-          <ScrollView
-            bounces={false}
-            alwaysBounceVertical={false}
-            overScrollMode="never"
-            keyboardShouldPersistTaps="handled"
-
-            showsVerticalScrollIndicator={false}>
-            <View style={[styles.mainView]}>
-
-              <>
-                <BackHeader title={"Dating Profile"} />
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.header}>Username</Text>
-                  <Text style={styles.textinputStyle}>{userName}</Text>
-                  <Text style={styles.header}>Personal Info</Text>
-                  <DropDown
-                    titleText={"Age"}
-                    data={ageData}
-                    value={age}
-                    // labelField="label"
-                    // value={value}
-                    // setValue={setAge}
-                    // setValue={(value) => { setAge(value), setUpdateDatingData([...updateDatingData, { 'age': value }]) }}
-                    // setValue={(value) => { setAge(value), onChangeDropDown({ key: 'age', age: value }) }}
-                    setValue={(value) => { setAge(value), setUpdateDatingData({ ...updateDatingData, age: value }) }}
-                  />
-                  {/* {console.log(updateDatingData, 'kdfndkjsbfsddnsa')} */}
-                  <DropDown
-                    titleText={"Gender Identity"}
-                    data={genderData}
-                    value={gender}
-                    // setValue={setGender}
-                    setValue={(value) => { setGender(value), setUpdateDatingData({ ...updateDatingData, gender: value }) }}
+    <SafeAreaView
+      style={[
+        styles.scrollView,
+        loader && {
+          justifyContent: "center",
+        },
+      ]}
+    >
+      {loader ? (
+        <ActivityIndicator color={color._primary_orange} size={"large"} />
+      ) : (
+        <ScrollView
+          bounces={false}
+          alwaysBounceVertical={false}
+          overScrollMode="never"
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={[styles.mainView]}>
+            <>
+              <BackHeader title={"Dating Profile"} />
+              <View style={{ flex: 1 }}>
+                <Text style={styles.header}>Initial Setup</Text>
+                <Text
+                  style={[
+                    styles.textinputStyle,
+                    { color: color._primary_orange },
+                  ]}
+                >
+                  Onboarding
+                </Text>
+                <Text style={styles.header}>Answers</Text>
+                <DropDown
+                  titleText={"Age"}
+                  data={ageData}
+                  value={age}
+                  // labelField="label"
+                  // value={value}
+                  // setValue={setAge}
+                  // setValue={(value) => { setAge(value), setUpdateDatingData([...updateDatingData, { 'age': value }]) }}
+                  // setValue={(value) => { setAge(value), onChangeDropDown({ key: 'age', age: value }) }}
+                  setValue={(value) => {
+                    setAge(value),
+                      setUpdateDatingData({ ...updateDatingData, age: value });
+                  }}
+                />
+                {/* {console.log(updateDatingData, 'kdfndkjsbfsddnsa')} */}
+                <DropDown
+                  titleText={"Gender Identity"}
+                  data={genderData}
+                  value={gender}
+                  // setValue={setGender}
+                  setValue={(value) => {
+                    setGender(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        gender: value,
+                      });
+                  }}
                   // setValue={(value) => { setGender(value), setUpdateDatingData([...updateDatingData, { 'gender': value }]) }}
-                  />
-                  <DropDown
-                    titleText={"Sexual Orientation"}
-                    data={SexualOrientationData}
-                    value={sexualOrientation}
-                    setValue={(value) => { setSexualOrientation(value), setUpdateDatingData({ ...updateDatingData, sexualOrientation: value }) }}
+                />
+                <DropDown
+                  titleText={"Sexual Orientation"}
+                  data={SexualOrientationData}
+                  value={sexualOrientation}
+                  setValue={(value) => {
+                    setSexualOrientation(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        sexualOrientation: value,
+                      });
+                  }}
                   //setValue={setSexualOrientation}
-                  />
-                  <DropDown
-                    titleText={"Relationship Status"}
-                    data={RelationshipStatusData}
-                    value={relationshipStatus}
-                    // setValue={setRelationshipStatus}
-                    setValue={(value) => { setRelationshipStatus(value), setUpdateDatingData({ ...updateDatingData, relationshipStatus: value }) }}
-                  />
-                  <DropDown
-                    titleText={"Anniversary"}
-                    data={ageData}
-                    value={anniversary}
-                    // setValue={setAnniversary}
-                    setValue={(value) => { setAnniversary(value), setUpdateDatingData({ ...updateDatingData, anniversary: value }) }}
-                  />
-                  <DropDown
-                    titleText={"Partner’s Birthday"}
-                    data={ageData}
-                    value={partnerBirthday}
-                    // setValue={setPartnerBirthday}
-                    setValue={(value) => { setPartnerBirthday(value), setUpdateDatingData({ ...updateDatingData, PartnerBirthday: value }) }}
-                  />
-                  <DropDown
-                    titleText={"Longest Relationship"}
-                    data={LongestRelationshipData}
-                    value={longestRelationship}
-                    // setValue={setLongestRelationship}
-                    setValue={(value) => { setLongestRelationship(value), setUpdateDatingData({ ...updateDatingData, longestRelationshipLength: value }) }}
-                  />
-                  <DropDown
-                    titleText={"Number of dates in the past six months"}
-                    data={HowManyDatesData}
-                    value={dates}
-                    // setValue={setDates}
-                    setValue={(value) => { setDates(value), setUpdateDatingData({ ...updateDatingData, howManyDates: value }) }}
-                  />
-                  <DropDown
-                    titleText={"Average amount of money per date"}
-                    data={BudgetData}
-                    value={budget}
-                    // setValue={setBudget}
-                    setValue={(value) => { setBudget(value), setUpdateDatingData({ ...updateDatingData, budget: value }) }}
-                  />
-                  <DropDown
-                    titleText={"Kids under the age of 12 years old"}
-                    data={KidsData}
-                    value={kids}
-                    // setValue={setKids}
-                    setValue={(value) => { setKids(value), setUpdateDatingData({ ...updateDatingData, kids: value }) }}
-                  />
-                  <View style={
-                    {
-                      flexDirection: 'row',
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: 18,
-                      zIndex: 2
+                />
+                <DropDown
+                  titleText={"Relationship Status"}
+                  data={RelationshipStatusData}
+                  value={relationshipStatus}
+                  // setValue={setRelationshipStatus}
+                  setValue={(value) => {
+                    setRelationshipStatus(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        relationshipStatus: value,
+                      });
+                  }}
+                />
+                <DropDown
+                  titleText={"Anniversary"}
+                  data={ageData}
+                  value={anniversary}
+                  // setValue={setAnniversary}
+                  setValue={(value) => {
+                    setAnniversary(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        anniversary: value,
+                      });
+                  }}
+                />
+                <DropDown
+                  titleText={"Partner’s Birthday"}
+                  data={ageData}
+                  value={partnerBirthday}
+                  // setValue={setPartnerBirthday}
+                  setValue={(value) => {
+                    setPartnerBirthday(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        PartnerBirthday: value,
+                      });
+                  }}
+                />
+                <DropDown
+                  titleText={"Longest Relationship"}
+                  data={LongestRelationshipData}
+                  value={longestRelationship}
+                  // setValue={setLongestRelationship}
+                  setValue={(value) => {
+                    setLongestRelationship(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        longestRelationshipLength: value,
+                      });
+                  }}
+                />
+                <DropDown
+                  titleText={"Number of dates in the past six months"}
+                  data={HowManyDatesData}
+                  value={dates}
+                  // setValue={setDates}
+                  setValue={(value) => {
+                    setDates(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        howManyDates: value,
+                      });
+                  }}
+                />
+                <DropDown
+                  titleText={"Average amount of money per date"}
+                  data={BudgetData}
+                  value={budget}
+                  // setValue={setBudget}
+                  setValue={(value) => {
+                    setBudget(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        budget: value,
+                      });
+                  }}
+                />
+                <DropDown
+                  titleText={"Kids under the age of 12 years old"}
+                  data={KidsData}
+                  value={kids}
+                  // setValue={setKids}
+                  setValue={(value) => {
+                    setKids(value),
+                      setUpdateDatingData({ ...updateDatingData, kids: value });
+                  }}
+                />
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginBottom: 18,
+                    zIndex: 2,
+                  }}
+                >
+                  <Text style={styles.textinputStyle}>Current City</Text>
+                  <GooglePlacesAutocomplete
+                    placeholder={
+                      updateDatingData?.city?.[0]?.locationName
+                        ? updateDatingData?.city?.[0]?.locationName
+                        : props.state.profileReducer?.datingData?.userProfile
+                            ?.locationAddress
+                        ? props.state.profileReducer?.datingData?.userProfile
+                            ?.locationAddress
+                        : "Search"
                     }
-                  } >
-                    <Text style={styles.textinputStyle
-                    } >Current City</Text>
-                    <GooglePlacesAutocomplete
-                      placeholder={updateDatingData?.city?.[0]?.locationName ? updateDatingData?.city?.[0]?.locationName
-                        : props.state.profileReducer?.datingData?.userProfile?.locationAddress ? props.state.profileReducer?.datingData?.userProfile?.locationAddress
-                          : 'Search'}
-                      fetchDetails={
-                        true
-                      }
-                      onPress={(data, details) => {
-                        setLoc(details)
-                      }}
-                      query={
-                        {
-                          key: 'AIzaSyCWbsC3b6QgedZG8VQe2ux5lovNGxTptZM',
-                          language: 'en',
-                        }
-                      }
-
-                      enablePoweredByContainer={
-                        false
-                      }
-                      currentLocation={
-                        true
-                      }
-                      textInputProps={{
-                        placeholderTextColor: 'black',
-                        returnKeyType: "search"
-                      }}
-                      currentLocationLabel='Current location'
-                      styles={
-                        {
-                          textInputContainer: {
-                            height: 40,
-                            width: 164,
-                            padding: 5,
-                            borderWidth: 1,
-                            borderColor: "#DCDCDD",
-                            borderRadius: 50,
-                            alignSelf: 'flex-end',
-                          },
-                          textInput: {
-                            placeholderTextColor: "red",
-                            borderRadius: 50,
-                            height: 36,
-                            fontFamily: fonts.REGULAR,
-                            // backgroundColor: "#F8F7FA",
-                            alignSelf: "center",
-                            fontSize: 12,
-                            color: color._black,
-                            top: 2,
-                          },
-                          listView: {
-                            // backgroundColor: 'yellow'
-                          },
-                          row: {
-                            // backgroundColor: '#FFFFFF',
-                            // backgroundColor: 'red',
-                            // padding: 13,
-                            height: 40,
-                            flexDirection: 'row',
-                          },
-                          separator: {
-                            height: 0.5,
-                            backgroundColor: '#c8c7cc',
-                          },
-                          // description: {},
-                          loader: {
-                            flexDirection: 'row',
-                            justifyContent: 'flex-end',
-                            height: 20,
-                          },
-                        }
-                      }
-                    />
-                  </View>
-                  {/* <DropDown
+                    fetchDetails={true}
+                    onPress={(data, details) => {
+                      setLoc(details);
+                    }}
+                    query={{
+                      key: "AIzaSyCWbsC3b6QgedZG8VQe2ux5lovNGxTptZM",
+                      language: "en",
+                    }}
+                    enablePoweredByContainer={false}
+                    currentLocation={true}
+                    textInputProps={{
+                      placeholderTextColor: "black",
+                      returnKeyType: "search",
+                    }}
+                    currentLocationLabel="Current location"
+                    styles={{
+                      textInputContainer: {
+                        height: 40,
+                        width: 164,
+                        padding: 5,
+                        borderWidth: 1,
+                        borderColor: "#DCDCDD",
+                        borderRadius: 50,
+                        alignSelf: "flex-end",
+                      },
+                      textInput: {
+                        placeholderTextColor: "red",
+                        borderRadius: 50,
+                        height: 36,
+                        fontFamily: fonts.REGULAR,
+                        // backgroundColor: "#F8F7FA",
+                        alignSelf: "center",
+                        fontSize: 12,
+                        color: color._black,
+                        top: 2,
+                      },
+                      listView: {
+                        // backgroundColor: 'yellow'
+                      },
+                      row: {
+                        // backgroundColor: '#FFFFFF',
+                        // backgroundColor: 'red',
+                        // padding: 13,
+                        height: 40,
+                        flexDirection: "row",
+                      },
+                      separator: {
+                        height: 0.5,
+                        backgroundColor: "#c8c7cc",
+                      },
+                      // description: {},
+                      loader: {
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                        height: 20,
+                      },
+                    }}
+                  />
+                </View>
+                {/* <DropDown
               titleText={"Current City"}
               data={ageData}
               value={city}
               // setValue={setCity}
               setValue={(value) => { setCity(value), setUpdateDatingData({ ...updateDatingData, locationCordinates: value }) }}
             /> */}
-                  <DropDown
-                    titleText={"Seek advice from a dating/relationship coach"}
-                    data={DatingCoachData}
-                    value={datingCoach}
-                    // setValue={setDatingCoach}
-                    setValue={(value) => { setDatingCoach(value), setUpdateDatingData({ ...updateDatingData, datingCoach: value }) }}
-                  />
-                  <Text style={styles.header}>Date Activity Interests</Text>
-                  <FlatList
-                    data={checkBoxArray}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    numColumns={2}
-                    scrollEnabled={false}
-                  />
-                  <Text style={styles.header}>Relationship Topics Interests</Text>
-                  <FlatList
-                    data={dateTopics}
-                    renderItem={renderTopicsItem}
-                    keyExtractor={(item) => item.id}
-                    numColumns={2}
-                    scrollEnabled={false}
-                  />
-                </View>
-                <Atom.Button
-                  onPress={() => {
-                    setUpdateDatingData({
-                      ...updateDatingData, userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-                        props.state?.signupReducer?.signupSucessData?.UserData?._id
-                    }),
-                      onPlaceOrder()
+                <DropDown
+                  titleText={"Seek advice from a dating/relationship coach"}
+                  data={DatingCoachData}
+                  value={datingCoach}
+                  // setValue={setDatingCoach}
+                  setValue={(value) => {
+                    setDatingCoach(value),
+                      setUpdateDatingData({
+                        ...updateDatingData,
+                        datingCoach: value,
+                      });
                   }}
-                  containerStyle={{ marginVertical: "8%" }}
-                  title={"SAVE"}
-                /></>
-            </View>
-          </ScrollView>
-        )}
+                />
+                <Text style={styles.header}>Date Activity Interests</Text>
+                <FlatList
+                  data={checkBoxArray}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+                  numColumns={2}
+                  scrollEnabled={false}
+                />
+                <Text style={styles.header}>Relationship Topics Interests</Text>
+                <FlatList
+                  data={dateTopics}
+                  renderItem={renderTopicsItem}
+                  keyExtractor={(item) => item.id}
+                  numColumns={2}
+                  scrollEnabled={false}
+                />
+              </View>
+              <Atom.Button
+                onPress={() => {
+                  setUpdateDatingData({
+                    ...updateDatingData,
+                    userId: props.state.loginReducer?.loginData._id
+                      ? props.state.loginReducer?.loginData._id
+                      : props.state?.signupReducer?.signupSucessData?.UserData
+                          ?._id,
+                  }),
+                    onPlaceOrder();
+                }}
+                containerStyle={{ marginVertical: "8%" }}
+                title={"SAVE"}
+              />
+            </>
+          </View>
+        </ScrollView>
+      )}
 
       <Model.CommonPopUp
         isVisible={modalVisibleAvailablity}
@@ -668,20 +795,21 @@ console.log(';props.state.loginReducer?.loginData._id',props.state?.profileReduc
         // middleContent={middleContentCardDecline()}
         middleContentStyle={{ paddingTop: 19 }}
         btnTxt="BACK TO PROFILE"
-        onPress={() => { setModalVisibleAvailablity(false), navigation.goBack(), onLoad() }}
+        onPress={() => {
+          setModalVisibleAvailablity(false), navigation.goBack(), onLoad();
+        }}
       />
     </SafeAreaView>
   );
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   updateProfileRequest: (data) => dispatch(updateProfileRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DatingProfile);

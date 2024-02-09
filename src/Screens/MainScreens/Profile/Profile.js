@@ -23,24 +23,32 @@ import { roleRequest } from "../../../modules/Role/actions";
 import ProfileGuestUser from "../../GuestScreens/ProfileGuestUser/ProfileGuestUser";
 import { signOutRequest, signOutSuccess } from "../../../modules/Login/actions";
 import { API_URL } from "../../../Constants/Config";
-import { aboutComfilityRequest, datingProfileRequest } from "../../../modules/Profile/actions";
+import {
+  aboutComfilityRequest,
+  datingProfileRequest,
+} from "../../../modules/Profile/actions";
 import { setLoader } from "../../../modules/Loader/actions";
 import axiosClient from "../../../Utils/ApiClient";
 import { REQUIRED_ERROR_MESSAGE } from "../../../Constants/ErrorMessages";
 
-
 const Profile = (props) => {
   const navigation = useNavigation();
-  const role = props?.state?.roleReducer?.role?.id
-  const dispatch = useDispatch()
-  const { userToken, loginData } = useSelector(state => state.loginReducer)
-  const { Usertoken, signupSucessData } = useSelector(state => state.signupReducer)
-  const [recent, setRecent] = useState()
+  const role = props?.state?.roleReducer?.role?.id;
+  const dispatch = useDispatch();
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
+  const [recent, setRecent] = useState();
 
-  const userName = props.state?.loginReducer?.loginData?.userName ? props.state?.loginReducer?.loginData?.userName : props.state?.signupReducer?.signupSucessData?.UserData?.userName
+  const userName = props.state?.loginReducer?.loginData?.userName
+    ? props.state?.loginReducer?.loginData?.userName
+    : props.state?.signupReducer?.signupSucessData?.UserData?.userName;
   // const email = props.state?.loginReducer
-  const email = props.state?.loginReducer?.loginData?.email ? props.state?.loginReducer?.loginData?.email : props.state?.signupReducer?.signupSucessData?.UserData?.email
-  const isFocused = useIsFocused()
+  const email = props.state?.loginReducer?.loginData?.email
+    ? props.state?.loginReducer?.loginData?.email
+    : props.state?.signupReducer?.signupSucessData?.UserData?.email;
+  const isFocused = useIsFocused();
   // console.log(props.state?.signupReducer?.signupSucessData?.UserData?.email, 'p-------------------------------');
   // console.log(props.state?.signupReducer?.signupSucessData?.UserData?.userName, 'p-------------------------------');
   // console.log(props.state?.loginReducer?.loginData?.email, 'p-------------------------------');
@@ -48,8 +56,8 @@ const Profile = (props) => {
 
   useEffect(() => {
     // props.setLoader(false);
-    handleRecentPurchase()
-  }, [isFocused])
+    handleRecentPurchase();
+  }, [isFocused]);
 
   const DATA = [
     {
@@ -58,7 +66,7 @@ const Profile = (props) => {
       // onPress: () => navigation.navigate("DatingProfile"),
       onPress: () => {
         // props.setLoader(true)
-        navigation.navigate("DatingProfile")
+        navigation.navigate("DatingProfile");
         // let params = {
         //   endpoint: API_URL.getProfile,
         //   userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
@@ -71,17 +79,17 @@ const Profile = (props) => {
         //     // props.setLoader(false)
         //     // setTimeout(() => {
         //     // }, 100)
-        //   }      
+        //   }
         // };
         // props.datingProfileRequest(params);
-        // console.log(params,'params');  
+        // console.log(params,'params');
       },
     },
-    {
-      id: "2",
-      title: "Purchase History ",
-      onPress: () => navigation.navigate("PurchaseHistory"),
-    },
+    // {
+    //   id: "2",
+    //   title: "Purchase History ",
+    //   onPress: () => navigation.navigate("PurchaseHistory"),
+    // },
     {
       id: "3",
       title: "Payment Methods",
@@ -118,12 +126,11 @@ const Profile = (props) => {
       onPress: () => {
         let params = {
           endpoint: API_URL.aboutComfilityget,
-          type: { type: 'Customer Support' },
-          navigation: () =>
-            navigation.navigate("CustomerSupport"),
+          type: { type: "Customer Support" },
+          navigation: () => navigation.navigate("CustomerSupport"),
         };
         props.aboutComfilityRequest(params);
-      }
+      },
     },
     // {
     //   id: "10",
@@ -133,8 +140,7 @@ const Profile = (props) => {
     {
       id: "11",
       title: "Rate & Review Us",
-      onPress: () => console.log("hi")
-
+      onPress: () => console.log("hi"),
     },
     {
       id: "12",
@@ -146,7 +152,7 @@ const Profile = (props) => {
       title: "Sign out",
       // onPress: () => navigation.navigate("Login"),
       onPress: async () => {
-        handleSignOut()
+        handleSignOut();
         // try {
         //   let params = {
         //     endpoint: API_URL.logOut,
@@ -220,28 +226,27 @@ const Profile = (props) => {
         //   console.log("EEEe", error)
         // }
 
-
         // dispatch(signOutRequest(params))
 
         // props.signOutRequest(params)
-      }
+      },
     },
   ];
-
 
   const handleSignOut = async () => {
     try {
       let params = {
         endpoint: API_URL.logOut,
         changeRole: props.roleRequest,
-        userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-          props.state?.signupReducer?.signupSucessData?.Usertoken,
+        userToken: props?.state?.loginReducer?.userToken
+          ? props?.state?.loginReducer?.userToken
+          : props.state?.signupReducer?.signupSucessData?.Usertoken,
         // props?.state?.loginReducer?.userToken,
         navigation: () =>
           navigation.reset({
             index: 0,
-            routes: [{ name: 'Root', params: { screen: 'Profile' } }],
-          })
+            routes: [{ name: "Root", params: { screen: "Profile" } }],
+          }),
         // navigation.navigate('Root', {
         //   screen: 'Profile',
         //   // params: { elapsedTime: elapsedTimeInSeconds }
@@ -284,7 +289,7 @@ const Profile = (props) => {
       //....................................
       // yield put(loginSuccess(res.data));
       // showAlert(res.data.message);
-      params.changeRole({ user: 'Guest', id: 1 })
+      params.changeRole({ user: "Guest", id: 1 });
       params.navigation();
       // console.log(res?.data?.status, 'onSignOut Api Response status');
       //   } else {
@@ -311,38 +316,35 @@ const Profile = (props) => {
     } catch (error) {
       // console.log("EEEe", error)
     }
-  }
-
+  };
 
   const handleNavigate = () => {
-    navigation.navigate("PurchaseHistory")
-  }
-
+    navigation.navigate("PurchaseHistory");
+  };
 
   const handleRecentPurchase = async () => {
     try {
       // let query = `?bookedItemId=${props.route.params.bId}`
       const res = await axiosClient.get(API_URL.recentPurchase, {
         headers: {
-          Authorization: userToken ? userToken :
-            Usertoken
-        }
-      })
+          Authorization: userToken ? userToken : Usertoken,
+        },
+      });
       // console.log(res.data, "userToken")
-      if (res.data.status)
-        setRecent(res.data.cartItem)
+      if (res.data.status) setRecent(res.data.cartItem);
     } catch (error) {
-      console.log("ERR", error)
+      console.log("ERR", error);
     }
-  }
-
-
+  };
 
   const Item = ({ title, onPress }) => (
     <TouchableOpacity
       activeOpacity={0.9}
-
-      style={styles.item} onPress={() => { onPress() }}>
+      style={styles.item}
+      onPress={() => {
+        onPress();
+      }}
+    >
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );
@@ -358,16 +360,26 @@ const Profile = (props) => {
           marginVertical: 5,
           // backgroundColor:'red'
         }}
-        onPress={() => { navigation.navigate("PurchasedActivity", { bId: item._id }) }} >
+        onPress={() => {
+          navigation.navigate("PurchasedActivity", { bId: item._id });
+        }}
+      >
         <View style={[styles.card]}>
           <Image
-            source={{ uri: `http://54.92.82.16:3001/data/${item?.providerImage}` }}
-            style={{ height: 95, width: 110, borderRadius: 6, marginHorizontal: 5 }}
+            source={{
+              uri: `http://54.92.82.16:3001/data/${item?.providerImage}`,
+            }}
+            style={{
+              height: 95,
+              width: 110,
+              borderRadius: 6,
+              marginHorizontal: 5,
+            }}
           />
           <View
             style={{
               flex: 1,
-              marginHorizontal: 5
+              marginHorizontal: 5,
               // backgroundColor:'red'
               // padding: 15,
               // width: "80%",
@@ -375,13 +387,14 @@ const Profile = (props) => {
           >
             <Text style={styles.textTitle}>{item.serviceName}</Text>
             <Text style={styles.textBetween}> {item.providerName}</Text>
-            <Text style={styles.textLoc}>
-              {"$160"}</Text>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              style={styles.mediaType2}>
+            <Text style={styles.textLoc}>{"$160"}</Text>
+            <TouchableOpacity activeOpacity={0.9} style={styles.mediaType2}>
               <Text style={styles.mediaType}>
-                <Icon name={"calendar-alt"} size={11} color={color._primary_orange} />
+                <Icon
+                  name={"calendar-alt"}
+                  size={11}
+                  color={color._primary_orange}
+                />
                 {"  "}
                 {item?.time ? item?.time : "Buy Now, Book Later"}
               </Text>
@@ -389,43 +402,41 @@ const Profile = (props) => {
           </View>
         </View>
       </TouchableOpacity>
-
     );
   };
 
   return (
     <>
-      {
-        role == 2 ?
-          <SafeAreaView style={styles.container}>
-            {
-              props.state.loaderReducer?.loader &&
-              <View style={{
-                position: 'absolute',
+      {role == 2 ? (
+        <SafeAreaView style={styles.container}>
+          {props.state.loaderReducer?.loader && (
+            <View
+              style={{
+                position: "absolute",
                 left: 0,
                 right: 0,
                 top: 0,
                 bottom: 0,
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
                 zIndex: 3,
-              }}>
-                <ActivityIndicator
-                  size="large" color={color._primary_orange} />
-              </View>
-            }
-            <ScrollView showsVerticalScrollIndicator={false}
-              bounces={false}
-              alwaysBounceVertical={false}
-              overScrollMode="never"
-
+              }}
             >
-              <View style={styles.view}>
-                {/* <Text style={styles.mainHeading}>{props.state.profileReducer?.datingData?.userName}</Text> */}
-                <Text style={styles.mainHeading}>{userName}</Text>
-                <Text style={styles.textHeading}>{email}</Text>
-                {/* <View style={styles.mainView}> */}
-                <Text style={styles.title2}>Recent Purchase</Text>
+              <ActivityIndicator size="large" color={color._primary_orange} />
+            </View>
+          )}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+            alwaysBounceVertical={false}
+            overScrollMode="never"
+          >
+            <View style={styles.view}>
+              {/* <Text style={styles.mainHeading}>{props.state.profileReducer?.datingData?.userName}</Text> */}
+              <Text style={styles.mainHeading}>{userName}</Text>
+              <Text style={styles.textHeading}>{email}</Text>
+              {/* <View style={styles.mainView}> */}
+              {/* <Text style={styles.title2}>Recent Purchase</Text>
                 <FlatList
                   data={recent?.splice(0, 1)}
                   keyExtractor={(item) => item.id}
@@ -438,42 +449,41 @@ const Profile = (props) => {
                   onPress={handleNavigate}
                   // containerStyle={{ marginTop: 28 }}
                   title={"See All Purchases"}
+                /> */}
+              {/* </View> */}
+              <View style={{ marginTop: 10, marginBottom: 41 }}>
+                {/* <Text
+                  style={{
+                    fontFamily: fonts.SEMI_BOLD,
+                    fontSize: 16,
+                    color: color._font_grey,
+                    marginBottom: 5,
+                    fontWeight: "600",
+                  }}
+                >
+                  Settings
+                </Text> */}
+                <FlatList
+                  scrollEnabled={false}
+                  data={DATA}
+                  renderItem={({ item }) => (
+                    <Item title={item.title} onPress={item.onPress} />
+                  )}
+                  keyExtractor={(item) => item.id}
                 />
-                {/* </View> */}
-                <View style={{ marginTop: 21, marginBottom: 41 }}>
-                  <Text
-                    style={{
-                      fontFamily: fonts.SEMI_BOLD,
-                      fontSize: 16,
-                      color: color._font_grey,
-                      marginBottom: 5,
-                      fontWeight: '600'
-                    }}
-                  >
-                    Settings
-                  </Text>
-                  <FlatList
-                    scrollEnabled={false}
-                    data={DATA}
-                    renderItem={({ item }) => (
-                      <Item title={item.title}
-                        onPress={item.onPress} />
-                    )}
-                    keyExtractor={(item) => item.id}
-                  />
-                </View>
               </View>
-            </ScrollView>
-          </SafeAreaView>
-          :
-          <ProfileGuestUser />
-      }
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      ) : (
+        <ProfileGuestUser />
+      )}
     </>
   );
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -481,7 +491,8 @@ const mapDispatchToProps = (dispatch) => ({
   setLoader: (data) => dispatch(setLoader(data)),
   signOutRequest: (data) => dispatch(signOutRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
-  aboutComfilityRequest: (data, navigation) => dispatch(aboutComfilityRequest(data, navigation)),
+  aboutComfilityRequest: (data, navigation) =>
+    dispatch(aboutComfilityRequest(data, navigation)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

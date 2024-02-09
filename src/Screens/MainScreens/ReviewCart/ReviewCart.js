@@ -561,45 +561,68 @@ const ReviewCart = (props) => {
                         // paddingHorizontal: 10,
                       }}
                     >
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                      >
-                        {/* <RadioButton
-                          disabled={role == 1 ? true : false}
-                          value="first"
-                          uncheckedColor="#CFCFCF"
-                          color={
-                            checked === "first"
-                              ? color._primary_orange
-                              : color._grey_1
-                          }
-                          status={checked === "first" ? "checked" : "checked"}
-                          onPress={() => setChecked("first")}
-                        /> */}
-                        <TouchableOpacity onPress={() => setChecked("first")}>
-                          <Image
-                            style={{
-                              height: 20,
-                              width: 20,
-                              margin: 10,
-                            }}
-                            source={
-                              checked === "first"
-                                ? require("../../../assets/images/checked.png")
-                                : require("../../../assets/images/uncheck.png")
-                            }
-                          />
-                        </TouchableOpacity>
-                        <Image
+                      {role == 1 ? (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <TouchableOpacity
+                            disabled={true}
+                            onPress={() => setChecked("first")}
+                          >
+                            <Image
+                              style={{
+                                height: 20,
+                                width: 20,
+                                margin: 10,
+                              }}
+                              source={
+                                checked === "first"
+                                  ? require("../../../assets/images/checked.png")
+                                  : require("../../../assets/images/uncheck.png")
+                              }
+                            />
+                          </TouchableOpacity>
+                          {/* <Image
                           source={require("../../../assets/images/Card.png")}
                           style={{ height: 32, width: 32 }}
-                        />
-                        <Text style={styles.cardText}>5555</Text>
-                      </View>
+                        /> */}
+                          <Text style={styles.cardText}>
+                            Add a payment method
+                          </Text>
+                        </View>
+                      ) : (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <TouchableOpacity onPress={() => setChecked("first")}>
+                            <Image
+                              style={{
+                                height: 20,
+                                width: 20,
+                                margin: 10,
+                              }}
+                              source={
+                                checked === "first"
+                                  ? require("../../../assets/images/checked.png")
+                                  : require("../../../assets/images/uncheck.png")
+                              }
+                            />
+                          </TouchableOpacity>
+                          <Image
+                            source={require("../../../assets/images/Card.png")}
+                            style={{ height: 32, width: 32 }}
+                          />
+                          <Text style={styles.cardText}>5555</Text>
+                        </View>
+                      )}
                       <Text
                         style={{
                           color: color._primary_orange,
@@ -623,18 +646,6 @@ const ReviewCart = (props) => {
                     <View
                       style={{ flexDirection: "row", alignItems: "center" }}
                     >
-                      {/* <RadioButton
-                        disabled={role == 1 ? true : false}
-                        value="second"
-                        status={checked === "second" ? "checked" : "checked"}
-                        uncheckedColor="#CFCFCF"
-                        color={
-                          checked === "second"
-                            ? color._primary_orange
-                            : color._grey_1
-                        }
-                        onPress={() => setChecked("second")}
-                      /> */}
                       <TouchableOpacity onPress={() => setChecked("second")}>
                         <Image
                           style={{
@@ -659,18 +670,6 @@ const ReviewCart = (props) => {
                     <View
                       style={{ flexDirection: "row", alignItems: "center" }}
                     >
-                      {/* <RadioButton
-                        disabled={role == 1 ? true : false}
-                        value="third"
-                        uncheckedColor="#CFCFCF"
-                        color={
-                          checked === "third"
-                            ? color._primary_orange
-                            : color._grey_1
-                        }
-                        status={checked === "third" ? "checked" : "checked"}
-                        onPress={() => setChecked("third")}
-                      /> */}
                       <TouchableOpacity onPress={() => setChecked("third")}>
                         <Image
                           style={{
@@ -718,7 +717,9 @@ const ReviewCart = (props) => {
               </Text>
             </Text> */}
           <Atom.Button
-            title={"PLACE YOUR ORDER"}
+            title={
+              role == 1 ? "SIGN IN TO PLACE YOUR ORDER" : "PLACE YOUR ORDER"
+            }
             onPress={() => onPlaceOrder()}
             containerStyle={
               role == 1

@@ -286,15 +286,15 @@ const EditCard = (props) => {
                     }}
                   >
                     <Atom.TextInputSimple
-                      textFieldStyle={{ height: 48, width: 57 }}
-                      value={card?.exp_month}
+                      textFieldStyle={{ height: 48, width: 150 }}
+                      value={`${card?.exp_month} / ${card?.exp_year}`}
                       editable={false}
                     />
-                    <Atom.TextInputSimple
+                    {/* <Atom.TextInputSimple
                       textFieldStyle={{ height: 48, width: 77 }}
                       value={card?.exp_year}
                       editable={false}
-                    />
+                    /> */}
                   </View>
                 </View>
                 <View>
@@ -362,7 +362,7 @@ const EditCard = (props) => {
                 onPress={() => {
                   handleEdit();
                 }}
-                title={"UPDATE"}
+                title={"SAVE"}
               />
               <Text style={styles.lastHeading}>
                 <Icon name="shield-checkmark" size={15} color={"#726A6A"} />{" "}

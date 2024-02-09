@@ -162,7 +162,6 @@ export const HomeNavigator = (props) => {
           ),
         })}
       />
-
       <Tab.Screen
         name={"PlanTab"}
         component={PlanStack}
@@ -185,7 +184,7 @@ export const HomeNavigator = (props) => {
                   { color: focused ? color._black : color._gray },
                 ]}
               >
-                Plan
+                Reservations
               </Text>
             </View>
           ),

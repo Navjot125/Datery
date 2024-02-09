@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 
   textHeading: {
     fontFamily: fonts.MEDIUM,
-    marginVertical: 10,
+    // marginVertical: 10,
     fontSize: 13,
     lineHeight: 24,
     color: color._font_black,

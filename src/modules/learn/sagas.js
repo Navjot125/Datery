@@ -47,21 +47,20 @@ function* onLearnRequest({ data }) {
           labels: data?.labels ? data?.labels : "",
           category: data?.category,
           name: data?.name,
-        },{
+        },
+        {
           headers: {
             "Content-Type": "application/json",
             Authorization: data?.token,
           },
-        
         }
-        
       )
       .then(function (response) {
         // console.log("onMerchantListRequest SAGA ERROR ===>", response.data);
         return response;
       })
       .catch(function (error) {
-        console.log('onMerchantListRequest SAGA ERROR ===>', error);
+        console.log("onMerchantListRequest SAGA ERROR ===>", error);
         return;
       });
     if (res) {
@@ -94,44 +93,49 @@ function* onLearnRequest({ data }) {
 
 function* onLearnDetailsRequest({ navigation }) {
   // yield put(setLoader(true));
-  try{  
-  let res = yield axiosClient
-    .get(navigation.endpoint,
-      //  navigation.serviceId
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: navigation?.userToken,
-        },
-     params:{ learnId: navigation?.learnId, learnType: navigation?.learnType },
-      },
-       )
-    .then(function (response) {
-      return response;
-    })
-    .catch(function (error) {
-      console.log('onLearnDetailsRequest SAGA ERROR ===>', error);
-      return;
-    });
-  if (res) {
-    if (res?.data?.status) {
-      // console.log(res.data, '----------------....');
-      yield put(setLoader(false));
-      yield put(LearnAllDetailsSuccess(res?.data?.data));
-      navigation.cb(res?.data?.data);
-      // navigation.navigation();
-      // console.log(res.data.data, ' message from saga merchant details');
+  try {
+    let res = yield axiosClient
+      .get(
+        navigation.endpoint,
+        //  navigation.serviceId
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: navigation?.userToken,
+          },
+          params: {
+            learnId: navigation?.learnId,
+            learnType: navigation?.learnType,
+          },
+        }
+      )
+      .then(function (response) {
+        return response;
+      })
+      .catch(function (error) {
+        console.log("onLearnDetailsRequest SAGA ERROR ===>", error);
+        return;
+      });
+    if (res) {
+      if (res?.data?.status) {
+        // console.log(res.data, '----------------....');
+        yield put(setLoader(false));
+        yield put(LearnAllDetailsSuccess(res?.data?.data));
+        navigation.cb(res?.data?.data);
+        // navigation.navigation();
+        // console.log(res.data.data, ' message from saga merchant details');
+      } else {
+        yield put(setLoader(false));
+        // showAlertError(res.data.message)
+        yield put(LearnAllDetailsFail());
+        // console.log(res.data.message);
+      }
     } else {
       yield put(setLoader(false));
-      // showAlertError(res.data.message)
-      yield put(LearnAllDetailsFail());
-      // console.log(res.data.message);
+      // showAlert(res.data.message)
+      // console.log(REQUIRED_ERROR_MESSAGE);
     }
-  } else {
-    yield put(setLoader(false));
-    // showAlert(res.data.message)
-    // console.log(REQUIRED_ERROR_MESSAGE);
-  }}catch (error) {
+  } catch (error) {
     yield put(setLoader(false));
     console.log("onLearnDetailsRequest SAGA ERROR 2 ===>", error);
   }
@@ -153,7 +157,7 @@ function* onLearnFavouriteRequest({ navigation }) {
       return;
     });
   if (res) {
-    console.log("---------------LEARNFAVOURITE_REQUESTED");
+    // console.log("---------------LEARNFAVOURITE_REQUESTED");
     if (res?.data?.status) {
       yield put(setLoader(false));
       console.log(res?.data, "res of add fav");

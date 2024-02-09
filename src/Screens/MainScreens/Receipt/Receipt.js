@@ -24,6 +24,8 @@ import * as Atom from "../../../Components/atoms";
 import { API_URL } from "../../../Constants/Config";
 import axiosClient from "../../../Utils/ApiClient";
 import { ActivityIndicator } from "react-native";
+import LocationIcon from "react-native-vector-icons/Entypo";
+import moment from "moment";
 
 const Receipt = (props) => {
   console.log(props.route.params.bookingI, "p");
@@ -102,7 +104,17 @@ const Receipt = (props) => {
 
   const ShowTextInput = (props) => {
     return (
-      <View style={{ borderRadius: 8, marginVertical: 8, marginHorizontal: 5 }}>
+      <View
+        style={{
+          borderRadius: 8,
+          marginVertical: 8,
+          marginHorizontal: 5,
+          shadowColor: "rgba(0, 0, 0, 0.05)",
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 1,
+          shadowRadius: 6,
+        }}
+      >
         <View style={styles.summaryView}>
           <View style={[styles.card]}>
             <Text style={styles.leftTitle}>{props.leftTitle}</Text>
@@ -141,6 +153,34 @@ const Receipt = (props) => {
             }}
           >
             <Text style={styles.textTitle}>{item.serviceName}</Text>
+            <View style={{ flexDirection: "row" }}>
+              <LocationIcon
+                name="location-pin"
+                size={15}
+                color={color._primary_orange}
+              />
+              <Text style={{ fontSize: 12 }}>Dallas, TX</Text>
+              <Image
+                style={{ height: 15, width: 15, marginHorizontal: 5 }}
+                source={require("../../../assets/images/travel.png")}
+              />
+              <Text style={{ fontSize: 12 }}>Travels to You</Text>
+            </View>
+            {/* <View
+            style={{
+              flexDirection: "row",
+              borderRadius: 10,
+              padding: 5,
+              marginVertical: 5,
+              alignSelf: "flex-start",
+            }}
+          >
+            <Image
+              style={{ height: 15, width: 15, marginHorizontal: 5 }}
+              source={require("../../../assets/images/travel.png")}
+            />
+            <Text style={{ fontSize: 12 }}>Travels to You</Text>
+          </View> */}
             <Text style={styles.textBetween}> {item.providerName}</Text>
             <Text style={styles.orangeText}>${item.servicePrice}</Text>
             <TouchableOpacity
@@ -155,13 +195,22 @@ const Receipt = (props) => {
               />
               <Text style={styles.mediaType2}>
                 {" "}
-                {selectedDate ? selectedDate : "Buy Now, Book Later"}{" "}
-                {selectedTime ? selectedTime.title : ""}
+                {moment(new Date()).format("ddd, MMM Do [at] h:mm A")}
+                {/* {selectedDate ? selectedDate : "Buy Now, Book Later"}{" "}
+                {selectedTime ? selectedTime.title : ""} */}
                 {/* {"Availability"} */}
               </Text>
             </TouchableOpacity>
             {/* <Text style={styles.textStyle}>Quantity {item.quantity} </Text> */}
           </View>
+        </View>
+        <View style={{ flexDirection: "row", marginVertical: 5 }}>
+          <LocationIcon
+            name="location-pin"
+            size={15}
+            color={color._primary_orange}
+          />
+          <Text style={{ fontSize: 12 }}>Desired Activity Location</Text>
         </View>
         <View style={{ flex: 1, marginTop: 10 }}>
           <Text style={styles.headings}>Address</Text>
@@ -205,12 +254,12 @@ const Receipt = (props) => {
                 {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
               </View>
             </View>
-            <Text
+            {/* <Text
               style={[styles.headings, { fontSize: 14, marginVertical: 10 }]}
             >
               Notes
-            </Text>
-            <Text style={styles.headings}>Dietary Restrictions</Text>
+            </Text> */}
+            <Text style={styles.headings}>Accommodations / Restrictions</Text>
             <Atom.TextInputSimple
               textFieldStyle={styles.textField}
               value={cardDetails.Dietary}
@@ -250,11 +299,12 @@ const Receipt = (props) => {
             bounces={false}
             alwaysBounceVertical={false}
             overScrollMode="never"
+            showsVerticalScrollIndicator={false}
           >
             <FlatList
               data={recipt && recipt.bookeditems}
               keyExtractor={(item) => item._id}
-              renderItem={showData}
+              renderItem={showData} 
             />
             <Text style={styles.summaryTitle}>Payment Method</Text>
             <View
@@ -277,7 +327,8 @@ const Receipt = (props) => {
                     style={{ height: 32, width: 32, resizeMode: "contain" }}
                   />
                   <Text style={styles.leftTitle}>
-                    {recipt && recipt.cardNumber}
+                    1234
+                    {/* {recipt && recipt.cardNumber} */}
                   </Text>
                 </View>
               </View>
@@ -285,8 +336,9 @@ const Receipt = (props) => {
 
             <Text style={styles.summaryTitle}>Purchase Date</Text>
             <ShowTextInput
-              leftTitle={formatDate(recipt && recipt.createdAt)}
-              // rightTitle={"215.89"}
+              // leftTitle={formatDate(recipt && recipt.createdAt)}
+              leftTitle={"Thursday, March 5th, 2022"}
+              rightTitle={"$215.89"}
             />
             <Text style={styles.summaryTitle}>Order Summary</Text>
             <ShowTextInput

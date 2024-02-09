@@ -176,7 +176,7 @@ let readio = [
   },
 ];
 const ListingDetail = (props) => {
-  console.log("props.route.params", props.route.params);
+  // console.log("props.route.params", props.route.params);
   const role = props.state.roleReducer.role.id;
   const dataa = props.route.params;
   const [result, setResults] = useState(props.route.params);
@@ -296,7 +296,7 @@ const ListingDetail = (props) => {
       },
     };
     dispatch(playRequest(apiData));
-    console.log("APPPPPPPP2-----", apiData);
+    console.log("", apiData);
   };
 
   const centerImage = () => {
@@ -1228,12 +1228,6 @@ const ListingDetail = (props) => {
           setEmptyCart(!emptyCart);
         }}
       />
-      {console.log(
-        "selectedDate----",
-        selectedDate,
-        "modalVisible------",
-        modalVisible
-      )}
       <PopUp.SlideUpPopUp
         // isVisible={modalVisible}
         isVisible={modalVisible}

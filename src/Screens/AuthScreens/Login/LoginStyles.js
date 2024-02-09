@@ -89,7 +89,8 @@ const styles = StyleSheet.create({
   inputErrorText:
   {
     fontSize: 12,
-    color: color._primary_orange,
+    // color: color._primary_orange,
+    color: 'red',
     bottom: 16
   },
 });
