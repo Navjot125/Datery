@@ -13,16 +13,16 @@ const styles = StyleSheet.create({
 
   newMain: {
     flexDirection: "row",
-    alignItems: 'center',
+    alignItems: "center",
     gap: 10,
-    marginTop: '2%'
+    marginTop: "2%",
   },
   newWrpTxt: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: "700",
     color: color._font_white,
     fontFamily: fonts.SEMI_BOLD,
-    textAlign: 'justify'
+    textAlign: "justify",
   },
   newWrp: {
     backgroundColor: color._primary_orange,
@@ -30,17 +30,17 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 8,
     paddingHorizontal: 10,
-    alignItems: 'center',
-    flexDirection: 'row'
+    alignItems: "center",
+    flexDirection: "row",
   },
   mainView: {
     flex: 1,
     backgroundColor: color._white,
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
   },
   header: {
     marginTop: 24,
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -48,7 +48,23 @@ const styles = StyleSheet.create({
   },
   cardView: {
     marginTop: 15,
-    marginHorizontal: 6,
+    // marginHorizontal: 20,
+    // flex:
+  },
+  button: {
+    backgroundColor: color._primary_orange,
+    justifyContent: "center",
+    // marginTop: 18,
+    paddingVertical: 15,
+    marginVertical: 10,
+    marginHorizontal: 20,
+    // height: 48,
+    borderRadius: 12,
+  },
+  title: {
+    fontFamily: fonts.REGULAR,
+    fontSize: 14,
+    color: "#333333",
   },
   textStyle: {
     color: "#2F2729",
@@ -67,10 +83,10 @@ const styles = StyleSheet.create({
   },
 
   shadowProp: {
-    // shadowColor: "rgba(0, 0, 0, 0.05)",
-    shadowOffset: { width: -3, height: -3 },
-    // shadowOpacity: 0.05,
-    shadowRadius: 3,
+    shadowColor: "rgba(0, 0, 0, 0.05)",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 6,
   },
   mediaType: {
     borderRadius: 50,
@@ -88,7 +104,7 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontFamily: fonts.BOLD,
-    fontSize: 15  ,
+    fontSize: 15,
     color: "#1F2937",
   },
   orangeText: {

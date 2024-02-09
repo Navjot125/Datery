@@ -22,21 +22,38 @@ import * as Atoms from "../../../Components/atoms";
 import { useNavigation } from "@react-navigation/native";
 import { connect, useDispatch } from "react-redux";
 import { Colors } from "react-native/Libraries/NewAppScreen";
+import LocationIcon from "react-native-vector-icons/Entypo";
 import Images from "../../../assets/Images";
-import { showAlertError, showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
-import { favouriteRequest, guestFavouriteRequest } from "../../../modules/Merchants/actions";
-import { CartListRequest, addToCartGuestRequest, addToCartRequest } from "../../../modules/Cart/actions";
+import {
+  showAlertError,
+  showAlertSuccess,
+} from "../../../Common/Functions/CommonFunctions";
+import {
+  favouriteRequest,
+  guestFavouriteRequest,
+} from "../../../modules/Merchants/actions";
+import {
+  CartListRequest,
+  addToCartGuestRequest,
+  addToCartRequest,
+} from "../../../modules/Cart/actions";
 import { API_URL } from "../../../Constants/Config";
-import { LearnfavouriteListRequest, LearnfavouriteRequest, LearnguestFavouriteRequest, LearnremoveFavouriteRequest, LearnremoveGuestFavouriteRequest } from "../../../modules/learn/actions";
+import {
+  LearnfavouriteListRequest,
+  LearnfavouriteRequest,
+  LearnguestFavouriteRequest,
+  LearnremoveFavouriteRequest,
+  LearnremoveGuestFavouriteRequest,
+} from "../../../modules/learn/actions";
 import CustomIcon from "../../../assets/CustomIcon";
 import { playRequest } from "../../../modules/play/actions";
 
 const CoachDetail = (props) => {
-  dispatch = useDispatch()
-  const navigation = useNavigation()
-  const [listData, setListData] = useState([props.route.params])
-  const role = props.state.roleReducer.role.id
-  const dataa = props.state.learnReducer.details
+  dispatch = useDispatch();
+  const navigation = useNavigation();
+  const [listData, setListData] = useState([props.route.params]);
+  const role = props.state.roleReducer.role.id;
+  const dataa = props.state.learnReducer.details;
   const [result, setResults] = useState(props.route.params);
   const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
   // {
@@ -77,7 +94,7 @@ const CoachDetail = (props) => {
                 justifyContent: "flex-start",
                 paddingRight: 5,
                 marginBottom: 11,
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <Text
@@ -90,9 +107,8 @@ const CoachDetail = (props) => {
                 {/* {" "} */}
                 {item.coachName}{" "}
               </Text>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 activeOpacity={0.9}
-
               >
                 <Web
                   name="web"
@@ -100,10 +116,9 @@ const CoachDetail = (props) => {
                   color={"#000000"}
                   style={{ marginLeft: 5 }}
                 />
-              </TouchableOpacity>
-              <TouchableOpacity
+              </TouchableOpacity> */}
+              {/* <TouchableOpacity
                 activeOpacity={0.9}
-
               >
                 <Web
                   name="instagram"
@@ -111,8 +126,8 @@ const CoachDetail = (props) => {
                   color={"#000000"}
                   style={{ marginLeft: 11 }}
                 />
-              </TouchableOpacity>
-              <TouchableOpacity
+              </TouchableOpacity> */}
+              {/* <TouchableOpacity
                 activeOpacity={0.9}
               >
                 <Web
@@ -121,19 +136,41 @@ const CoachDetail = (props) => {
                   color={"#000000"}
                   style={{ marginLeft: 11 }}
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
-            <Text
-              style={{
-                fontFamily: fonts.MEDIUM,
-                fontSize: 10,
-                color: color._black,
-                lineHeight: 15,
-              }}
-            >
-              {/* {" "} */}
-              {item.coachAddress} {"|"} {item.coachAvailability}
-            </Text>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Text
+                style={{
+                  fontFamily: fonts.MEDIUM,
+                  fontSize: 10,
+                  color: color._black,
+                  lineHeight: 15,
+                }}
+              >
+                <LocationIcon
+                  name="location-pin"
+                  size={15}
+                  color={color._primary_orange}
+                />{" "}
+                {item.coachAddress}
+              </Text>
+              <Image
+                style={{ height: 13, width: 13, marginLeft: 5, marginTop: 2 }}
+                resizeMode="center"
+                source={require("../../../assets/images/Video.png")}
+              />
+              <Text
+                style={{
+                  fontFamily: fonts.MEDIUM,
+                  fontSize: 11,
+                  color: color._black,
+                  lineHeight: 15,
+                  marginLeft: 5,
+                }}
+              >
+                {item.coachAvailability}
+              </Text>
+            </View>
             <Text
               style={{
                 marginTop: 3,
@@ -151,27 +188,30 @@ const CoachDetail = (props) => {
         {/* {showTags()} */}
         <View
           style={{
-            flexDirection: 'row',
-            flexWrap: 'wrap',
+            flexDirection: "row",
+            flexWrap: "wrap",
           }}
         >
-          <View style={{
-            marginHorizontal: 4,
-            marginTop: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-
-          }}>
-            <View style={{
-              // marginHorizontal: 4,
-              backgroundColor: color._primary_orange,
-              padding: 10,
-              borderRadius: 20,
+          <View
+            style={{
+              marginHorizontal: 4,
               marginTop: 10,
-              paddingHorizontal: 20,
-              right: 10
-            }}>
+              flexDirection: "row",
+              justifyContent: "space-evenly",
+              alignItems: "center",
+            }}
+          >
+            <View
+              style={{
+                // marginHorizontal: 4,
+                backgroundColor: color._primary_orange,
+                padding: 10,
+                borderRadius: 20,
+                marginTop: 10,
+                paddingHorizontal: 20,
+                right: 10,
+              }}
+            >
               <Text
                 style={{
                   color: color._white,
@@ -182,15 +222,16 @@ const CoachDetail = (props) => {
                 {item.coachLabel[0]}
               </Text>
             </View>
-            <View style={{
-              // marginHorizontal: 4,
-              backgroundColor: color._primary_orange,
-              padding: 10,
-              borderRadius: 20,
-              marginTop: 10,
-              paddingHorizontal: 20,
-
-            }}>
+            <View
+              style={{
+                // marginHorizontal: 4,
+                backgroundColor: color._primary_orange,
+                padding: 10,
+                borderRadius: 20,
+                marginTop: 10,
+                paddingHorizontal: 20,
+              }}
+            >
               <Text
                 style={{
                   color: color._white,
@@ -201,15 +242,17 @@ const CoachDetail = (props) => {
                 {item.coachLabel[1]}
               </Text>
             </View>
-            <View style={{
-              // marginHorizontal: 4,
-              backgroundColor: color._primary_orange,
-              padding: 10,
-              borderRadius: 20,
-              marginTop: 10,
-              paddingHorizontal: 20,
-              left: 10
-            }}>
+            <View
+              style={{
+                // marginHorizontal: 4,
+                backgroundColor: color._primary_orange,
+                padding: 10,
+                borderRadius: 20,
+                marginTop: 10,
+                paddingHorizontal: 20,
+                left: 10,
+              }}
+            >
               <Text
                 style={{
                   color: color._white,
@@ -383,37 +426,42 @@ const CoachDetail = (props) => {
       <TouchableOpacity
         activeOpacity={0.9}
 
-      // style = {{backgroundColor:'red'}}
-      // onPress={async () => {
-      //   let param = {
-      //     endpoint: API_URL.favoritiesInsert,
-      //     id: {
-      //       userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
-      //         props.state?.signupReducer?.signupSucessData?.UserData?._id,
-      //       serviceId: result?._id
-      //     },
-      //   }
-      //   // console.log(JSON.stringify(result, null, 2), "PARARARAR")
+        // style = {{backgroundColor:'red'}}
+        // onPress={async () => {
+        //   let param = {
+        //     endpoint: API_URL.favoritiesInsert,
+        //     id: {
+        //       userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
+        //         props.state?.signupReducer?.signupSucessData?.UserData?._id,
+        //       serviceId: result?._id
+        //     },
+        //   }
+        //   // console.log(JSON.stringify(result, null, 2), "PARARARAR")
 
-      //   if (role == 2 && !existingFavourite(result?._id)) {
-      //     await props.LearnfavouriteRequest(param)
-      //     // console.log("LearnApi", res)
-      //     // showAlertSuccess(`Item added to your favourite list`)
-      //   }
-      //   else if (existingFavourite(result?._id)) {
-      //     showAlertError(`Item already exist in your favourite list`)
-      //   } else
-      //     showAlertError(`Please login to add favourites`)
-      // }}
+        //   if (role == 2 && !existingFavourite(result?._id)) {
+        //     await props.LearnfavouriteRequest(param)
+        //     // console.log("LearnApi", res)
+        //     // showAlertSuccess(`Item added to your favourite list`)
+        //   }
+        //   else if (existingFavourite(result?._id)) {
+        //     showAlertError(`Item already exist in your favourite list`)
+        //   } else
+        //     showAlertError(`Please login to add favourites`)
+        // }}
       >
         <Image
-          style={{ height: 16, width: 16, resizeMode: "contain", tintColor: color._black }}
+          style={{
+            height: 16,
+            width: 16,
+            resizeMode: "contain",
+            tintColor: color._black,
+          }}
           source={require("../../../assets/images/Like.png")}
         />
       </TouchableOpacity>
     );
   };
-  
+
   const handleFavListing = () => {
     dispatch(
       LearnfavouriteListRequest({
@@ -422,7 +470,7 @@ const CoachDetail = (props) => {
       })
     );
   };
-  
+
   const handleDelete = (id) => {
     // console.log(id, "IIDDDDd");
     // setData((prevData) => prevData.filter((item) => item.id !== id));
@@ -441,7 +489,7 @@ const CoachDetail = (props) => {
     role == 2
       ? props.LearnremoveFavouriteRequest(param)
       : props.LearnremoveGuestFavouriteRequest(serviceId);
-      setIsFavorite(!isFavorite)
+    setIsFavorite(!isFavorite);
     showAlertSuccess(`Item removed from your favourite list`);
     setTimeout(() => {
       handleFavListing();
@@ -452,16 +500,18 @@ const CoachDetail = (props) => {
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.fetchAllLearn,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
       id: {
-        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData))  
+    dispatch(playRequest(apiData));
     // console.log("APPPPPPPP2-----", apiData)
-  }
+  };
   const centerImage = () => {
     return (
       <CustomIcon
@@ -471,8 +521,8 @@ const CoachDetail = (props) => {
         color={isFavorite ? color._primary_orange : null}
         onPress={async () => {
           if (!isFavorite) {
-            onLoad()
-            console.log('yes is favorite 2');
+            onLoad();
+            console.log("yes is favorite 2");
             let param = {
               endpoint: API_URL.favoritiesInsert,
               id: {
@@ -483,16 +533,14 @@ const CoachDetail = (props) => {
               },
             };
             if (role == 2) {
-              console.log('role is 2 2');
+              console.log("role is 2 2");
               await props.LearnfavouriteRequest(param);
-              setIsFavorite(!isFavorite)
+              setIsFavorite(!isFavorite);
             } else if (existingFavourite(result?._id)) {
               showAlertError(`Item already exist in your favourite list`);
             } else showAlertError(`Please login to add favourites`);
           } else {
-            onLoad(),
-            console.log('not in favorite'),
-            handleDelete(result?._id);
+            onLoad(), console.log("not in favorite"), handleDelete(result?._id);
           }
         }}
       />
@@ -548,49 +596,55 @@ const CoachDetail = (props) => {
       <TouchableOpacity
         activeOpacity={0.9}
 
-      // style = {{backgroundColor:'red'}}
-      // onPress={async () => {
-      //   let param = {
-      //     endpoint: API_URL.favoritiesInsert,
-      //     id: {
-      //       userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
-      //         props.state?.signupReducer?.signupSucessData?.UserData?._id,
-      //       serviceId: result?._id
-      //     },
-      //   }
-      //   // console.log(JSON.stringify(result, null, 2), "PARARARAR")
+        // style = {{backgroundColor:'red'}}
+        // onPress={async () => {
+        //   let param = {
+        //     endpoint: API_URL.favoritiesInsert,
+        //     id: {
+        //       userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
+        //         props.state?.signupReducer?.signupSucessData?.UserData?._id,
+        //       serviceId: result?._id
+        //     },
+        //   }
+        //   // console.log(JSON.stringify(result, null, 2), "PARARARAR")
 
-      //   if (role == 2 && !existingFavourite(result?._id)) {
-      //     await props.LearnfavouriteRequest(param)
-      //     // console.log("LearnApi", res)
-      //     // showAlertSuccess(`Item added to your favourite list`)
-      //   }
-      //   else if (existingFavourite(result?._id)) {
-      //     showAlertError(`Item already exist in your favourite list`)
-      //   } else
-      //     showAlertError(`Please login to add favourites`)
-      // }}
+        //   if (role == 2 && !existingFavourite(result?._id)) {
+        //     await props.LearnfavouriteRequest(param)
+        //     // console.log("LearnApi", res)
+        //     // showAlertSuccess(`Item added to your favourite list`)
+        //   }
+        //   else if (existingFavourite(result?._id)) {
+        //     showAlertError(`Item already exist in your favourite list`)
+        //   } else
+        //     showAlertError(`Please login to add favourites`)
+        // }}
       >
         <Image
-          style={{ height: 16, width: 16, resizeMode: "contain", tintColor: color._black }}
+          style={{
+            height: 16,
+            width: 16,
+            resizeMode: "contain",
+            tintColor: color._black,
+          }}
           source={require("../../../assets/images/Share.png")}
         />
       </TouchableOpacity>
     );
   };
 
-
   function existingFavourite(id) {
-    const exist = props.state.merchantReducer.favouritesGuest.find(item => item.serviceId === id)
+    const exist = props.state.merchantReducer.favouritesGuest.find(
+      (item) => item.serviceId === id
+    );
     return exist ? true : false;
   }
   function getLabelById(id) {
-    const radioButton = result.radioButtonsData.find(item => item._id === id);
+    const radioButton = result.radioButtonsData.find((item) => item._id === id);
     return radioButton ? radioButton.label : null;
   }
 
   function getPriceById(id) {
-    const radioButton = result.radioButtonsData.find(item => item._id === id);
+    const radioButton = result.radioButtonsData.find((item) => item._id === id);
     return radioButton ? radioButton.price : null;
   }
   const rightImage = () => {
@@ -603,11 +657,12 @@ const CoachDetail = (props) => {
           let param = {
             endpoint: API_URL.favoritiesInsert,
             id: {
-              userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
-                props.state?.signupReducer?.signupSucessData?.UserData?._id,
-              serviceId: result?._id
+              userId: props.state?.loginReducer?.loginData?._id
+                ? props.state?.loginReducer?.loginData?._id
+                : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+              serviceId: result?._id,
             },
-          }
+          };
 
           // let data = {
           //   ...result,
@@ -621,19 +676,22 @@ const CoachDetail = (props) => {
           //   serviceId: result?._id,
           // }
           if (role == 2 && !existingFavourite(result?._id)) {
-            await props.LearnfavouriteRequest(param)
+            await props.LearnfavouriteRequest(param);
             // console.log("LearnApi",res)
             // showAlertSuccess(`Item added to your favourite list`)
-          }
-          else if (existingFavourite(result?._id)) {
-            showAlertError(`Item already exist in your favourite list`)
-          } else
-            showAlertError(`Please login to add favourites`)
-
+          } else if (existingFavourite(result?._id)) {
+            showAlertError(`Item already exist in your favourite list`);
+          } else showAlertError(`Please login to add favourites`);
         }}
       >
         <Image
-          style={{ height: 21, width: 25, resizeMode: "contain", marginRight: 10, tintColor: color._primary_orange }}
+          style={{
+            height: 21,
+            width: 25,
+            resizeMode: "contain",
+            marginRight: 10,
+            tintColor: color._primary_orange,
+          }}
           source={require("../../../assets/images/WhiteHeart.png")}
         />
       </TouchableOpacity>
@@ -641,17 +699,34 @@ const CoachDetail = (props) => {
   };
   return (
     <SafeAreaView style={styles.scrollView}>
-      <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 20, alignItems: 'center' }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+          alignItems: "center",
+        }}
+      >
         <CustomIcon
-          type={'AntDesign'}
-          name={'arrowleft'}
+          type={"AntDesign"}
+          name={"arrowleft"}
           size={24}
           color={color._black}
-          onPress={() => { navigation.goBack() }}
+          onPress={() => {
+            navigation.goBack();
+          }}
         />
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', flex: 0.35 }}>
-          {likeImage()}
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            flex: 0.35,
+          }}
+        >
           {centerImage()}
+          {likeImage()}
           {shareImage()}
         </View>
       </View>
@@ -681,13 +756,9 @@ const CoachDetail = (props) => {
             {"BOOK THIS COACH"}
           </Text>
         </TouchableOpacity> */}
-
       </View>
-      <TouchableOpacity
-        activeOpacity={0.9}
-
-        style={styles.bttnStyle}>
-        <Text style={{ color: color._font_white, fontWeight: 'bold' }}>
+      <TouchableOpacity activeOpacity={0.9} style={styles.bttnStyle}>
+        <Text style={{ color: color._font_white, fontWeight: "bold" }}>
           {"BOOK THIS COACH"}
         </Text>
       </TouchableOpacity>
@@ -696,20 +767,22 @@ const CoachDetail = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   LearnfavouriteRequest: (data) => dispatch(LearnfavouriteRequest(data)),
-  addToCartRequest: (data, navigation) => dispatch(addToCartRequest(data, navigation)),
-  addToCartGuestRequest: (data, navigation) => dispatch(addToCartGuestRequest(data, navigation)),
+  addToCartRequest: (data, navigation) =>
+    dispatch(addToCartRequest(data, navigation)),
+  addToCartGuestRequest: (data, navigation) =>
+    dispatch(addToCartGuestRequest(data, navigation)),
   CartListRequest: (data) => dispatch(CartListRequest(data)),
-  LearnguestFavouriteRequest: (data) => dispatch(LearnguestFavouriteRequest(data)),
+  LearnguestFavouriteRequest: (data) =>
+    dispatch(LearnguestFavouriteRequest(data)),
   LearnremoveFavouriteRequest: (navigation) =>
     dispatch(LearnremoveFavouriteRequest(navigation)),
-    LearnremoveGuestFavouriteRequest: (data) =>
-      dispatch(LearnremoveGuestFavouriteRequest(data)),
-
+  LearnremoveGuestFavouriteRequest: (data) =>
+    dispatch(LearnremoveGuestFavouriteRequest(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoachDetail);

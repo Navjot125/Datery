@@ -21,7 +21,7 @@ import { connect, useDispatch } from "react-redux";
 import { API_URL } from "../../../Constants/Config";
 import {
   playRequest,
-  playfavouriteRequest, 
+  playfavouriteRequest,
   playguestFavouriteRequest,
 } from "../../../modules/play/actions";
 import {
@@ -29,32 +29,44 @@ import {
   addToCartGuestRequest,
   addToCartRequest,
 } from "../../../modules/Cart/actions";
-import { showAlertError, showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import {
+  showAlertError,
+  showAlertSuccess,
+} from "../../../Common/Functions/CommonFunctions";
 import CustomIcon from "../../../assets/CustomIcon";
 import Images from "../../../assets/Images";
-import { LearnfavouriteListRequest, LearnfavouriteRequest, LearnremoveFavouriteRequest, LearnremoveGuestFavouriteRequest } from "../../../modules/learn/actions";
+import {
+  LearnfavouriteListRequest,
+  LearnfavouriteRequest,
+  LearnremoveFavouriteRequest,
+  LearnremoveGuestFavouriteRequest,
+} from "../../../modules/learn/actions";
 
 const HowToPlay = (props) => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const [dataa, setDataa] = useState(props?.route?.params);
   const role = props.state.roleReducer.role.id;
-  const [result, setResults] = useState(props.route.params); 
-  const [isFavorite, setIsFavorite] = useState(props.route.params[0]?.isFavorite);
-  console.log('isFavorite',isFavorite);
+  const [result, setResults] = useState(props.route.params);
+  const [isFavorite, setIsFavorite] = useState(
+    props.route.params[0]?.isFavorite
+  );
+  console.log("isFavorite", isFavorite);
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.fetchAllGame,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
       id: {
-        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData))  
-    console.log("APPPPPPPP-----", apiData)
-  }
+    dispatch(playRequest(apiData));
+    console.log("APPPPPPPP-----", apiData);
+  };
   const showList = ({ item }) => {
     // { console.log(item, "IIIIIIII"); }
     return (
@@ -113,7 +125,7 @@ const HowToPlay = (props) => {
         </View>
         {/* <Text style={styles.textTitle}>{item.gameTitle}</Text> */}
         <Text style={styles.textContent}>{item.gameDescription}</Text>
-        <Text style={styles.ruleHeading}>{"HowToPlay"}</Text>
+        <Text style={styles.ruleHeading}>{"How to Play"}</Text>
         <Text style={styles.ruleContent}>{item.HowToPlay}</Text>
       </View>
       // </ScrollView>
@@ -198,7 +210,7 @@ const HowToPlay = (props) => {
     role == 2
       ? props.LearnremoveFavouriteRequest(param)
       : props.LearnremoveGuestFavouriteRequest(serviceId);
-      setIsFavorite(!isFavorite)
+    setIsFavorite(!isFavorite);
     showAlertSuccess(`Item removed from your favourite list`);
     setTimeout(() => {
       handleFavListing();
@@ -214,28 +226,28 @@ const HowToPlay = (props) => {
         color={isFavorite ? color._primary_orange : null}
         onPress={async () => {
           if (!isFavorite) {
-            onLoad()
-            console.log('yes is favorite');
+            onLoad();
+            console.log("yes is favorite");
             let param = {
               endpoint: API_URL.favoritiesInsert,
               id: {
                 userId: props.state?.loginReducer?.loginData?._id
                   ? props.state?.loginReducer?.loginData?._id
                   : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-                  serviceId: result[0]?._id,
-                },   
+                serviceId: result[0]?._id,
+              },
             };
             if (role == 2) {
               await props.LearnfavouriteRequest(param);
-              setIsFavorite(!isFavorite)
+              setIsFavorite(!isFavorite);
               // showAlertSuccess(`Item added to your favourite list`);
             } else if (existingFavourite(result[0]?._id)) {
               showAlertError(`Item already exist in your favourite list`);
             } else showAlertError(`Please login to add favourites`);
           } else {
             onLoad(),
-            console.log('not in favorite'),
-            handleDelete(result[0]?._id);
+              console.log("not in favorite"),
+              handleDelete(result[0]?._id);
           }
         }}
       />
@@ -316,8 +328,8 @@ const HowToPlay = (props) => {
             gap: 15,
           }}
         >
-          {likeImage()}
           {centerImage()}
+          {likeImage()}
           {shareImage()}
         </View>
       </View>
@@ -359,10 +371,10 @@ const mapDispatchToProps = (dispatch) => ({
   CartListRequest: (data) => dispatch(CartListRequest(data)),
   playguestFavouriteRequest: (data) =>
     dispatch(playguestFavouriteRequest(data)),
-    LearnremoveFavouriteRequest: (navigation) =>
-      dispatch(LearnremoveFavouriteRequest(navigation)),
-      LearnremoveGuestFavouriteRequest: (data) =>
-        dispatch(LearnremoveGuestFavouriteRequest(data)),
+  LearnremoveFavouriteRequest: (navigation) =>
+    dispatch(LearnremoveFavouriteRequest(navigation)),
+  LearnremoveGuestFavouriteRequest: (data) =>
+    dispatch(LearnremoveGuestFavouriteRequest(data)),
   LearnfavouriteRequest: (data) => dispatch(LearnfavouriteRequest(data)),
   playRequest: (data) => dispatch(playRequest(data)),
 });

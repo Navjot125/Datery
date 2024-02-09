@@ -49,15 +49,10 @@ const data = [
     title: "What’s your favorite show to binge-watch?",
     body: "Getting to know ‘em",
     imgUrl: require("../../../assets/images/orange_hearts.png"),
-  }
+  },
 ];
 
 const Game = (props) => {
-
-  // console.log(props.route.params.questions, "QUESTIOOOOO___");
-
-  const [listData, setListData] = useState(props.route.params.questions)
-
   const CarouselCardItem = ({ item, index }) => {
     return (
       <View style={styles.container} key={index}>
@@ -88,7 +83,7 @@ const Game = (props) => {
           }}
         >
           <Carousel
-            layout='#FFFF'
+            layout="#FFFF"
             layoutCardOffset={1}
             ref={isCarousel}
             data={data}
@@ -98,7 +93,6 @@ const Game = (props) => {
             onSnapToItem={(index) => setIndex(index)}
             useScrollView={true}
             firstItem={1}
-            
           />
           <Pagination
             dotsLength={data.length}
@@ -116,7 +110,6 @@ const Game = (props) => {
             inactiveDotOpacity={0.4}
             inactiveDotScale={0.6}
             tappableDots={true}
-
           />
         </View>
       </View>

@@ -31,6 +31,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     // paddingHorizontal:20
   },
+  title: {
+    fontFamily: fonts.REGULAR,
+    fontSize: 14,
+    color: "#333333",
+  },
+  button: {
+    backgroundColor: color._primary_orange,
+    justifyContent: "center",
+    paddingVertical: 15,
+    marginHorizontal: 20,
+    // height: 48,
+    borderRadius: 12,
+  },
   textStyle: {
     color: "#2F2729",
     fontFamily: fonts.SEMI_BOLD,
