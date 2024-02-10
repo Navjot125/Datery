@@ -298,10 +298,9 @@ const CourseOverview = (props) => {
               {/* <ScrollView> */}
               <VideoPlayer
                 source={{
-                  uri: `http://54.92.82.16:3001/data/${listData?.[0]?.file[0]}`
-                    ? `http://54.92.82.16:3001/data/${listData?.[0]?.file[0]}`
-                    : null,
-                }} // Can be a URL or a local file.
+                  uri: `http://54.92.82.16:3001/data/${listData?.[0]?.file[0]}`,
+                }}
+                // Can be a URL or a local file.
                 disableBack
                 disableVolume
                 tapAnywhereToPause={true}

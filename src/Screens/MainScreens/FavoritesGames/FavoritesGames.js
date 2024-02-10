@@ -21,6 +21,7 @@ import { useNavigation } from "@react-navigation/native";
 import { API_URL } from "../../../Constants/Config";
 import axiosClient from "../../../Utils/ApiClient";
 import { showAlertError } from "../../../Common/Functions/CommonFunctions";
+import FastImage from "react-native-fast-image";
 
 const FavoritesGames = (props) => {
   const navigation = useNavigation();
@@ -69,11 +70,18 @@ const FavoritesGames = (props) => {
             // favorite: true
           >
             <View style={[styles.card, { flex: 1 }]}>
-              <Image
+              {/* <Image
                 source={{
                   uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
                 }}
                 style={{ height: 66, width: 85, borderRadius: 6 }}
+              /> */}
+              <FastImage
+                style={{ width: 85, height: 85, borderRadius: 6 }}
+                source={{
+                  uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
+                }}
+                // resizeMode="contain"
               />
               <View style={{ padding: 15, flexDirection: "column" }}>
                 <Text style={[styles.textTitle, { fontWeight: "400" }]}>
@@ -109,11 +117,18 @@ const FavoritesGames = (props) => {
             // favorite: true
           >
             <View style={[styles.card]}>
-              <Image
+              {/* <Image
                 source={{
                   uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
                 }}
                 style={{ height: 66, width: 85, borderRadius: 6 }}
+              /> */}
+              <FastImage
+                style={{ width: 85, height: 85, borderRadius: 6 }}
+                source={{
+                  uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
+                }}
+                // resizeMode="contain"
               />
               <View style={{ padding: 15, flexDirection: "column" }}>
                 <Text style={[styles.textTitle, { fontWeight: "400" }]}>

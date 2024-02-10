@@ -30,6 +30,7 @@ import {
 import { API_URL } from "../../../Constants/Config";
 import { ActivityIndicator } from "react-native-paper";
 import { showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import FastImage from "react-native-fast-image";
 
 const FavoriteHome = (props) => {
   const route = useRoute();
@@ -127,7 +128,7 @@ const FavoriteHome = (props) => {
             onPress={() => navigation.navigate("ListingDetail")}
           >
             <View style={[styles.card]}>
-              <Image
+              {/* <Image
                 style={{
                   height: 100,
                   width: 100,
@@ -138,6 +139,19 @@ const FavoriteHome = (props) => {
                 source={{
                   uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
                 }}
+              /> */}
+              <FastImage
+                style={{
+                  height: 100,
+                  width: 100,
+                  borderRadius: 6,
+                  // padding: 13,
+                  // resizeMode: 'contain',
+                }}
+                source={{
+                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
+                }}
+                // resizeMode="contain"
               />
               <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Text
@@ -246,7 +260,7 @@ const FavoriteHome = (props) => {
             onPress={() => navigation.navigate("ListingDetail")}
           >
             <View style={styles.card}>
-              <Image
+              {/* <Image
                 style={{
                   height: 100,
                   width: 100,
@@ -257,6 +271,19 @@ const FavoriteHome = (props) => {
                 source={{
                   uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
                 }}
+              /> */}
+              <FastImage
+                style={{
+                  height: 100,
+                  width: 100,
+                  borderRadius: 6,
+                  // padding: 13,
+                  // resizeMode: 'contain',
+                }}
+                source={{
+                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
+                }}
+                // resizeMode="contain"
               />
               <View style={{ flex: 1, paddingHorizontal: 10 }}>
                 <Text
@@ -419,6 +446,7 @@ const FavoriteHome = (props) => {
           showsVerticalScrollIndicator={false}
         /> */}
         {/* isEditMode, */}
+
         {data?.length > 0 ? (
           isEditMode ? (
             <>
@@ -465,15 +493,6 @@ const FavoriteHome = (props) => {
             />
           )
         ) : (
-          // <SwipeListView
-          //   data={data}
-          //   renderItem={renderItem}
-          //   ItemSeparatorComponent={() => {
-          //     return <View style={{ height: 40 }} />;
-          //   }}
-          //   renderHiddenItem={renderHiddenItem}
-          //   rightOpenValue={-55} // adjust this value based on your item width
-          // />
           <Text
             style={{
               flex: 1,

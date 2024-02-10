@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 
   mainView: {
     flex: 1,
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
     backgroundColor: color._white,
   },
   header: {
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   cardView: {
     // marginTop: 17,
     // marginHorizontal: 6,
-    backgroundColor: "white",
+    // backgroundColor: "yellow",
     borderRadius: 10,
     // paddingHorizontal:20
   },
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   },
   card: {
     backgroundColor: "white",
+    // backgroundColor: "red",
     borderRadius: 10,
     width: "100%",
     flexDirection: "row",
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 4,
     marginLeft: 15,
-    marginBottom:10,
+    marginBottom: 10,
   },
   mediaType: {
     // borderRadius: 50,
@@ -91,49 +92,49 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontFamily: fonts.BOLD,
-    fontSize: 14,
+    fontSize: 15,
     color: "#1F2937",
   },
   orangeText: {
     fontFamily: fonts.SEMI_BOLD,
-    fontSize: 12,
+    fontSize: 13,
     color: color._black,
     // left:-5
   },
   lastText: {
     flexDirection: "row",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     alignItems: "center",
   },
-  
+
   row: {
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: 'black',
+    backgroundColor: "black",
     marginTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   rowBack: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
     // paddingHorizontal: 6,
     // marginTop: 21,
   },
   actionButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     width: 65,
-    height: '100%',
+    height: "100%",
   },
   deleteButton: {
     backgroundColor: color._primary_orange,
     borderRadius: 15,
   },
   buttonText: {
-    color: '#ffffff',
+    color: "#ffffff",
   },
 });
 export default styles;

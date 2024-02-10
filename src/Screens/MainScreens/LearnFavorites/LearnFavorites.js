@@ -16,6 +16,7 @@ import DropShadow from "react-native-drop-shadow";
 import { BackHeader } from "../../../Components/molecules";
 import { useNavigation } from "@react-navigation/native";
 import { connect, useDispatch, useSelector } from "react-redux";
+import FastImage from "react-native-fast-image";
 import { SwipeListView } from "react-native-swipe-list-view";
 import axios from "axios";
 import axiosClient from "../../../Utils/ApiClient";
@@ -190,7 +191,7 @@ const LearnFavorites = (props) => {
               <View style={[styles.card]}>
                 {item?.learnType !== "64b9239001e60e6d882e737d" ? (
                   <View style={[styles.card]}>
-                    <Image
+                    {/* <Image
                       source={
                         !isVideo
                           ? {
@@ -200,16 +201,29 @@ const LearnFavorites = (props) => {
                               uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
                             }
                       }
-                      style={{ height: 85, width: 85, borderRadius: 6 }}
+                      style={{ height: 95, width: 95, borderRadius: 6 }}
+                    /> */}
+                    <FastImage
+                      style={{ width: 95, height: 95,  borderRadius: 6 }}
+                      source={
+                        !isVideo
+                          ? {
+                              uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
+                            }
+                          : {
+                              uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
+                            }
+                      }
+                      // resizeMode="contain"
                     />
                     <View
                       style={{
-                        padding: 15,
+                        paddingHorizontal: 10,
                         width: "74%",
                       }}
                     >
                       <Text style={styles.textTitle}>{item.learnTitle}</Text>
-                      <Text style={{ fontSize: 13, color: "#1F2937" }}>
+                      <Text style={{ fontSize: 15, color: "#1F2937" }}>
                         Chelsea Smith
                       </Text>
                       {/* <Text style={[styles.textBetween, { marginTop: 10 }]}>
@@ -232,20 +246,20 @@ const LearnFavorites = (props) => {
                           <Text style={[styles.orangeText]}>
                             {item.learnTime}
                           </Text> */}
-                          <View
-                            style={{
-                              backgroundColor: color._primary_orange,
-                              alignSelf: "flex-start",
-                              padding: 3,
-                              borderRadius: 5,
-                              paddingHorizontal: 5,
-                              marginTop: 5,
-                            }}
-                          >
-                            <Text style={{ fontSize: 13, color: "#1F2937" }}>
-                              {item?.labels}
-                            </Text>
-                          </View>
+                        </View>
+                        <View
+                          style={{
+                            backgroundColor: color._primary_orange,
+                            alignSelf: "flex-start",
+                            padding: 3,
+                            borderRadius: 5,
+                            paddingHorizontal: 5,
+                            marginTop: 5,
+                          }}
+                        >
+                          <Text style={{ fontSize: 13, color: "#1F2937" }}>
+                            {item?.labels}
+                          </Text>
                         </View>
                       </View>
                     </View>
@@ -390,7 +404,7 @@ const LearnFavorites = (props) => {
               <View style={[styles.card]}>
                 {item?.learnType !== "64b9239001e60e6d882e737d" ? (
                   <View style={[styles.card]}>
-                    <Image
+                    {/* <Image
                       source={
                         !isVideo
                           ? {
@@ -401,6 +415,19 @@ const LearnFavorites = (props) => {
                             }
                       }
                       style={{ height: 95, width: 95, borderRadius: 6 }}
+                    /> */}
+                    <FastImage
+                      style={{ width: 95, height: 95, borderRadius: 6 }}
+                      source={
+                        !isVideo
+                          ? {
+                              uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
+                            }
+                          : {
+                              uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
+                            }
+                      }
+                      resizeMode="cover"
                     />
                     <View
                       style={{
@@ -409,7 +436,7 @@ const LearnFavorites = (props) => {
                       }}
                     >
                       <Text style={styles.textTitle}>{item.learnTitle}</Text>
-                      <Text style={{ fontSize: 13, color: "#1F2937" }}>
+                      <Text style={{ fontSize: 15, color: "#1F2937" }}>
                         Chelsea Smith
                       </Text>
                       {/* <Text style={[styles.textBetween, { marginTop: 10 }]}>

@@ -83,13 +83,13 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowOpacity: 1,
     shadowRadius: 6,
-  }, 
+  },
   cardView: {
     // marginTop: 18,
     // marginHorizontal: 5,
     backgroundColor: color._font_white,
     borderRadius: 8,
-    paddingVertical: 25,
+    paddingVertical: 15,
     paddingHorizontal: 5,
     // shadowColor: "#000",
     shadowOffset: {
