@@ -6,7 +6,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    // SET LOADER
     case SET_LOADER:
       return {
         ...state,

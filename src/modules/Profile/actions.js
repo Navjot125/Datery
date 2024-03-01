@@ -20,7 +20,7 @@ export const aboutComfilityFail = () => ({
   type: ABOUT_COMFILITY_FAIL,
 });
 
-export const datingProfileRequest = (navigation) => {
+export const  datingProfileRequest = (navigation) => {
   // console.log("NNNN", navigation);
   return {
     type: DATING_PROFILE_REQUESTED,

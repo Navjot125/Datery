@@ -14,14 +14,11 @@ const styles = StyleSheet.create({
   logoImage: {
     width: wp(35),
     height: hp(16),
-    marginTop: 50,
     alignSelf: "center",
-    // tintColor: color._black
   },
   mainView: {
     flex: 1,
     marginHorizontal: 20,
-    // padding: 20,
     backgroundColor: color._white,
   },
   logo: {
@@ -76,11 +73,8 @@ const styles = StyleSheet.create({
     borderRadius: 122,
   },
   textinputStyle: {
-    // marginTop: 18,
-    // marginBottom: 24,
     fontFamily: fonts.MEDIUM,
-    fontSize: 12,
-    // color: "#1C1C1C",
+    fontSize: 14,
     color: color._primary_orange,
     letterSpacing: -0.3,
     lineHeight: 15,

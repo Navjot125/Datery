@@ -410,7 +410,8 @@ const PlanReserved = (props) => {
                   <>
                     {plan && Object.keys(plan).length > 0 && (
                       <Text style={[styles.textTitle, { marginTop: 10 }]}>
-                        Upcoming ({Object.keys(plan).length})
+                        {/* Upcoming ({Object.keys(plan).length}) */}
+                        Upcoming (6)
                       </Text>
                     )}
                     {/* <Text style={styles.textTitle}>Selected Date</Text> */}

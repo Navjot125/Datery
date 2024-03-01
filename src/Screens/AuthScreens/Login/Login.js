@@ -4,28 +4,22 @@ import {
   View,
   TouchableOpacity,
   Image,
-  TextInput,
-  Keyboard,
   ScrollView,
   Pressable,
 } from "react-native";
-import React, { memo, useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, Checkbox } from "react-native-paper";
+import React, { memo, useState } from "react";
 import styles from "./LoginStyles";
 import color from "../../../Constants/Color";
 import fonts from "../../../Constants/Fonts";
 import { APPLE_LOGO, GOOGLE_LOGO, LOGO_ORANGE } from "../../../assets";
 import * as Atom from "../../../Components/atoms";
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { roleRequest } from "../../../modules/Role/actions";
-import { Formik, useFormik } from "formik";
+import { Formik } from "formik";
 import * as yup from "yup";
 import { API_URL } from "../../../Constants/Config";
-import {
-  PASSWORD_VALIDATION,
-  REQUIRED_ERROR_MESSAGE,
-} from "../../../Constants/ErrorMessages";
+import { PASSWORD_VALIDATION2 } from "../../../Constants/ErrorMessages";
 import {
   loginFail,
   loginRequest,
@@ -34,22 +28,19 @@ import {
 import { setLoader } from "../../../modules/Loader/actions";
 import { removeAnswer } from "../../../modules/SetAnswer/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
-import CustomIcon from "../../../assets/CustomIcon";
-import Images from "../../../assets/Images";
 import axiosClient from "../../../Utils/ApiClient";
 import { addToCartSuccess } from "../../../modules/Cart/actions";
 import { GoogleSignin } from "@react-native-community/google-signin";
+import { showAlertError } from "../../../Common/Functions/CommonFunctions";
+import { ActivityIndicator } from "react-native-paper";
+import { put } from "redux-saga/effects";
 
 const Login = memo(
   (props) => {
-    // console.log('Component rendered');
     const { userToken, loginData } = useSelector((state) => state.loginReducer);
     const { signupSucessData } = useSelector((state) => state.signupReducer);
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const [checkImg, setCheckImg] = useState(false);
-    const [googleToken, setGoogleToken] = useState();
-
     // Initialize GoogleSignIn
     // GoogleSignin.configure({
     //   webClientId: '290737786940-o9vntbtq736av2h54cvjmq8ncq9ee70i.apps.googleusercontent.com',
@@ -72,11 +63,7 @@ const Login = memo(
           navigation2: () =>
             navigation.navigate("Root", {
               screen: "Home",
-              // params: { elapsedTime: elapsedTimeInSeconds }
             }),
-
-          //   navigation2: () =>
-          //     navigation.navigate("HomeTab", { screen: "Home" })
         };
         // console.log({
         //   socialMediaID: idToken.user.id,
@@ -90,94 +77,39 @@ const Login = memo(
           signUpType: "google",
         });
       } catch (err) {
-        // console.log(err)
+        console.log("Error in googleLogin ----", err);
       }
     };
 
-    // const handleResSign = async () => {
-    //   try {
-    //     let params = {
-    //       endpoint: API_URL.socialSignUp,
-    //       changeRole: props.roleRequest,
-    //       navigation: () =>
-    //         navigation.navigate('Welcome'),
-    //       navigation2: () => navigation.navigate('Root', {
-    //         screen: 'Home',
-    //         // params: { elapsedTime: elapsedTimeInSeconds }
-    //       })
-
-    //       //   navigation2: () =>
-    //       //     navigation.navigate("HomeTab", { screen: "Home" })
-
-    //     };
-    //     onLogIn(params, {
-    //       socialMediaID: googleToken.user.id,
-    //       email: googleToken.user.email,
-    //       userName: googleToken.user.name,
-    //     })
-    //     console.log(googleToken.user.name, "LOGGg")
-    //     // navigation.navigate('Root', {
-    //     //   screen: 'Home',
-    //     //   // params: { elapsedTime: elapsedTimeInSeconds }
-    //     // })
-    //     // setRecipt(res.data.cartItem)
-    //   }
-    //   catch (error) {
-    //     console.log("ERR", error)
-    //   }
-    // }
-
     const onLogIn = async (params, data) => {
       try {
-        // console.log(data,'data',params,'params')
+        dispatch(setLoader(true));
         let res = await axiosClient.post(params.endpoint, data);
-        if (res) {
-          // console.log(res?.data, '..--------------------------------------------..');
-          if (res?.data?.status) {
-            console.log(res.data);
-            // await put(setLoader(false));
-            // showAlertSuccess(res.data.message);
-            dispatch(loginSuccess(res.data));
-            dispatch(addToCartSuccess(res.data?.cartcount));
-            // await put(removeAnswer())
-            // await dispatch(loginSuccess(res.data));
-            // showAlert(res.data.message);
-            // console.log(res.data.message, ' message from saga login ', params.changeRole, "ROLLEEE");
-            params.changeRole({ user: "user", id: 2 });
-            let apiData = {
-              endpoint: API_URL.getProfile,
-              offset: 0,
-              userToken: userToken ? userToken : signupSucessData?.Usertoken,
-              id: {
-                userId: loginData._id
-                  ? loginData._id
-                  : signupSucessData?.UserData?._id,
-              },
-              // navigation: () =>
-              //   // console.log("hi")
-            };
-
-            dispatch(datingProfileRequest(apiData));
-            res?.data?.userProfile == true
-              ? params.navigation2()
-              : params.navigation();
-            // callback({ params: params })
-            // await call(datingProfileRequest(params));
-          } else {
-            // await put(setLoader(false));
-            // showAlertError(res.data.message)
-            dispatch(loginFail());
-            // showAlert(res.data.message);
-            // console.log(res.data.message);
-          }
+        if (res?.data?.status) {
+          console.log(res.data);
+          dispatch(loginSuccess(res.data));
+          dispatch(addToCartSuccess(res.data?.cartcount));
+          params.changeRole({ user: "user", id: 2 });
+          let apiData = {
+            endpoint: API_URL.getProfile,
+            offset: 0,
+            userToken: userToken ? userToken : signupSucessData?.Usertoken,
+            id: {
+              userId: loginData._id
+                ? loginData._id
+                : signupSucessData?.UserData?._id,
+            },
+          };
+          dispatch(datingProfileRequest(apiData));
+          res?.data?.userProfile == true
+            ? params.navigation2()
+            : params.navigation();
         } else {
-          // await put(setLoader(false));
-          // showAlert(res.data.message)
-          // console.log(REQUIRED_ERROR_MESSAGE);
-          // showAlert(ERROR_MESSAGE);
+          showAlertError(res.data.message);
+          dispatch(loginFail());
         }
       } catch (e) {
-        // console.log(e)
+        console.log("error", e);
       }
     };
 
@@ -186,53 +118,15 @@ const Login = memo(
         .string()
         .email("Please provide valid email")
         .required("Email is required")
-        .matches(
-          /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-          // /^[a-zA-Z0-9._%+-]+@(?!gmail.com)(?!yahoo.com)(?!hotmail.com)(?!yahoo.co.in)(?!aol.com)(?!live.com)(?!outlook.com)[a-zA-Z0-9_-]+.[a-zA-Z0-9-.]{2,61}$/,
-          "Please provide a valid email"
-        ),
+        .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please provide a valid email"),
       password: yup
         .string()
         .required("Password is required")
-        // .matches(/\w*[A-Z]\w*/, PASSWORD_VALIDATION)
-        // .matches(/\w*[a-z]\w*/, PASSWORD_VALIDATION)
-        // .matches(/\d/, PASSWORD_VALIDATION)
-        // .matches(/[@#$!%*^?&]/, PASSWORD_VALIDATION)
-        .min(3, ({ min }) => PASSWORD_VALIDATION),
+        .min(3, ({ min }) => PASSWORD_VALIDATION2),
     });
 
     return (
       <SafeAreaView style={styles.container}>
-        <CustomIcon
-          type={"MaterialIcons"}
-          name={"arrow-back"}
-          size={30}
-          style={{ left: 20, top: 5 }}
-          color={color._black}
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-        {/* {console.log(props.state.loaderReducer.loader, 'loader')} */}
-        {props.state.loaderReducer?.loader && (
-          <View
-            style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
-              top: 0,
-              bottom: 0,
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 3,
-            }}
-          >
-            {/* <ActivityIndicator
-            // animating={props.state.loaderReducer?.loader}
-            // style={{zIndex:4}}
-            size="large" color={color._primary_orange} /> */}
-          </View>
-        )}
         <ScrollView
           bounces={false}
           alwaysBounceVertical={false}
@@ -242,20 +136,11 @@ const Login = memo(
           <View style={styles.mainView}>
             <Formik
               initialValues={{
-                // userName: '',
-                // email: 'param@gmail.com',
                 email: "",
-                // password: 'delhi@1A',
                 password: "",
-                role: "user",
-                isChecked: false,
-                // role: props.selectedRole.id,
               }}
               validationSchema={SignupFormSchema}
-              // validateOnChange={false}
-              // onSubmit={()=>console.log('fdfsdfd')}
               onSubmit={async (data) => {
-                // console.log("hello")
                 let params = {
                   endpoint: API_URL.login,
                   changeRole: props.roleRequest,
@@ -263,39 +148,18 @@ const Login = memo(
                   navigation2: () =>
                     navigation.navigate("Root", {
                       screen: "Home",
-                      // params: { elapsedTime: elapsedTimeInSeconds }
                     }),
-
-                  //   navigation2: () =>
-                  //     navigation.navigate("HomeTab", { screen: "Home" })
                 };
-
-                // console.log(values)
-                // props.loginRequest(values, params);
-                // try {
-
-                //   dispatch(loginRequest(values, params))
-                // } catch (e) {
-                //   console.log(e, 'err')
-                // }
-                // console.log(data, 'data', params, 'navigation --------------- ');
-                // yield put(setLoader(true));
                 onLogIn(params, data);
               }}
             >
               {({
                 handleChange,
-                // handleBlur,
                 handleSubmit,
                 values,
                 errors,
-                // setFieldTouched,
                 touched,
-                // isValid,
                 setFieldValue,
-                // handleReset,
-                // validateOnChange
-                // handlePress
               }) => (
                 <>
                   <Image
@@ -312,7 +176,6 @@ const Login = memo(
                       TextIcon={"email-outline"}
                       placeholder="Email"
                       onChangeText={(txt) => setFieldValue("email", txt)}
-                      // onBlur={handleBlur('email')}
                       value={values.email}
                     />
                     {touched.email && errors.email && (
@@ -324,7 +187,6 @@ const Login = memo(
                       typePassword={true}
                       placeholder="Password"
                       onChangeText={handleChange("password")}
-                      // onBlur={handleBlur('password')}
                       value={values.password}
                     />
                     {touched.password && errors.password && (
@@ -360,8 +222,6 @@ const Login = memo(
                             fontFamily: fonts.REGULAR,
                             fontSize: 14,
                             color: color._primary_orange,
-                            // marginTop: 29,
-                            // marginBottom: 29,
                           }}
                         >
                           Not a member?{" "}
@@ -379,36 +239,6 @@ const Login = memo(
                       </Pressable>
                     </View>
                   </View>
-                  <View style={{ flexDirection: "row", marginTop: "5%" }}>
-                    <CustomIcon
-                      type={"MaterialCommunityIcons"}
-                      name={
-                        values.isChecked
-                          ? "checkbox-marked"
-                          : "checkbox-blank-outline"
-                      }
-                      size={25}
-                      onPress={() =>
-                        setFieldValue("isChecked", !values.isChecked)
-                      }
-                      color={color._primary_orange}
-                      style={{ right: 5 }}
-                    />
-                    {/* </TouchableOpacity> */}
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontFamily: fonts.MEDIUM,
-                        // opacity: 0.5,
-                        color: color._black,
-                      }}
-                    >
-                      {
-                        "Yes, I would like to received personalized Datery emails with suggested dates."
-                      }
-                    </Text>
-                  </View>
-
                   <View
                     style={{ alignItems: "center", justifyContent: "center" }}
                   >
@@ -444,7 +274,7 @@ const Login = memo(
                       // }}
                       containerStyle={{
                         paddingHorizontal: 12,
-                        marginVertical: 48,
+                        marginVertical: 28,
                       }}
                       title={"SIGN IN"}
                     />
@@ -480,7 +310,11 @@ const Login = memo(
                       activeOpacity={0.9}
                       style={{ marginBottom: 20 }}
                       onPress={() => navigation.replace("Root")}
-                    ></TouchableOpacity>
+                    >
+                      <Text style={styles.textinputStyle}>
+                        Countinue as Guest
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </>
               )}
@@ -497,11 +331,9 @@ const Login = memo(
     );
   }
 );
-
 const mapStateToProps = (state) => ({
   state: state,
 });
-
 const mapDispatchToProps = (dispatch) => ({
   loginRequest: (data, navigation, callback) =>
     dispatch(loginRequest(data, navigation, callback)),
