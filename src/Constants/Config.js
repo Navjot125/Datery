@@ -20,6 +20,7 @@ export const API_URL = {
   //user
   Signup: "userSignupWithEmail",
   login: "signInWithEmail",
+  forgotPassword:'forgotPassword',
   datingQuestions: "datingQuestionInsert",
   questions: "getQuestion",
   datingDataInsert: "datingDataInsert",

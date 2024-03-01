@@ -1,8 +1,18 @@
 import {
-  CHANGEPASSWORD_FAIL, CHANGEPASSWORD_REQUESTED, CHANGEPASSWORD_SUCCESS, LOGIN_FAIL, LOGIN_REQUESTED, LOGIN_SUCCESS, SIGNOUT_FAIL,
-  SIGNOUT_REQUESTED, SIGNOUT_SUCCESS, REMOVE_ALL
-} from './types';
-
+  CHANGEPASSWORD_FAIL,
+  CHANGEPASSWORD_REQUESTED,
+  CHANGEPASSWORD_SUCCESS,
+  LOGIN_FAIL,
+  LOGIN_REQUESTED,
+  LOGIN_SUCCESS,
+  SIGNOUT_FAIL,
+  SIGNOUT_REQUESTED,
+  SIGNOUT_SUCCESS,
+  REMOVE_ALL,
+  FORGOT_PASSWORD_REQUESTED,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAIL,
+} from "./types";
 
 const INITIAL_STATE = {
   demo: null,
@@ -39,6 +49,21 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
       };
+    case FORGOT_PASSWORD_REQUESTED:
+      return {
+        ...state,
+      };
+
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        role: null,
+      };
+
+    case FORGOT_PASSWORD_FAIL:
+      return {
+        ...state,
+      };
 
     case SIGNOUT_REQUESTED:
       return {
@@ -47,7 +72,7 @@ export default (state = INITIAL_STATE, action) => {
 
     case SIGNOUT_SUCCESS:
       return {
-        ...INITIAL_STATE
+        ...INITIAL_STATE,
       };
 
     case SIGNOUT_FAIL:
@@ -62,7 +87,7 @@ export default (state = INITIAL_STATE, action) => {
 
     case CHANGEPASSWORD_SUCCESS:
       return {
-        ...state
+        ...state,
       };
 
     case CHANGEPASSWORD_FAIL:
@@ -74,7 +99,7 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         loginData: [],
         userToken: null,
-        datingData: []
+        datingData: [],
       };
 
     default:

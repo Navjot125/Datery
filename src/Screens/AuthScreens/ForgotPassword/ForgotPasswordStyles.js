@@ -96,6 +96,11 @@ const styles = StyleSheet.create({
     letterSpacing: -0.3,
     lineHeight: 15,
     alignSelf: 'flex-end',
+  },inputErrorText:
+  {
+    fontSize: 12,
+    color: 'red',
+    bottom: 10
   },
 });
 export default styles;
