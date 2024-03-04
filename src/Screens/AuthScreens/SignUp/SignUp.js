@@ -29,7 +29,7 @@ import CustomIcon from "../../../assets/CustomIcon";
 
 const SignUp = (props) => {
   // const [isChecked, setIsChecked] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const SignupFormSchema = yup.object().shape({
     userName: yup
       .string()
@@ -129,19 +129,18 @@ const SignUp = (props) => {
             //   }
             //   props.signupRequest(values, params, callbackSignUp);
             // }}
-            onSubmit={async(data) => {
+            onSubmit={async (data) => {
               let params = {
-                endpoint: API_URL.login,
+                endpoint: API_URL.Signup,
                 changeRole: props.roleRequest,
                 cb: (data) => dispatch(datingProfileRequest(data)),
-                // cb: (data) => console.log(data, "apiData-----------"),
                 navigation: () => navigation.navigate("Welcome"),
                 navigation2: () =>
                   navigation.navigate("Root", {
                     screen: "Home",
                   }),
               };
-              console.log(data,'data for singup');
+              console.log(data, "data for singup");
               // dispatch(signupRequest())
               // navigation.navigate("Welcome");
             }}

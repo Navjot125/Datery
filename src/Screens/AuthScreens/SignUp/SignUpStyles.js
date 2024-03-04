@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   logoImage: {
     width: wp(35),
     height: hp(16),
-    marginTop: "20%",
+    marginTop: "2%",
     alignSelf: "center",
   },
   scrollView: {

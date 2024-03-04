@@ -145,7 +145,6 @@ const Login = memo(
                   endpoint: API_URL.login,
                   changeRole: props.roleRequest,
                   cb: (data) => dispatch(datingProfileRequest(data)),
-                  // cb: (data) => console.log(data, "apiData-----------"),
                   navigation: () => navigation.navigate("Welcome"),
                   navigation2: () =>
                     navigation.navigate("Root", {
