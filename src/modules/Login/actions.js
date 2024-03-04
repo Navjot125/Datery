@@ -17,7 +17,7 @@ import {
 export const loginRequest = (data, navigation) => {
   return {
     type: LOGIN_REQUESTED,
-    data,
+    data, 
     navigation,
   };
 };

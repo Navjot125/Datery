@@ -15,7 +15,7 @@ import { ScrollView } from "react-native-virtualized-view";
 import * as Atom from "../../../Components/atoms";
 import { APPLE_LOGO, GOOGLE_LOGO, LOGO_ORANGE } from "../../../assets";
 import { useNavigation } from "@react-navigation/native";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import { roleRequest } from "../../../modules/Role/actions";
 import { signupRequest } from "../../../modules/SignUp/actions";
 import { API_URL } from "../../../Constants/Config";
@@ -29,7 +29,7 @@ import CustomIcon from "../../../assets/CustomIcon";
 
 const SignUp = (props) => {
   // const [isChecked, setIsChecked] = useState(false);
-
+  const dispatch = useDispatch()
   const SignupFormSchema = yup.object().shape({
     userName: yup
       .string()
@@ -49,6 +49,28 @@ const SignUp = (props) => {
       .matches(/[@#$!%*^?&]/, PASSWORD_VALIDATION)
       .min(8, ({ min }) => PASSWORD_VALIDATION),
   });
+
+  const ForgotSchema = yup.object().shape({
+    email: yup
+      .string()
+      .email("Please provide valid email")
+      .required("Email is required")
+      .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, "Please provide a valid email"),
+  });
+  const onForgotRequest = async (params, data) => {
+    console.log(data, "------data");
+    try {
+      let res = await axiosClient.post(params.endpoint, data);
+      if (res?.data?.status) {
+        console.log("onForgotRequest - ", res.data);
+        setModalVisible(!modalVisible);
+      } else {
+        showAlertError(res.data.message);
+      }
+    } catch (err) {
+      console.log("error in onForgotRequest", err);
+    }
+  };
 
   const navigation = useNavigation();
   return (
@@ -91,10 +113,10 @@ const SignUp = (props) => {
               userName: "",
               email: "",
               password: "",
-              role: "user",
+              // role: "user",
               isChecked: false,
             }}
-            validationSchema={SignupFormSchema}
+            // validationSchema={SignupFormSchema}
             // onSubmit={values => {
             //   let params = {
             //     endpoint: API_URL.Signup,
@@ -107,8 +129,21 @@ const SignUp = (props) => {
             //   }
             //   props.signupRequest(values, params, callbackSignUp);
             // }}
-            onSubmit={() => {
-              navigation.navigate("Welcome");
+            onSubmit={async(data) => {
+              let params = {
+                endpoint: API_URL.login,
+                changeRole: props.roleRequest,
+                cb: (data) => dispatch(datingProfileRequest(data)),
+                // cb: (data) => console.log(data, "apiData-----------"),
+                navigation: () => navigation.navigate("Welcome"),
+                navigation2: () =>
+                  navigation.navigate("Root", {
+                    screen: "Home",
+                  }),
+              };
+              console.log(data,'data for singup');
+              // dispatch(signupRequest())
+              // navigation.navigate("Welcome");
             }}
           >
             {({

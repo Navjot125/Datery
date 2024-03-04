@@ -70,9 +70,7 @@ let page = 0;
 
 const Home = (props) => {
   const { userToken, loginData } = useSelector((state) => state.loginReducer);
-  const { Usertoken, signupSucessData } = useSelector(
-    (state) => state.signupReducer
-  );
+  const { signupSucessData } = useSelector((state) => state.signupReducer);
   const navigation = useNavigation();
   const role = props.state.roleReducer.role.id;
   const [modalVisible, setModalVisible] = useState(false);
@@ -548,23 +546,10 @@ const Home = (props) => {
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.getProfile,
-      offset: page,
-      userToken: props?.state?.loginReducer?.userToken
-        ? props?.state?.loginReducer?.userToken
-        : props.state?.signupReducer?.signupSucessData?.Usertoken,
-      id: {
-        userId: props.state.loginReducer?.loginData._id
-          ? props.state.loginReducer?.loginData._id
-          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-      },
-      // navigation: () =>
-      // console.log("hi")
+      token: userToken ? userToken : signupSucessData?.Usertoken,
+      id: loginData._id ? loginData._id : signupSucessData?.UserData?._id,
     };
-
-    console.log(apiData);
     role == 2 ? props.datingProfileRequest(apiData) : null;
-    // console.log("APIIIIIII", apiData);
-
     props.setLoader(false);
   };
 

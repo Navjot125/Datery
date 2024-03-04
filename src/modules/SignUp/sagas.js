@@ -1,12 +1,16 @@
-import { put, takeLatest } from 'redux-saga/effects';
-import { SIGNUP_REQUESTED } from './types';
-import { signupFail, signupSuccess } from './actions';
-import { API_URL } from '../../Constants/Config';
-import axiosClient from '../../Utils/ApiClient';
-import { CommonActions } from '@react-navigation/native';
-import { removeAnswer, setAnswer } from '../SetAnswer/actions';
-import { setLoader } from '../Loader/actions';
-import { showAlert, showAlertError, showAlertSuccess } from '../../Common/Functions/CommonFunctions';
+import { put, takeLatest } from "redux-saga/effects";
+import { SIGNUP_REQUESTED } from "./types";
+import { signupFail, signupSuccess } from "./actions";
+import { API_URL } from "../../Constants/Config";
+import axiosClient from "../../Utils/ApiClient";
+import { CommonActions } from "@react-navigation/native";
+import { removeAnswer, setAnswer } from "../SetAnswer/actions";
+import { setLoader } from "../Loader/actions";
+import {
+  showAlert,
+  showAlertError,
+  showAlertSuccess,
+} from "../../Common/Functions/CommonFunctions";
 
 function* onDemoRequest({ data }) {
   // API CALL
@@ -34,12 +38,12 @@ function* onSignUpRequest({ data, navigation, callbackSignUp }) {
       // showAlertSuccess(res.data.message)
       yield put(setLoader(false));
       yield put(signupSuccess(res.data));
-      callbackSignUp()
-      yield put(removeAnswer())
+      callbackSignUp();
+      yield put(removeAnswer());
       // yield put(loginSuccess(res.data));
       // showAlert(res.data.message);
       // console.log(res.data.message);
-      navigation.changeRole({ user: 'user', id: 2 })
+      navigation.changeRole({ user: "user", id: 2 });
       // navigation.dispatch(
       //   CommonActions.reset({
       //     index: 0, // Reset to the first screen in the stack
@@ -67,4 +71,3 @@ function* sagaSignup() {
   yield takeLatest(SIGNUP_REQUESTED, onSignUpRequest);
 }
 export default sagaSignup;
-

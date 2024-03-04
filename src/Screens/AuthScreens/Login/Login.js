@@ -70,12 +70,12 @@ const Login = memo(
         //   email: idToken.user.email,
         //   userName: idToken.user.name,
         // }, "LOGGg")
-        await onLogIn(params, {
-          socialMediaID: idToken.user.id,
-          email: idToken.user.email,
-          userName: idToken.user.name,
-          signUpType: "google",
-        });
+        // await onLogIn(params, {
+        //   socialMediaID: idToken.user.id,
+        //   email: idToken.user.email,
+        //   userName: idToken.user.name,
+        //   signUpType: "google",
+        // });
       } catch (err) {
         console.log("Error in googleLogin ----", err);
       }
@@ -144,13 +144,16 @@ const Login = memo(
                 let params = {
                   endpoint: API_URL.login,
                   changeRole: props.roleRequest,
+                  cb: (data) => dispatch(datingProfileRequest(data)),
+                  // cb: (data) => console.log(data, "apiData-----------"),
                   navigation: () => navigation.navigate("Welcome"),
                   navigation2: () =>
                     navigation.navigate("Root", {
                       screen: "Home",
                     }),
                 };
-                onLogIn(params, data);
+                dispatch(loginRequest(params, data));
+                // onLogIn(params, data);
               }}
             >
               {({

@@ -29,64 +29,36 @@ import { addToCartSuccess, removeAllCart } from "../Cart/actions";
 import { removeAllSignupData } from "../SignUp/actions";
 import { removeAllFavourites } from "../Merchants/actions";
 
-function* onDemoRequest({ data }) {
-  // API CALL
-  // RESULT
-  // yield put(demoSuccess(data));
-  // yield put(demoFail());
-}
+// yield call(datingProfileRequest(params));
 function* onLoginRequest({ data, navigation }) {
-
-  // yield put(setLoader(true));
-  // console.log(data, 'data', navigation, 'navigation --------------- ');
-  // yield put(setLoader(true));
+  yield put(setLoader(true));
   let res = yield axiosClient
-    .post(navigation.endpoint, data)
-    // .post("http://3.144.132.104:4000/login", {userType:1, email:"swatisharma2435.indiit@gmail.com", password:"Swati20"})
+    .post(data.endpoint, navigation)
     .then(function (response) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onLogin SAGA ERROR ===>', error);
+      console.log(error, "-------------login error saga");
       return;
     });
-  if (res) {
-    // console.log(res.data, '..--------------------------------------------..');
-    if (res?.data?.status) {
-      yield put(setLoader(false));
-      // showAlertSuccess(res.data.message);
-      yield put(loginSuccess(res.data));
-      yield put(addToCartSuccess(res.data?.cartcount));
-      // yield put(removeAnswer())
-      // yield put(loginSuccess(res.data));
-      // showAlert(res.data.message);
-      // console.log(res.data.message, ' message from saga login ');
-      navigation.changeRole({ user: "user", id: 2 });
-      res?.data?.userProfile == true
-        ? navigation.navigation2()
-        : navigation.navigation();
-
-      let params = {
-        endpoint: API_URL.getProfile,
-        userToken: res?.data?.Usertoken,
-        id: { userId: res?.data?.UserData?._id },
-      };
-      // callback({ params: params })
-      // yield call(datingProfileRequest(params));
-    } else {
-      yield put(setLoader(false));
-      // showAlertError(res.data.message)
-      yield put(loginFail());
-      // showAlert(res.data.message);
-      // console.log(res.data.message);
-    }
-  } else {
+  if (res?.data?.status) {
+    // console.log(res?.data, "res?.data-------- on login");
     yield put(setLoader(false));
-    // showAlert(res.data.message)
-    // console.log(REQUIRED_ERROR_MESSAGE);
-    // showAlert(ERROR_MESSAGE);
+    yield put(loginSuccess(res.data));
+    yield put(addToCartSuccess(res.data?.cartcount));
+    data.changeRole({ user: "user", id: 2 });
+    res?.data?.userProfile == true ? data.navigation2() : data.navigation();
+    let param = {
+      token: res?.data?.Usertoken,
+      endpoint: API_URL.getProfile,
+      id: res?.data?.UserData?._id,
+    };
+    data?.cb(param);
+  } else {
+    console.log("res of false status", res?.data);
+    yield put(setLoader(false));
+    yield put(loginFail());
   }
-  // yield put(setLoader(false));
 }
 
 function* onChangePasswordRequest({ data, navigation }) {
@@ -242,14 +214,3 @@ function* sagaLogin() {
   yield takeLatest(FORGOT_PASSWORD_REQUESTED, onForgotRequest);
 }
 export default sagaLogin;
-
-// function* sagaMobile() {
-//   yield takeLatest(LOGIN_REQUESTED, onLoginRequest);
-//   yield takeLatest(SOCIAL_LOGIN_REQUESTED, onSocialLoginRequest);
-//   yield takeLatest(FORGOT_PASS_REQUESTED, onForgotPass);
-//   yield takeLatest(OTP_VERIFICATION_REQUESTED, onOtpVerification);
-//   yield takeLatest(RESET_PASSWORD_REQUESTED, onResetPassword);
-//   yield takeLatest(LOGOUT_REQUESTED, onLogoutRequest);
-//   yield takeLatest(RESET_REQUESTED, onResetRequest);
-// }
-// export default sagaMobile;

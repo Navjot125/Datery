@@ -44,15 +44,10 @@ const Profile = (props) => {
   const userName = props.state?.loginReducer?.loginData?.userName
     ? props.state?.loginReducer?.loginData?.userName
     : props.state?.signupReducer?.signupSucessData?.UserData?.userName;
-  // const email = props.state?.loginReducer
   const email = props.state?.loginReducer?.loginData?.email
     ? props.state?.loginReducer?.loginData?.email
     : props.state?.signupReducer?.signupSucessData?.UserData?.email;
   const isFocused = useIsFocused();
-  // console.log(props.state?.signupReducer?.signupSucessData?.UserData?.email, 'p-------------------------------');
-  // console.log(props.state?.signupReducer?.signupSucessData?.UserData?.userName, 'p-------------------------------');
-  // console.log(props.state?.loginReducer?.loginData?.email, 'p-------------------------------');
-  // console.log(props.state?.loginReducer?.loginData?.userName, 'p-------------------------------');
 
   useEffect(() => {
     // props.setLoader(false);
