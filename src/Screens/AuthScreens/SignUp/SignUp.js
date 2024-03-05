@@ -26,8 +26,12 @@ import { PASSWORD_VALIDATION } from "../../../Constants/ErrorMessages";
 import { setLoader } from "../../../modules/Loader/actions";
 import { removeAnswer } from "../../../modules/SetAnswer/actions";
 import CustomIcon from "../../../assets/CustomIcon";
+import { useToast } from "react-native-toast-notifications";
+import { datingProfileRequest } from "../../../modules/Profile/actions";
 
 const SignUp = (props) => {
+  const toast = useToast();
+  const [error, setErrors] = useState();
   // const [isChecked, setIsChecked] = useState(false);
   const dispatch = useDispatch();
   const SignupFormSchema = yup.object().shape({
@@ -71,7 +75,6 @@ const SignUp = (props) => {
       console.log("error in onForgotRequest", err);
     }
   };
-
   const navigation = useNavigation();
   return (
     <SafeAreaView style={styles.container}>
@@ -116,7 +119,7 @@ const SignUp = (props) => {
               // role: "user",
               isChecked: false,
             }}
-            // validationSchema={SignupFormSchema}
+            validationSchema={SignupFormSchema}
             // onSubmit={values => {
             //   let params = {
             //     endpoint: API_URL.Signup,
@@ -135,14 +138,17 @@ const SignUp = (props) => {
                 changeRole: props.roleRequest,
                 cb: (data) => dispatch(datingProfileRequest(data)),
                 navigation: () => navigation.navigate("Welcome"),
-                navigation2: () =>
-                  navigation.navigate("Root", {
-                    screen: "Home",
-                  }),
+                error: (msg) => {
+                  toast.show(msg, {
+                    type: "danger",
+                    placement: "bottom",
+                    duration: 4000,
+                    offset: 30,
+                    animationType: "slide-in ",
+                  });
+                },
               };
-              console.log(data, "data for singup");
-              // dispatch(signupRequest())
-              // navigation.navigate("Welcome");
+              dispatch(signupRequest(params, data));
             }}
           >
             {({

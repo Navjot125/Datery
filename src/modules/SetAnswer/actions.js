@@ -117,11 +117,10 @@ export const setPartnerBirthday = (data) => {
   };
 };
 
-export const answerRequest = (data, navigation) => {
+export const answerRequest = (data) => {
   return {
     type: ANSWER_REQUESTED,
     data,
-    navigation,
   };
 };
 

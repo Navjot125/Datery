@@ -91,6 +91,6 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     alignSelf: "flex-end",
   },
-  inputErrorText: { fontSize: 12, color: color._primary_orange, bottom: 16 },
+  inputErrorText: { fontSize: 12, color: 'red', bottom: 16 },
 });
 export default styles;

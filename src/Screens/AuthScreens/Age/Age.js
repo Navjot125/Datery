@@ -22,9 +22,10 @@ import * as Atom from "../../../Components/atoms";
 import * as Molecules from "../../../Components/molecules";
 import { APPLE_LOGO, GOOGLE_LOGO, LOGO_ORANGE } from "../../../assets";
 import { useNavigation } from "@react-navigation/native";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import * as PopUp from "../../../Components/models";
 import * as Model from "../../../Components/models";
+import * as Yup from "yup";
 import { API_URL } from "../../../Constants/Config";
 import { questionRequest } from "../../../modules/GetQuestions/actions";
 import {
@@ -39,6 +40,7 @@ import {
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import CustomIcon from "../../../assets/CustomIcon";
 import DatePicker from "react-native-date-picker";
+import { useToast } from "react-native-toast-notifications";
 const TouchableOpacityOrange = (props) => {
   return (
     <View>
@@ -98,6 +100,8 @@ const DATA1 = [
 ];
 
 const Age = (props) => {
+  const dispatch = useDispatch();
+  const toast = useToast();
   const navigation = useNavigation();
   var question = props?.state?.questionsReducer?.questions[0]?.question;
   var data = props?.state?.questionsReducer?.questions[0]?.value;
@@ -116,6 +120,8 @@ const Age = (props) => {
   const [topic, setTopic] = React.useState();
   const [typeOfDates, settypeOfDates] = React.useState([]);
   const [kids, setKids] = React.useState();
+  const [city, setCity] = React.useState();
+
   const [searchQuery, setSearchQuery] = React.useState("");
   const [budget, setBudget] = React.useState();
   const [anniversary, setAnniversary] = React.useState();
@@ -151,27 +157,9 @@ const Age = (props) => {
     );
     mergedObject = Object.assign({}, ...filteredArray);
   };
-  let datingData;
-
+  // let datingData;
   const insertData = () => {
-    // console.log(props?.state?.loginReducer)
     const token = userToken ? userToken : Usertoken;
-    let params = {
-      endpoint: API_URL.datingDataInsert,
-      token,
-      id: props?.state?.loginReducer?.UserData?._id
-        ? props?.state?.loginReducer?.UserData?._id
-        : props.state?.signupReducer?.signupSucessData?.UserData?._id
-        ? props.state?.signupReducer?.signupSucessData?.UserData?._id
-        : props.state?.loginReducer?.loginData?._id,
-      navigation: () =>
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "Done", params: { screen: "Done" } }],
-        }),
-      // navigation.navigate("Done")
-    };
-    console.log(params);
     datingData = [
       { userId: props?.state?.answerReducer?.userId?.userId },
       { age: age },
@@ -186,14 +174,15 @@ const Age = (props) => {
       { topic: topic },
       { datingCoach: datingCoach },
       { kids: kids },
-      // { city: city, },
+      { city: city },
       { anniversary: anniversary },
       { PartnerBirthday: PartnerBirthday },
     ];
     removeUndefinedObjects = (datingData) => {
       return datingData.filter((obj) => {
         for (let key in obj) {
-          if (obj[key] === undefined) {
+          if (obj[key] === undefined || obj[key] === null) {
+            console.log("ndkfndkj");
             return false;
           }
         }
@@ -204,11 +193,85 @@ const Age = (props) => {
       (item) => item !== undefined && !Array.isArray(item)
     );
     mergedObject = Object.assign({}, ...filteredArray);
-    props.answerRequest(mergedObject, params);
+    let params = {
+      mergedObject,
+      endpoint: API_URL.datingDataInsert,
+      token,
+      id: props?.state?.loginReducer?.UserData?._id
+        ? props?.state?.loginReducer?.UserData?._id
+        : props.state?.signupReducer?.signupSucessData?.UserData?._id
+        ? props.state?.signupReducer?.signupSucessData?.UserData?._id
+        : props.state?.loginReducer?.loginData?._id,
+      navigation: () =>
+        // navigation.reset({
+        //   index: 0,
+        //   routes: [{ name: "Done", params: { screen: "Done" } }],
+        // }),
+        navigation.navigate("AddCard", { fromOnboarding: true }),
+    };
+    console.log("mergedObject", mergedObject?.city?.city);
+    dispatch(answerRequest(params));
+    // console.log(params, "--------------------", mergedObject);
+    // props.answerRequest(mergedObject, params);
   };
 
   const [step, setStep] = useState(1);
+  // const cardFormSchema = yup.object().shape({
+  //   userName: yup
+  //     .string()
+  //     .required("Username is required")
+  //     .min(3, "Must be at least 3 characters"),
+  //   password: yup
+  //     .string()
+  //     .required("Password is required")
+  //     .matches(/\w*[A-Z]\w*/, PASSWORD_VALIDATION)
+  //     .matches(/\w*[a-z]\w*/, PASSWORD_VALIDATION)
+  //     .matches(/\d/, PASSWORD_VALIDATION)
+  //     .matches(/[@#$!%*^?&]/, PASSWORD_VALIDATION)
+  //     .min(8, ({ min }) => PASSWORD_VALIDATION),
+  // });
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .required("Name is required")
+      .min(3, "Name must be at least 3 characters long")
+      .matches(
+        /^[^\s]+(\s+[^\s]+)*$/,
+        "Only one space between words is allowed"
+      ),
+    number: Yup.string()
+      .required("Credit card number is required")
+      .test("creditCardNumber", "Invalid credit card number", (value) => {
+        const formattedValue = value.replace(/\D/g, "");
+        const validLengths = {
+          Visa: 16,
+          Mastercard: 16,
+        };
+        let sum = 0;
+        let doubled = false;
+        for (let i = formattedValue.length - 1; i >= 0; i--) {
+          let digit = parseInt(formattedValue[i]);
+          if (doubled) {
+            digit *= 2;
+            if (digit > 9) {
+              digit -= 9;
+            }
+          }
+          sum += digit;
+          doubled = !doubled;
+        }
+        return sum % 10 === 0;
+      }),
+    cvv: Yup.string()
+      .matches(/^[0-9]{3,4}$/, "CVV must be a valid three or four-digit number")
+      .required("CVV is required"),
+    date: Yup.string()
+      .required("Expiry date is required")
+      .matches(
+        /^([1-9]|0[1-9]|1[0-2])\/([0-9]{2})$/,
+        "Invalid expiry date format (MM/YY)"
+      ),
+  });
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
@@ -246,7 +309,7 @@ const Age = (props) => {
               <Molecules.SelectItem
                 DATA={DATA}
                 onChange={(data) => {
-                  setAge(data.name);
+                  setAge(data?.name);
                   // console.log(data.name, 'data value ')
                 }}
                 multiSelect={false}
@@ -277,7 +340,7 @@ const Age = (props) => {
                   { _id: 5, name: "I do not identify with these options" },
                 ]}
                 onChange={(data) => {
-                  setGender({ gender: data.name });
+                  setGender(data.name);
                 }}
               />
             </View>
@@ -306,7 +369,7 @@ const Age = (props) => {
                   { _id: 7, name: "Asexual or non-sexual" },
                 ]}
                 onChange={(data) => {
-                  setSexualOrientation({ sexualOrientation: data.name });
+                  setSexualOrientation(data.name);
                 }}
               />
             </View>
@@ -328,8 +391,8 @@ const Age = (props) => {
                   { _id: 5, name: "Married" },
                 ]}
                 onChange={(data) => {
-                  setRelationshipStatus({ relationshipStatus: data.name });
                   setRelationshipStatus(data.name);
+                  // setRelationshipStatus(data.name);
                   // console.log("DATTTTTT", data.name);
                 }}
               />
@@ -383,9 +446,7 @@ const Age = (props) => {
                   { _id: 7, name: "Less than 6 Months" },
                 ]}
                 onChange={(data) => {
-                  setCurrentRelationshipLength({
-                    currentRelationshipLength: data.name,
-                  });
+                  setCurrentRelationshipLength(data.name);
                 }}
               />
             </View>
@@ -408,9 +469,7 @@ const Age = (props) => {
                   { _id: 7, name: "Less than 6 Months" },
                 ]}
                 onChange={(data) => {
-                  setLongestRealtionshipLength({
-                    longestRelationshipLength: data.name,
-                  });
+                  setLongestRealtionshipLength(data.name);
                 }}
               />
             </View>
@@ -433,7 +492,7 @@ const Age = (props) => {
                   { _id: 7, name: "None" },
                 ]}
                 onChange={(data) => {
-                  setHowManyDates({ howManyDates: data.name });
+                  setHowManyDates(data.name);
                 }}
               />
             </View>
@@ -457,7 +516,7 @@ const Age = (props) => {
                   { _id: 8, name: "I don’t pay for dates" },
                 ]}
                 onChange={(data) => {
-                  setBudget({ budget: data.name });
+                  setBudget(data.name);
                 }}
               />
             </View>
@@ -483,7 +542,7 @@ const Age = (props) => {
                 ]}
                 onChange={(data) => {
                   // console.log(data, 'type of dates on change data')
-                  settypeOfDates({ typeOfDates: data });
+                  settypeOfDates(data);
                 }}
                 multiSelect={true}
               />
@@ -506,7 +565,7 @@ const Age = (props) => {
               <Molecules.SelectItem
                 DATA={DATA1}
                 onChange={(data) => {
-                  setTopic({ topic: data });
+                  setTopic(data);
                 }}
                 multiSelect={true}
                 numColumns={2}
@@ -533,7 +592,7 @@ const Age = (props) => {
                   { _id: 6, name: "Very Unlikely" },
                 ]}
                 onChange={(data) => {
-                  setDatingCoach({ datingCoach: data.name });
+                  setDatingCoach(data.name);
                 }}
               />
             </View>
@@ -552,7 +611,7 @@ const Age = (props) => {
                   { _id: 2, name: "No" },
                 ]}
                 onChange={(data) => {
-                  setKids({ kids: data.name });
+                  setKids(data.name);
                 }}
               />
             </View>
@@ -594,18 +653,17 @@ const Age = (props) => {
                 placeholder="Search"
                 fetchDetails={true}
                 onPress={(data, details = null) => {
-                  props.setCity({
-                    city: [
-                      { locationName: details?.formatted_address },
-                      {
-                        latlong: [
-                          details?.geometry?.location.lng,
-                          details?.geometry?.location.lat,
-                        ],
-                      },
-                      { placeId: details?.place_id },
-                    ],
-                  });
+                  // props.setCity({
+                  setCity([
+                    { locationName: details?.formatted_address },
+                    {
+                      latlong: [
+                        details?.geometry?.location.lng,
+                        details?.geometry?.location.lat,
+                      ],
+                    },
+                    { placeId: details?.place_id },
+                  ]);
                 }}
                 query={{
                   key: "AIzaSyCWbsC3b6QgedZG8VQe2ux5lovNGxTptZM",
@@ -617,13 +675,21 @@ const Age = (props) => {
             </View>
           </>
         )}
-
         <Atom.Button
           onPress={() => {
             {
               step == 13
                 ? // insertData()
-                  navigation.navigate("AddCard", { fromOnboarding: true })
+                  city
+                  ? insertData()
+                  : // navigation.navigate("AddCard", { fromOnboarding: true })
+                    toast.show("Please select your preferred city", {
+                      type: "danger",
+                      placement: "bottom",
+                      duration: 4000,
+                      offset: 30,
+                      animationType: "slide-in ",
+                    })
                 : setStep((step) => step + 1);
             }
             // props.setAge(age)

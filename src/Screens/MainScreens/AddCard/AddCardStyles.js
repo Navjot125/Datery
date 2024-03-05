@@ -72,5 +72,6 @@ const styles = StyleSheet.create({
     opacity: 0.5,
     fontSize: 12,
   },
+  inputErrorText: { fontSize: 12, color: 'red', bottom: 13 },
 });
 export default styles;

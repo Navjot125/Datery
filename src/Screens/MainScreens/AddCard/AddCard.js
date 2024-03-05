@@ -23,6 +23,7 @@ import { useNavigation } from "@react-navigation/native";
 import { connect, useDispatch } from "react-redux";
 import * as Atom from "../../../Components/atoms";
 import * as Models from "../../../Components/models";
+import * as Yup from "yup";
 import Toast from "react-native-toast-message";
 import {
   CardAllDetailsRequest,
@@ -40,6 +41,11 @@ import { ActivityIndicator } from "react-native";
 const AddCard = (props) => {
   const [modalVisibleUpdate, setModalVisibleUpdate] = useState(false);
   const fromOnboarding = props?.route?.params?.fromOnboarding;
+  const [date, setDate] = useState("");
+  const [name, setName] = useState();
+  const [cardNumber, setCardNumber] = useState();
+  const [cvv, setCvv] = useState();
+  const [number, setNumber] = useState("");
   const [cardDetails, setCardDetails] = useState({
     name: "",
     cardNumber: "",
@@ -51,8 +57,79 @@ const AddCard = (props) => {
     zipCode: "",
     city: "",
     state: "",
+    date: "",
   });
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string()
+      .required("Name is required")
+      .min(3, "Name must be at least 3 characters long")
+      .matches(
+        /^[^\s]+(\s+[^\s]+)*$/,
+        "Only one space between words is allowed"
+      ),
+    cardNumber: Yup.string()
+      .required("Credit card number is required")
+      .test("creditCardNumber", "Invalid credit card number", (value) => {
+        const formattedValue = value.replace(/\D/g, "");
+        const validLengths = {
+          Visa: 16,
+          Mastercard: 16,
+        };
+        let sum = 0;
+        let doubled = false;
+        for (let i = formattedValue.length - 1; i >= 0; i--) {
+          let digit = parseInt(formattedValue[i]);
+          if (doubled) {
+            digit *= 2;
+            if (digit > 9) {
+              digit -= 9;
+            }
+          }
+          sum += digit;
+          doubled = !doubled;
+        }
+        return sum % 10 === 0;
+      }),
+    cvv: Yup.string()
+      .matches(/^[0-9]{3,4}$/, "CVV must be a valid three or four-digit number")
+      .required("CVV is required"),
+    date: Yup.string()
+      .required("Expiry date is required")
+      .matches(
+        /^([1-9]|0[1-9]|1[0-2])\/([0-9]{2})$/,
+        "Invalid expiry date format (MM/YY)"
+      ),
+  });
+  const handleChangeCardNumber = (text) => {
+    setNumber(formatCardNumber(text));
+  };
+
+  const formatCardNumber = (value) => {
+    const formattedValue = value.replace(/\D/g, "");
+    const groups = formattedValue.match(/\d{1,4}/g);
+    if (groups) {
+      return groups.join(" ");
+    }
+    return formattedValue;
+  };
+  const handleInputChange = (value) => {
+    let formattedValue;
+    let groups;
+    if (value.length <= 5) {
+      formattedValue = value.replace(/\D/g, "");
+      groups = formattedValue.match(/\d{1,2}/g);
+      if (groups) {
+        console.log("groups-----0", groups?.[0]);
+        console.log("groups-----1", groups?.[1]);
+        // month(groups/)
+        return groups.join("/");
+      }
+      return formattedValue;
+    }
+    // console.log(date,'[[[[[[[');
+    return date;
+  };
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       // setLoader(true)
@@ -65,6 +142,7 @@ const AddCard = (props) => {
     };
   }, []);
 
+  const [error, setError] = useState();
   const [errors, setErrors] = useState({
     name: "",
     cardNumber: "",
@@ -74,9 +152,11 @@ const AddCard = (props) => {
   });
 
   const handleChange = (name, value) => {
-    setCardDetails({ ...cardDetails, [name]: value });
+    name === "cardNumber"
+      ? (setCardNumber(formatCardNumber(value)),
+        setCardDetails({ ...cardDetails, [name]: formatCardNumber(value) }))
+      : setCardDetails({ ...cardDetails, [name]: value });
   };
-
   const validateField = (name, value) => {
     const regexMap = {
       name: /^[a-zA-Z\s.'-]+$/,
@@ -90,7 +170,7 @@ const AddCard = (props) => {
     const regex = regexMap[name];
     if (!regex.test(value)) {
       // setErrors({ ...errors, [name]: `Invalid ${name === 'cvv' ? 'CVV' : name}` });
-      Alert.alert(`Invalid ${name === "cvv" ? "CVV" : name}`);
+      // Alert.alert(`Invalid ${name === "cvv" ? "CVV" : name}`);
       // Toast.show({
       //   type: 'error',
       //   text1: name,
@@ -98,11 +178,9 @@ const AddCard = (props) => {
       // });
       return false;
     }
-
     setErrors({ ...errors, [name]: "" });
     return true;
   };
-
   const isFormValid = () => {
     let isValid = true;
 
@@ -126,50 +204,67 @@ const AddCard = (props) => {
   const handleState = (key, value) => {
     setState((prev) => ({ ...prev, [key]: value }));
   };
+  console.log(error, "----------error", cardNumber);
   const handlePayment = () => {
-    try {
-      // Create a card token using react-native-stripe-sdk
-      const token = props?.state?.loginReducer?.userToken
-        ? props?.state?.loginReducer?.userToken
-        : props.state?.signupReducer?.signupSucessData?.Usertoken;
-      const data = {
-        userId: props.state.loginReducer?.loginData._id
-          ? props.state.loginReducer?.loginData._id
-          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+    validationSchema
+      // .validate({ name, cardNumber, cvv, date }, { abortEarly: false })
+      .validate({ name, cardNumber, cvv, date }, { abortEarly: false })
+      .then(() => {
+        console.log();
+      })
+      .catch((error) => {
+        const validationErrors = {};
+        console.log(error, "error");
 
-        cardHolderName: cardDetails.name,
-        cardNumber: cardDetails.cardNumber,
-        exp_month: cardDetails.expiryMonth,
-        exp_year: cardDetails.expiryYear,
-        cardCVV: cardDetails.cvv,
-        default: cardDetails.default,
-        address: cardDetails.adress,
-        zipCode: cardDetails.zipCode,
-        city: cardDetails.city,
-        state: cardDetails.state,
-      };
-      if (!data.default) delete data.default;
-      setLoader(false);
-      const callback = (res) => {
-        navigation.goBack();
-        setLoader(false);
-      };
-      dispatch(
-        CardAllRequest({ data, callback, token, endpoint: API_URL.addCard })
-      );
-      setCardDetails({
-        name: "",
-        cardNumber: "",
-        expiryMonth: "",
-        expiryYear: "",
-        cvv: "",
+        error.inner.forEach((err) => {
+          validationErrors[err.path] = err.message;
+        });
+        setError(validationErrors);
       });
-    } catch (error) {
-      setLoader(false);
-      // console.log("ERRROORrr", error)
-      // Handle any errors that occurred during the payment process
-      Alert.alert(error.Error);
-    }
+
+    // try {
+    //   // Create a card token using react-native-stripe-sdk
+    //   const token = props?.state?.loginReducer?.userToken
+    //     ? props?.state?.loginReducer?.userToken
+    //     : props.state?.signupReducer?.signupSucessData?.Usertoken;
+    //   const data = {
+    //     userId: props.state.loginReducer?.loginData._id
+    //       ? props.state.loginReducer?.loginData._id
+    //       : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+
+    //     cardHolderName: cardDetails.name,
+    //     cardNumber: cardDetails.cardNumber,
+    //     exp_month: cardDetails.expiryMonth,
+    //     exp_year: cardDetails.expiryYear,
+    //     cardCVV: cardDetails.cvv,
+    //     default: cardDetails.default,
+    //     address: cardDetails.adress,
+    //     zipCode: cardDetails.zipCode,
+    //     city: cardDetails.city,
+    //     state: cardDetails.state,
+    //   };
+    //   if (!data.default) delete data.default;
+    //   setLoader(false);
+    //   const callback = (res) => {
+    //     navigation.goBack();
+    //     setLoader(false);
+    //   };
+    //   dispatch(
+    //     CardAllRequest({ data, callback, token, endpoint: API_URL.addCard })
+    //   );
+    //   setCardDetails({
+    //     name: "",
+    //     cardNumber: "",
+    //     expiryMonth: "",
+    //     expiryYear: "",
+    //     cvv: "",
+    //   });
+    // } catch (error) {
+    //   setLoader(false);
+    //   // console.log("ERRROORrr", error)
+    //   // Handle any errors that occurred during the payment process
+    //   Alert.alert(error.Error);
+    // }
   };
 
   // useEffect(() => {
@@ -184,7 +279,9 @@ const AddCard = (props) => {
   //     if (timeout) clearTimeout(timeout)
   //   }
   // }, [isFocus])
-
+  {
+    // console.log("cardDetails--", cardDetails);
+  }
   return (
     <SafeAreaView style={styles.scrollView}>
       <BackHeader title={"Add Payment Card"} />
@@ -211,34 +308,62 @@ const AddCard = (props) => {
               textFieldStyle={[styles.textField]}
               value={cardDetails.name}
               name={"name"}
-              onChangeText={(value) => handleChange("name", value)}
+              onChangeText={(value) => {
+                setName(value),
+                  handleChange("name", value),
+                  setError({ ...error, name: "" });
+              }}
             />
-            {errors.name ? <Text>{errors.name}</Text> : null}
+            {error?.name ? (
+              <Text style={styles?.inputErrorText}>{error?.name}</Text>
+            ) : null}
 
             <Text style={styles.headings}>Card Number</Text>
             <Atom.TextInputSimple
-              maxLength={16}
-              name={"cardName"}
+              maxLength={19}
+              name={"cardNumber"}
               textFieldStyle={styles.textField}
               keyboardType={"numeric"}
-              value={cardDetails?.cardNumber}
-              onChangeText={(value) => handleChange("cardNumber", value)}
+              // value={cardDetails?.cardNumber}
+              value={cardNumber}
+              onChangeText={(value) => {
+                // handleChangeCardNumber(value);
+                setCardNumber(formatCardNumber(value));
+                handleChange("cardNumber", value);
+                setError({ ...error, number: "" });
+              }}
             />
-            {errors.cardNumber ? <Text>{errors.cardNumber}</Text> : null}
+            {error?.number ? (
+              <Text style={styles?.inputErrorText}>{error?.number}</Text>
+            ) : null}
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
             >
               <View style={{ flex: 1 }}>
                 <Text style={styles.headings}>Expiration date</Text>
-
                 <View
-                  style={{ flexDirection: "row", justifyContent: "flex-start" }}
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "flex-start",
+                  }}
                 >
                   <Atom.TextInputSimple
-                    value={`${cardDetails.expiryMonth} / ${cardDetails.expiryYear}`}
+                    // value={`${cardDetails.expiryMonth} / ${cardDetails.expiryYear}`}
+                    value={date}
                     textFieldStyle={{ height: 48, width: 150 }}
-                    onChangeText={(value) => handleChange("expiryMonth", value)}
+                    onChangeText={(value) => {
+                      value?.length > 6
+                        ? null
+                        : setDate(handleInputChange(value));
+                      handleChange("date", handleInputChange(value));
+                    }}
+                    placeholder={"MM/YY"}
+                    placeholderTextColor={"lightgray"}
                   />
+
                   {/* <View style={{ left: 10 }}>
                     <Atom.TextInputSimple
                       value={cardDetails.expiryYear}
@@ -249,16 +374,28 @@ const AddCard = (props) => {
                     />
                   </View> */}
                 </View>
+                {error?.date ? (
+                  <Text style={styles?.inputErrorText}>{error?.date}</Text>
+                ) : null}
               </View>
               <View>
                 <Text style={styles.headings}>CVV</Text>
                 <Atom.TextInputSimple
-                  keyboardType={"numeric"}
+                  secureTextEntry={true}
+                  hideEye={true}
+                  keyboardType="numbers-and-punctuation"
                   textFieldStyle={{ height: 48, width: 156 }}
                   value={cardDetails.cvv}
-                  onChangeText={(value) => handleChange("cvv", value)}
+                  onChangeText={(value) => {
+                    setCvv(value), handleChange("cvv", value);
+                    setError({ ...error, cvv: "" });
+                  }}
+                  placeholder={"123"}
+                  placeholderTextColor={"lightgray"}
                 />
-                {errors.cvv ? <Text>{errors.cvv}</Text> : null}
+                {error?.cvv ? (
+                  <Text style={styles?.inputErrorText}>{error?.cvv}</Text>
+                ) : null}
               </View>
             </View>
             {!fromOnboarding && (
@@ -288,7 +425,10 @@ const AddCard = (props) => {
               onChangeText={(value) => handleChange("city", value)}
             />
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
             >
               <View>
                 <Text style={styles.headings}>State</Text>
@@ -334,7 +474,7 @@ const AddCard = (props) => {
                 onPress={() => {
                   // InteractionManager.runAfterInteractions(() => {
                   handlePayment();
-                  setLoader(true);
+                  // setLoader(true);
                 }}
                 title={"SAVE"}
               />

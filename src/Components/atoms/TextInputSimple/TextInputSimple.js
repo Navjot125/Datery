@@ -8,6 +8,7 @@ import DropShadow from "react-native-drop-shadow";
 
 const TextInputSimple = ({
   value,
+  hideEye,
   title,
   name,
   textFieldStyle,
@@ -20,7 +21,6 @@ const TextInputSimple = ({
   editable,
   onFocus,
   onRef,
-  secureTextEntry,
   error,
   errors,
   onBlur,
@@ -30,6 +30,7 @@ const TextInputSimple = ({
   iconColor,
   touched,
   typePassword,
+  secureTextEntry,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -47,7 +48,7 @@ const TextInputSimple = ({
           selectionColor={color._blue}
           maxLength={length}
           keyboardType={keyboardType ? keyboardType : "default"}
-          secureTextEntry={typePassword ? !showPassword : false}
+          secureTextEntry={ hideEye ? true : typePassword ? !showPassword : false}
           style={[styles.input, textFieldStyle, error ? { color: "red" } : {}]}
           underlineColorAndroid={"transparent"}
           onChangeText={(text) => {

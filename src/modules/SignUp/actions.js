@@ -1,12 +1,11 @@
 import {REMOVE_ALL_SIGNUP, SIGNUP_FAIL, SIGNUP_REQUESTED, SIGNUP_SUCCESS} from './types';
 
 
-export const signupRequest = (data, navigation, callbackSignUp) => {
+export const signupRequest = (data, navigation) => {
   return {
     type: SIGNUP_REQUESTED,
     data,
     navigation,
-    callbackSignUp,
   };
 };
 
