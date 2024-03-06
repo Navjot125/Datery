@@ -28,10 +28,10 @@ import fonts from "../../../Constants/Fonts";
 import { ActivityIndicator } from "react-native-paper";
 
 const DatingProfile = (props) => {
+  // defaultButtonText
   // Sexual Orientation
   // Longest Relationship
   const datingData = useSelector((state) => state?.profileReducer?.datingData);
-  console.log("datingData---------", datingData);
   const navigation = useNavigation();
   const userName = props.state?.profileReducer?.datingData?.userName;
   const [modalVisibleAvailablity, setModalVisibleAvailablity] =
@@ -253,6 +253,7 @@ const DatingProfile = (props) => {
         <Text style={styles.textinputStyle}>{props.titleText}</Text>
         <Dropdown
           style={styles.dropdown}
+          // defaultButtonText
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
