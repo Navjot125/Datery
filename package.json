@@ -38,6 +38,7 @@
     "react-native-fast-image": "^8.6.3",
     "react-native-gesture-handler": "^2.9.0",
     "react-native-google-places-autocomplete": "^2.5.1",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.7.3",
     "react-native-maps": "^1.10.3",
     "react-native-modal": "^13.0.1",

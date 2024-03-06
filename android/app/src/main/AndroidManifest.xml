@@ -30,3 +30,5 @@
 
   </application>
 </manifest>
+
+<!-- android:windowSoftInputMode="adjustPan" -->
