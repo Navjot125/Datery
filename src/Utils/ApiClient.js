@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axios from "axios";
 // import {clockRunning} from 'react-native-reanimated';
-import { BASE_URL } from '../Constants/Config';
-import configureStore from '../redux/configureStore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { BASE_URL } from "../Constants/Config";
+import configureStore from "../redux/configureStore";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const {store, persistor} = configureStore();
 
@@ -10,8 +10,8 @@ const axiosClient = axios.create({
   baseURL: BASE_URL,
   // timeout: 1000,
   headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/x-www-form-urlencoded',
+    Accept: "application/json",
+    "Content-Type": "application/x-www-form-urlencoded",
   },
 });
 
@@ -26,7 +26,7 @@ axiosClient.interceptors.request.use(
     // Do something with request error
     // console.log(error.response.data)
     return Promise.reject(error);
-  },
+  }
 );
 
 // Add a response interceptor
@@ -41,16 +41,16 @@ axiosClient.interceptors.response.use(
     // Do something with response error
     // console.log(error.response.data)
     return Promise.reject(error);
-  },
+  }
 );
 
 export const axiosClientFormdata = axios.create({
   baseURL: BASE_URL,
   // timeout: 1000,
   headers: {
-    Accept: 'application/json',
+    Accept: "application/json",
     // 'Content-Type': 'application/x-www-form-urlencoded',
-    'Content-Type': 'multipart/form-data',
+    "Content-Type": "multipart/form-data",
   },
 });
 
@@ -69,7 +69,7 @@ axiosClientLoggedIn.interceptors.request.use(
     // Do something with request error
     // console.log('axiosClientLoggedIn interceptors ==>', error);
     return Promise.reject(error);
-  },
+  }
 );
 
 export default axiosClient;

@@ -220,7 +220,50 @@ const AddCard = (props) => {
         { abortEarly: false }
       )
       .then(() => {
-        console.log("Done");
+        // console.log("Done");
+        try {
+          // Create a card token using react-native-stripe-sdk
+          const token = props?.state?.loginReducer?.userToken
+            ? props?.state?.loginReducer?.userToken
+            : props.state?.signupReducer?.signupSucessData?.Usertoken;
+          const data = {
+            // userId: props.state.loginReducer?.loginData._id
+            //   ? props.state.loginReducer?.loginData._id
+            //   : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+            cardHolderName: name,
+            cardNumber: cardNumber,
+            exp_month: date.slice(0, 2),
+            exp_year: date.slice(3, 5),
+            cardCVV: cvv,
+            address: address,
+            city: city,
+            state: state,
+            zipCode: zipCode,
+            default: isDefault,
+          };
+          // if (!data.default) delete data.default;
+          // setLoader(false);
+          const callback = (res) => {
+            fromOnboarding ? navigation.navigate("Done") : navigation.goBack();
+            // console.log("working callback", res);
+            setLoader(false);
+          };
+          dispatch(
+            CardAllRequest({ data, callback, token, endpoint: API_URL.addCard })
+          );
+          // setCardDetails({
+          //   name: "",
+          //   cardNumber: "",
+          //   expiryMonth: "",
+          //   expiryYear: "",
+          //   cvv: "",
+          // });
+        } catch (error) {
+          setLoader(false);
+          console.log("ERRROORrr in add card", error);
+          // Handle any errors that occurred during the payment process
+          // Alert.alert(error.Error);
+        }
       })
       .catch((error) => {
         const validationErrors = {};
@@ -231,49 +274,6 @@ const AddCard = (props) => {
         });
         setError(validationErrors);
       });
-
-    try {
-      // Create a card token using react-native-stripe-sdk
-      const token = props?.state?.loginReducer?.userToken
-        ? props?.state?.loginReducer?.userToken
-        : props.state?.signupReducer?.signupSucessData?.Usertoken;
-      const data = {
-        // userId: props.state.loginReducer?.loginData._id
-        //   ? props.state.loginReducer?.loginData._id
-        //   : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-        cardHolderName: name,
-        cardNumber: cardNumber,
-        exp_month: date.slice(0, 2),
-        exp_year: date.slice(3, 5),
-        cardCVV: cvv,
-        address: address,
-        city: city,
-        state: state,
-        zipCode: zipCode,
-        default: isDefault,
-      };
-      if (!data.default) delete data.default;
-      setLoader(false);
-      const callback = (res) => {
-        navigation.goBack();
-        setLoader(false);
-      };
-      // dispatch(
-      //   CardAllRequest({ data, callback, token, endpoint: API_URL.addCard })
-      // );
-      // setCardDetails({
-      //   name: "",
-      //   cardNumber: "",
-      //   expiryMonth: "",
-      //   expiryYear: "",
-      //   cvv: "",
-      // });
-    } catch (error) {
-      setLoader(false);
-      console.log("ERRROORrr in add card", error);
-      // Handle any errors that occurred during the payment process
-      // Alert.alert(error.Error);
-    }
   };
   // useEffect(() => {
   //   InteractionManager.runAfterInteractions(() => {
@@ -418,7 +418,6 @@ const AddCard = (props) => {
                   ) : null}
                 </View>
               </View>
-              {console.log("isDefault", isDefault)}
               {!fromOnboarding && (
                 <Atom.CheckBox
                   label={"Set as default payment method"}
@@ -553,7 +552,7 @@ const AddCard = (props) => {
               {fromOnboarding ? (
                 <Atom.Button
                   onPress={() => {
-                    navigation.navigate("Done");
+                    handlePayment();
                   }}
                   title={"NEXT"}
                 />
@@ -567,7 +566,6 @@ const AddCard = (props) => {
                   title={"SAVE"}
                 />
               )}
-              {/* fromOnboarding */}
               <Text style={styles.lastHeading}>
                 <Icon name="shield-checkmark" size={15} color={"#726A6A"} />{" "}
                 Information is sent over a secure connection

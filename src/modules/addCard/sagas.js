@@ -32,47 +32,40 @@ import { setLoader } from "../Loader/actions";
 import { navigationRef } from "../../RootNavigation";
 
 function* onCardRequest({ data }) {
-  // yield put(setLoader(true));
-  console.log(data, "DATA OF onCardRequest");
+  yield put(setLoader(true));
   try {
     let res = yield axiosClient.post(data.endpoint, data.data, {
       headers: {
-        Authorization: data?.token, // Add your authorization token here
-        // Other headers you might need
+        "Content-Type": "application/x-www-form-urlencoded",
+        Authorization: data?.token,
       },
     });
-    // .then(function (response) {
-    //   return response;
-    // })
-    // .catch(function (error) {
-    //   console.log('onMerchantListRequest SAGA ERROR ===>', error);
-    //   return;
-    // });
     if (res) {
+      yield put(setLoader(false));
+      console.log(res, "res", "res?.data1----------", res?.data);
       if (res?.data?.status) {
-        // yield put(setLoader(false));
         yield put(CardAllSuccess(res?.data?.data));
         data.callback(res?.data);
       } else {
+        console.log(res, "res", "res?.data2----------", res?.data);
         data.callback(res?.data);
-        // yield put(setLoader(false));
-        // yield put(merchantFail());
         res.data.message == "Please provide the coridnates."
           ? null
-          : // showAlertError(res.data.message)
-            yield put(CardAllFail());
+          : showAlertError(res.data.message);
+        yield put(CardAllFail());
         // console.log(res.data.message);
       }
     } else {
+      console.log(res, "res", "res?.data3----------", res?.data);
       data.callback(res?.data);
       yield put(setLoader(false));
       res.data.message == "Please provide the coridnates."
         ? null
         : showAlert(res.data.message);
-      // console.log(res.data.message);
     }
   } catch (err) {
-    console.log(err, "onCardRequest");
+    console.log("onCardRequest", err?.response?.data);
+    showAlertError(err?.response?.data?.Error);
     data.callback();
   }
 }

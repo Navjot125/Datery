@@ -1,13 +1,29 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects';
-import { ADD_TO_CART_GUEST_REQUESTED, ADD_TO_CART_REQUESTED, CART_LIST_REQUESTED, REMOVE_ITEM_FROM_CART_REQUESTED, REMOVE_ITEM_FROM_GUEST_CART_REQUESTED } from './types';
-import { setLoader } from '../Loader/actions';
-import axiosClient from '../../Utils/ApiClient';
-import { showAlertError, showAlertSuccess } from '../../Common/Functions/CommonFunctions';
-import { showAlert } from '../../Constants/AlertHelper';
-import { CartListRequest, CartListSuccess, addToCartGuestSuccess, addToCartSuccess, removeFromCartGuestRequest, removeFromCartGuestSuccess, removeItemFromCartSuccess } from './actions';
-import { API_URL } from '../../Constants/Config';
-import { REQUIRED_ERROR_MESSAGE } from '../../Constants/ErrorMessages';
-
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
+import {
+  ADD_TO_CART_GUEST_REQUESTED,
+  ADD_TO_CART_REQUESTED,
+  CART_LIST_REQUESTED,
+  REMOVE_ITEM_FROM_CART_REQUESTED,
+  REMOVE_ITEM_FROM_GUEST_CART_REQUESTED,
+} from "./types";
+import { setLoader } from "../Loader/actions";
+import axiosClient from "../../Utils/ApiClient";
+import {
+  showAlertError,
+  showAlertSuccess,
+} from "../../Common/Functions/CommonFunctions";
+import { showAlert } from "../../Constants/AlertHelper";
+import {
+  CartListRequest,
+  CartListSuccess,
+  addToCartGuestSuccess,
+  addToCartSuccess,
+  removeFromCartGuestRequest,
+  removeFromCartGuestSuccess,
+  removeItemFromCartSuccess,
+} from "./actions";
+import { API_URL } from "../../Constants/Config";
+import { REQUIRED_ERROR_MESSAGE } from "../../Constants/ErrorMessages";
 
 function* onAddToCartRequest({ data, navigation }) {
   yield put(setLoader(true));
@@ -32,7 +48,7 @@ function* onAddToCartRequest({ data, navigation }) {
     } else {
       yield put(setLoader(false));
       // showAlertError(res.data.message)
-      // yield put(merchantDetailsFail());  
+      // yield put(merchantDetailsFail());
       // console.log(res.data.message);
     }
   } else {
@@ -56,7 +72,6 @@ function* onAddToCartGuestRequest({ data, navigation }) {
   // yield put(setLoader(false));
 }
 
-
 function* onRemoveFromCartGuestRequest({ data }) {
   yield put(setLoader(true));
   // console.log('navigation ---------------request for add to cart Guest', data);
@@ -76,8 +91,8 @@ function* onCartListRequest({ data }) {
   let res = yield axiosClient
     .post(data.endpoint, data.userId, {
       headers: {
-        Authorization: data.token
-      }
+        Authorization: data.token,
+      },
     })
     .then(function (response) {
       return response;
@@ -87,11 +102,11 @@ function* onCartListRequest({ data }) {
       return;
     });
   if (res) {
-    console.log(res.data, '....');
+    console.log(res.data, "....");
     if (res?.data?.status) {
       // yield put(setLoader(false));
       yield put(CartListSuccess(res?.data?.data));
-      data.navigation()
+      data.navigation();
       // showAlertSuccess(res.data.message)
       // console.log(res.data.data, ' message from saga merchant details');
     } else {
@@ -127,8 +142,8 @@ function* onRemoveItemFromCartRequest({ data }) {
       yield put(setLoader(false));
       let removeData = {
         cartId: data._id,
-        cartCount: res.data.cartcount
-      }
+        cartCount: res.data.cartcount,
+      };
       yield put(removeItemFromCartSuccess(removeData));
       // navigation.navigation()
       // showAlertSuccess(res.data.message)
@@ -151,7 +166,13 @@ function* sagaCart() {
   yield takeLatest(ADD_TO_CART_REQUESTED, onAddToCartRequest);
   yield takeLatest(ADD_TO_CART_GUEST_REQUESTED, onAddToCartGuestRequest);
   yield takeLatest(CART_LIST_REQUESTED, onCartListRequest);
-  yield takeLatest(REMOVE_ITEM_FROM_CART_REQUESTED, onRemoveItemFromCartRequest);
-  yield takeLatest(REMOVE_ITEM_FROM_GUEST_CART_REQUESTED, onRemoveFromCartGuestRequest);
+  yield takeLatest(
+    REMOVE_ITEM_FROM_CART_REQUESTED,
+    onRemoveItemFromCartRequest
+  );
+  yield takeLatest(
+    REMOVE_ITEM_FROM_GUEST_CART_REQUESTED,
+    onRemoveFromCartGuestRequest
+  );
 }
 export default sagaCart;
