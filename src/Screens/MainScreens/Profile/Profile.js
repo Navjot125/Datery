@@ -32,9 +32,6 @@ import axiosClient from "../../../Utils/ApiClient";
 import { REQUIRED_ERROR_MESSAGE } from "../../../Constants/ErrorMessages";
 
 const Profile = (props) => {
-
-  // Sexual Orientation
-  // Longest Relationship
   const navigation = useNavigation();
   const role = props?.state?.roleReducer?.role?.id;
   const dispatch = useDispatch();

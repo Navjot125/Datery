@@ -17,7 +17,7 @@ import { BackHeader } from "../../../Components/molecules";
 import * as Atom from "../../../Components/atoms";
 import * as Model from "../../../Components/models";
 import { useNavigation } from "@react-navigation/native";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import {
   datingProfileRequest,
   updateProfileRequest,
@@ -28,6 +28,10 @@ import fonts from "../../../Constants/Fonts";
 import { ActivityIndicator } from "react-native-paper";
 
 const DatingProfile = (props) => {
+  // Sexual Orientation
+  // Longest Relationship
+  const datingData = useSelector((state) => state?.profileReducer?.datingData);
+  console.log("datingData---------", datingData);
   const navigation = useNavigation();
   const userName = props.state?.profileReducer?.datingData?.userName;
   const [modalVisibleAvailablity, setModalVisibleAvailablity] =
@@ -80,10 +84,6 @@ const DatingProfile = (props) => {
   let types = props.state?.profileReducer?.datingData?.userProfile?.typeOfDates;
   let topicsFromReducer =
     props.state?.profileReducer?.datingData?.userProfile?.topic;
-  console.log(
-    ";props.state.loginReducer?.loginData._id",
-    props.state?.profileReducer?.datingData?.userProfile
-  );
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       setUpdateDatingData({

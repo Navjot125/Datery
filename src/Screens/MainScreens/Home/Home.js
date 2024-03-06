@@ -71,6 +71,7 @@ let page = 0;
 const Home = (props) => {
   const { userToken, loginData } = useSelector((state) => state.loginReducer);
   const { signupSucessData } = useSelector((state) => state.signupReducer);
+  const SignupToken = signupSucessData?.Usertoken;
   const navigation = useNavigation();
   const role = props.state.roleReducer.role.id;
   const [modalVisible, setModalVisible] = useState(false);
@@ -546,7 +547,7 @@ const Home = (props) => {
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.getProfile,
-      token: userToken ? userToken : signupSucessData?.Usertoken,
+      token: userToken ? userToken : SignupToken,
       id: loginData._id ? loginData._id : signupSucessData?.UserData?._id,
     };
     role == 2 ? props.datingProfileRequest(apiData) : null;
@@ -556,7 +557,7 @@ const Home = (props) => {
   const requestMerchants = async () => {
     let coords = await getCurrentCity();
 
-    const token = userToken ? userToken : Usertoken;
+    const token = userToken ? userToken : SignupToken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
@@ -645,7 +646,7 @@ const Home = (props) => {
   const getApiRes = (item) => {
     console.log(item, "pp");
     page = 0;
-    const token = userToken ? userToken : Usertoken;
+    const token = userToken ? userToken : SignupToken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
@@ -671,7 +672,7 @@ const Home = (props) => {
   const getSortRes = (item) => {
     console.log(item, "hhh");
     page = 0;
-    const token = userToken ? userToken : Usertoken;
+    const token = userToken ? userToken : SignupToken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
@@ -692,11 +693,10 @@ const Home = (props) => {
     // console.log('param of fetchAllSerrvices', params, null, 2)
     props.merchantRequest(params);
   };
-
   const endReached = () => {
     if (totalMerchant > merchants.length) {
       page += 1;
-      const token = userToken ? userToken : Usertoken;
+      const token = userToken ? userToken : SignupToken;
       let params = {
         token,
         endpoint: API_URL.fetchAllServices,
