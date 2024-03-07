@@ -196,7 +196,7 @@ const PlanReserved = (props) => {
               <Text style={styles.textBetween}>
                 {item?.records[0].serviceName}
               </Text>
-              <Text style={styles.textLoc}>
+              <Text style={styles.textLoc}> 
                 <LocationIcon
                   name="location-pin"
                   size={15}

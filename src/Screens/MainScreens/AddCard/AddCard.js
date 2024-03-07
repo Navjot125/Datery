@@ -44,12 +44,16 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 const AddCard = (props) => {
   const [modalVisibleUpdate, setModalVisibleUpdate] = useState(false);
   const fromOnboarding = props?.route?.params?.fromOnboarding;
+  console.log(props?.route?.params?.fromOnboarding,'[[======', fromOnboarding? 'true':'false');
+  const [isFromOnboarding, setIsFromOnboarding] = useState(
+    props?.route?.params?.fromOnboarding
+  );
   const [date, setDate] = useState("");
   const [name, setName] = useState();
   const [cardNumber, setCardNumber] = useState();
   const [cvv, setCvv] = useState();
   const [city, setCity] = useState();
-  const [address, setAddress] = useState("mohali");
+  const [address, setAddress] = useState();
   const [zipCode, setZipCode] = useState();
   const [state, setState] = useState();
   const [number, setNumber] = useState("");
@@ -244,7 +248,19 @@ const AddCard = (props) => {
           // if (!data.default) delete data.default;
           // setLoader(false);
           const callback = (res) => {
-            fromOnboarding ? navigation.navigate("Done") : navigation.goBack();
+            isFromOnboarding
+              ? // navigation.navigate("Done")
+              (navigation.reset({
+                index: 0,
+                routes: [{ name: 'Done' }],
+              })
+              // (navigation.reset({
+              //     index: 0,
+              //     routes: [{ name: "Root", params: { screen: "Done" } }],
+              //   })
+                ,
+                setIsFromOnboarding(false))
+              : navigation.goBack();
             // console.log("working callback", res);
             setLoader(false);
           };
@@ -290,9 +306,14 @@ const AddCard = (props) => {
   {
     // console.log("cardDetails--", cardDetails);
   }
+  const onBackPress = () => {
+    isFromOnboarding
+      ? navigation?.navigate("Age")
+      : navigation?.navigate("Profile");
+  };
   return (
     <SafeAreaView style={styles.scrollView}>
-      <BackHeader title={"Add Payment Card"} />
+      <BackHeader onBackPress={onBackPress} title={"Add Payment Card"} />
       {/* <KeyboardAvoidingView style={{ flexGrow: 1 }} behavior="padding">
         <ScrollView
           // automaticallyAdjustKeyboardInsets={true}
@@ -301,6 +322,7 @@ const AddCard = (props) => {
           contentContainerStyle={{ flexGrow: 1 }}
         > */}
       <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="always"
         showsVerticalScrollIndicator={false}
         extraScrollHeight={20}
       >
@@ -321,6 +343,7 @@ const AddCard = (props) => {
               overScrollMode="never"
               style={{ marginTop: 20 }}
               showsVerticalScrollIndicator={false}
+              keyboardShouldPersistTaps="always"
             >
               <Text style={styles.headings}>Name on Card</Text>
               <Atom.TextInputSimple
@@ -418,7 +441,7 @@ const AddCard = (props) => {
                   ) : null}
                 </View>
               </View>
-              {!fromOnboarding && (
+              {!isFromOnboarding && (
                 <Atom.CheckBox
                   label={"Set as default payment method"}
                   // checkValue={cardDetails.default}
@@ -539,7 +562,7 @@ const AddCard = (props) => {
                   ) : null}
                 </View>
               </View>
-              {fromOnboarding && (
+              {isFromOnboarding && (
                 <Text
                   onPress={() => {
                     navigation.navigate("Done");
@@ -553,7 +576,7 @@ const AddCard = (props) => {
                   SKIP
                 </Text>
               )}
-              {fromOnboarding ? (
+              {isFromOnboarding ? (
                 <Atom.Button
                   onPress={() => {
                     handlePayment();

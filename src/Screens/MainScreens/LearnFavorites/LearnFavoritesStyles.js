@@ -50,13 +50,27 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   card: {
+    // backgroundColor: "white",
+    // // backgroundColor: "red",
+    // borderRadius: 10,
+    // width: "100%",
+    // flexDirection: "row",
+    // alignItems: "center",
+    // padding: 5,
+    
     backgroundColor: "white",
-    // backgroundColor: "red",
     borderRadius: 10,
-    width: "100%",
     flexDirection: "row",
     alignItems: "center",
-    padding: 5,
+    margin: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 0,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 2.22,
+    elevation: 3,
   },
 
   shadowProp: {

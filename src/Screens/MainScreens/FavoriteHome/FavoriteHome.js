@@ -147,8 +147,8 @@ const FavoriteHome = (props) => {
                 marginTop: 5,
               }}
             >
-              {item.providerName?.length > 10
-                ? item.providerName.slice(0, 10)
+              {item.providerName?.length > 14
+                ? `${item.providerName.slice(0, 14)}...`
                 : item.providerName}
             </Text>
             <View
@@ -166,7 +166,7 @@ const FavoriteHome = (props) => {
                 }}
               >
                 {item.providerlocationAddress}{" "}
-                <Text>{item?.Distance.toFixed(2)} mi</Text>
+                <Text>{item?.Distance?.toFixed(2)} mi</Text>
               </Text>
             </View>
             <View
@@ -226,7 +226,7 @@ const FavoriteHome = (props) => {
                   // marginBottom: 4,
                   fontFamily: fonts.BOLD,
                   color: color._border_orange,
-                  fontSize: 15,
+                  fontSize: 13,
                 }}
               >
                 ${item?.price}
@@ -285,7 +285,7 @@ const FavoriteHome = (props) => {
                   }}
                 >
                   {item.providerlocationAddress}{" "}
-                  <Text>{item?.Distance.toFixed(2)} mi</Text>
+                  <Text>{item?.Distance?.toFixed(2)} mi</Text>
                 </Text>
               </View>
               <View
@@ -348,7 +348,7 @@ const FavoriteHome = (props) => {
                     // marginBottom: 14,
                     fontFamily: fonts.BOLD,
                     color: color._border_orange,
-                    fontSize: 20,
+                    fontSize: 15,
                   }}
                 >
                   ${item.price}

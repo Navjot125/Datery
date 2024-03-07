@@ -78,7 +78,7 @@ function* onMerchantRequest({ data }) {
       // console.log(REQUIRED_ERROR_MESSAGE);
     }
   } catch (error) {
-    console.log(error, "error in onMerchantRequest");
+    console.log(error, "error in onMerchantRequest", error?.response?.data);
   }
   // yield put(setLoader(false));
 }
@@ -166,10 +166,10 @@ function* onFavouriteRequest({ navigation }) {
 
 function* onFavouriteListRequest({ navigation }) {
   yield put(setLoader(true));
-  // console.log(
-  //   navigation,
-  //   "navigation ---------------request of favourites list"
-  // );
+  console.log(
+    navigation,
+    "navigation ---------------request of favourites list"
+  );
   let res = yield axiosClient
     .post(navigation.endpoint, {
       userId: navigation.id.userId,
@@ -179,7 +179,7 @@ function* onFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onFavouriteListRequest SAGA ERROR ===>', error);
+      console.log('onFavouriteListRequest SAGA ERROR ===>', error?.response);
       return;
     });
   if (res) {
@@ -195,7 +195,7 @@ function* onFavouriteListRequest({ navigation }) {
       yield put(setLoader(false));
       // showAlertError(res.data.message)
       yield put(favouriteListFail());
-      // console.log(res.data.message);
+      console.log(res.data.message);
     }
   } else {
     yield put(setLoader(false));

@@ -45,10 +45,10 @@ const CommonHeader = (props) => {
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
+  // const cordinates = props.state?.profileReducer?.userTempCoordinates;
   const [geoCityName, setGeoCityName] = useState("");
   const [geoCityShortName, setGeoCityShortName] = useState("");
   // const [cordinates, setCordinates] = useState()
-
   const search = () => {
     let loc =
       role == 1
@@ -213,14 +213,17 @@ const CommonHeader = (props) => {
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={() => {
+          console.log("working on heart");
           const token = userToken ? userToken : Usertoken;
-          const cords =
-            props.state.merchantReducer?.details?.locationCordinates
-              ?.coordinates || 0;
+          // const cords =
+          //   cordinates?.length > 0
+          //     ? cordinates
+          //     : props.state.merchantReducer?.details?.locationCordinates
+          //         ?.coordinates;
           let param = {
             endpoint: API_URL.fetchFavoriteServices,
             token,
-            coordinates: cords,
+            // coordinates: cords,
             id: {
               userId: props.state?.loginReducer?.loginData?._id
                 ? props.state?.loginReducer?.loginData?._id

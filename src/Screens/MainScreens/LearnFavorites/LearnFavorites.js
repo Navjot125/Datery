@@ -20,6 +20,7 @@ import FastImage from "react-native-fast-image";
 import { SwipeListView } from "react-native-swipe-list-view";
 import axios from "axios";
 import axiosClient from "../../../Utils/ApiClient";
+import LocationIcon from "react-native-vector-icons/Entypo";
 import * as Atom from "../../../Components/atoms";
 import {
   removeFavouriteRequest,
@@ -151,14 +152,7 @@ const LearnFavorites = (props) => {
         ? splittedStr[splittedStr.length - 1] === "mp4"
         : false;
     return (
-      <View
-        style={[
-          styles.cardView,
-          {
-            flexDirection: "row",
-          },
-        ]}
-      >
+      <View style={{ flexDirection: "row" }}>
         <Atom.CheckBox
           // label={item?.title}
           containerStyle={{}}
@@ -170,8 +164,9 @@ const LearnFavorites = (props) => {
           status={checked ? "checked" : "unchecked"}
           // status={types[0] == item.title ? 'checked' : 'unchecked'}
         />
-        <DropShadow style={[styles.shadowProp, { flex: 1 }]}>
+        {item?.learnType !== "64b9239001e60e6d882e737d" ? (
           <TouchableOpacity
+            style={[styles.card, { height: 100 }]}
             activeOpacity={0.9}
             onPress={() => {
               navigation.navigate(
@@ -185,57 +180,46 @@ const LearnFavorites = (props) => {
                 }
               );
             }}
-            style={styles.cardView}
           >
-            <DropShadow style={styles.shadowProp}>
-              <View style={[styles.card]}>
-                {item?.learnType !== "64b9239001e60e6d882e737d" ? (
-                  <View style={[styles.card]}>
-                    {/* <Image
-                      source={
-                        !isVideo
-                          ? {
-                              uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
-                            }
-                          : {
-                              uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
-                            }
-                      }
-                      style={{ height: 95, width: 95, borderRadius: 6 }}
-                    /> */}
-                    <FastImage
-                      style={{ width: 95, height: 95,  borderRadius: 6 }}
-                      source={
-                        !isVideo
-                          ? {
-                              uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
-                            }
-                          : {
-                              uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
-                            }
-                      }
-                      // resizeMode="contain"
-                    />
-                    <View
-                      style={{
-                        paddingHorizontal: 10,
-                        width: "74%",
-                      }}
-                    >
-                      <Text style={styles.textTitle}>{item.learnTitle}</Text>
-                      <Text style={{ fontSize: 15, color: "#1F2937" }}>
-                        Chelsea Smith
-                      </Text>
-                      {/* <Text style={[styles.textBetween, { marginTop: 10 }]}>
+            <FastImage
+              style={{ width: 95, height: 95, borderRadius: 6 }}
+              source={
+                !isVideo
+                  ? {
+                      uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
+                    }
+                  : {
+                      uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
+                    }
+              }
+              // resizeMode="contain"
+            />
+            <View
+              style={{
+                paddingHorizontal: 10,
+                width: "59%",
+              }}
+            >
+              <Text style={styles.textTitle}>
+                {" "}
+                {item?.learnTitle?.length > 14
+                  ? `${item?.learnTitle.slice(0, 14)}...`
+                  : item?.learnTitle}
+              </Text>
+              {/* <Text style={styles.textTitle}>{item.learnTitle}</Text> */}
+              <Text style={{ fontSize: 15, color: "#1F2937" }}>
+                Chelsea Smith
+              </Text>
+              {/* <Text style={[styles.textBetween, { marginTop: 10 }]}>
                         {" "}
                         {item.coachName}
                       </Text> */}
-                      <View style={{ flex: 1 }}>
-                        <View style={styles.lastText}>
-                          <Text style={styles.orangeText}>
-                            {formatDate(item.createdAt)}
-                          </Text>
-                          {/* <View
+              <View style={{ flex: 1 }}>
+                <View style={styles.lastText}>
+                  <Text style={styles.orangeText}>
+                    {formatDate(item.createdAt)}
+                  </Text>
+                  {/* <View
                             style={{
                               height: 5,
                               width: 5,
@@ -246,72 +230,67 @@ const LearnFavorites = (props) => {
                           <Text style={[styles.orangeText]}>
                             {item.learnTime}
                           </Text> */}
-                        </View>
-                        <View
-                          style={{
-                            backgroundColor: color._primary_orange,
-                            alignSelf: "flex-start",
-                            padding: 3,
-                            borderRadius: 5,
-                            paddingHorizontal: 5,
-                            marginTop: 5,
-                          }}
-                        >
-                          <Text style={{ fontSize: 13, color: "#1F2937" }}>
-                            {item?.labels}
-                          </Text>
-                        </View>
-                      </View>
-                    </View>
-                    {/* <View style={{ right: 20 }}>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: color._primary_orange,
+                    alignSelf: "flex-start",
+                    padding: 3,
+                    borderRadius: 5,
+                    paddingHorizontal: 5,
+                    marginTop: 5,
+                  }}
+                >
+                  <Text style={{ fontSize: 13, color: "#1F2937" }}>
+                    {item?.labels}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            {/* <View style={{ right: 20 }}>
                       <Image
                         source={!isVideo ? Images.DocsImage : Images.vedioImage}
                         style={{ height: 40, width: 30, resizeMode: "contain" }}
                       />
                     </View> */}
-                  </View>
-                ) : item.learnType === "64b9239001e60e6d882e737d" ? (
-                  <View style={[styles.card]}>
-                    <Image
-                      source={{
-                        uri: `http://54.92.82.16:3001/data/${item?.coachPic}`,
-                      }}
-                      style={{ height: 95, width: 95, borderRadius: 6 }}
-                    />
-                    <View
-                      style={{
-                        padding: 15,
-                        width: "74%",
-                        // marginTop:15
-                        // flexWrap:'wrap',
-                      }}
-                    >
-                      <Text style={styles.textTitle}>{item.coachName}</Text>
-                      <Text
-                        style={[
-                          styles.textBetween,
-                          { color: "black", marginTop: 5 },
-                        ]}
-                      >
-                        {" "}
-                        {item.coachAddress}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.textBetween,
-                          { color: "black", marginTop: 8 },
-                        ]}
-                      >
-                        {" "}
-                        {item.coachApproach}
-                      </Text>
+            {/* </View> */}
+          </TouchableOpacity>
+        ) : item.learnType === "64b9239001e60e6d882e737d" ? (
+          <View style={[styles.card]}>
+            <Image
+              source={{
+                uri: `http://54.92.82.16:3001/data/${item?.coachPic}`,
+              }}
+              style={{ height: 95, width: 95, borderRadius: 6 }}
+            />
+            <View
+              style={{
+                padding: 15,
+                width: "74%",
+                // marginTop:15
+                // flexWrap:'wrap',
+              }}
+            >
+              <Text style={styles.textTitle}>{item.coachName}</Text>
+              <Text
+                style={[styles.textBetween, { color: "black", marginTop: 5 }]}
+              >
+                {" "}
+                {item.coachAddress}
+              </Text>
+              <Text
+                style={[styles.textBetween, { color: "black", marginTop: 8 }]}
+              >
+                {" "}
+                {item.coachApproach}
+              </Text>
 
-                      {/* <View style={{ flex: 1, marginTop: 15,justifyContent:'space-between' }}> */}
-                      <View style={[styles.lastText, {}]}>
-                        <Text style={styles.orangeText}>
-                          {formatDate(item.createdAt)}
-                        </Text>
-                        {/* <View
+              {/* <View style={{ flex: 1, marginTop: 15,justifyContent:'space-between' }}> */}
+              <View style={[styles.lastText, {}]}>
+                <Text style={styles.orangeText}>
+                  {formatDate(item.createdAt)}
+                </Text>
+                {/* <View
                           style={{
                             height: 5,
                             width: 5,
@@ -327,46 +306,41 @@ const LearnFavorites = (props) => {
                         >
                           {item.coachAvailability}
                         </Text> */}
-                      </View>
-                      <View
-                        style={{
-                          backgroundColor: color._primary_orange,
-                          alignSelf: "flex-start",
-                          padding: 3,
-                          borderRadius: 5,
-                          paddingHorizontal: 5,
-                          marginTop: 5,
-                        }}
-                      >
-                        <Text style={{ fontSize: 13, color: "#1F2937" }}>
-                          {item?.labels}
-                        </Text>
-                      </View>
-                      {/* </View> */}
-                    </View>
-                    <View style={styles.iconWrap}>
-                      <Image
-                        source={Images.WhistleImage}
-                        style={{
-                          height: 15,
-                          width: 16,
-                          resizeMode: "cover",
-                          right: 20,
-                        }}
-                      />
-                    </View>
-                  </View>
-                ) : (
-                  // Else Block, render a default image or any other content
-                  <Image
-                    source={Images.BallerinaImage}
-                    style={{ height: 85, width: 85, borderRadius: 6 }}
-                  />
-                )}
               </View>
-            </DropShadow>
-          </TouchableOpacity>
-        </DropShadow>
+              <View
+                style={{
+                  backgroundColor: color._primary_orange,
+                  alignSelf: "flex-start",
+                  padding: 3,
+                  borderRadius: 5,
+                  paddingHorizontal: 5,
+                  marginTop: 5,
+                }}
+              >
+                <Text style={{ fontSize: 13, color: "#1F2937" }}>
+                  {item?.labels}
+                </Text>
+              </View>
+              {/* </View> */}
+            </View>
+            <View style={styles.iconWrap}>
+              <Image
+                source={Images.WhistleImage}
+                style={{
+                  height: 15,
+                  width: 16,
+                  resizeMode: "cover",
+                  right: 20,
+                }}
+              />
+            </View>
+          </View>
+        ) : (
+          <Image
+            source={Images.BallerinaImage}
+            style={{ height: 85, width: 85, borderRadius: 6 }}
+          />
+        )}
       </View>
     );
   };
@@ -381,74 +355,65 @@ const LearnFavorites = (props) => {
         ? splittedStr[splittedStr.length - 1] === "mp4"
         : false;
     return (
-      <View style={styles.cardView}>
-        <DropShadow style={styles.shadowProp}>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => {
-              navigation.navigate(
-                item.learnType == "64b9239001e60e6d882e737d"
-                  ? "CoachDetail"
-                  : !isVideo
-                  ? "AdviceDetail"
-                  : "CourseOverview",
-                {
-                  item,
-                }
-              );
-            }}
-            style={styles.cardView}
-          >
-            <DropShadow style={styles.shadowProp}>
-              {console.log("item", item)}
-              <View style={[styles.card]}>
-                {item?.learnType !== "64b9239001e60e6d882e737d" ? (
-                  <View style={[styles.card]}>
-                    {/* <Image
-                      source={
-                        !isVideo
-                          ? {
-                              uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
-                            }
-                          : {
-                              uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
-                            }
-                      }
-                      style={{ height: 95, width: 95, borderRadius: 6 }}
-                    /> */}
-                    <FastImage
-                      style={{ width: 95, height: 95, borderRadius: 6 }}
-                      source={
-                        !isVideo
-                          ? {
-                              uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
-                            }
-                          : {
-                              uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
-                            }
-                      }
-                      resizeMode="cover"
-                    />
-                    <View
-                      style={{
-                        padding: 15,
-                        width: "74%",
-                      }}
-                    >
-                      <Text style={styles.textTitle}>{item.learnTitle}</Text>
-                      <Text style={{ fontSize: 15, color: "#1F2937" }}>
-                        Chelsea Smith
-                      </Text>
-                      {/* <Text style={[styles.textBetween, { marginTop: 10 }]}>
+      <View style={[styles.cardView, { marginHorizontal: 15 }]}>
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => {
+            navigation.navigate(
+              item.learnType == "64b9239001e60e6d882e737d"
+                ? "CoachDetail"
+                : !isVideo
+                ? "AdviceDetail"
+                : "CourseOverview",
+              {
+                item,
+              }
+            );
+          }}
+        >
+          <View style={[styles.card]}>
+            {item?.learnType !== "64b9239001e60e6d882e737d" ? (
+              <>
+                <FastImage
+                  style={{ width: 95, height: "85%", borderRadius: 6 }}
+                  source={
+                    !isVideo
+                      ? {
+                          uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
+                        }
+                      : {
+                          uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
+                        }
+                  }
+                  resizeMode="cover"
+                />
+                <View
+                  style={{
+                    padding: 15,
+                    width: "74%",
+                  }}
+                >
+                  <Text>
+                    {item?.learncategories == "Video" ? "VIDEO" : "ARTICLE"}
+                  </Text>
+                  <Text style={styles.textTitle}>
+                    {item?.learnTitle?.length > 14
+                      ? `${item?.learnTitle.slice(0, 14)}...`
+                      : item?.learnTitle}
+                  </Text>
+                  <Text style={{ fontSize: 15, color: "#1F2937" }}>
+                    Chelsea Smith
+                  </Text>
+                  {/* <Text style={[styles.textBetween, { marginTop: 10 }]}>
                         {" "}
                         {item.coachName}
                       </Text> */}
-                      <View style={{ flex: 1 }}>
-                        <View style={styles.lastText}>
-                          <Text style={styles.orangeText}>
-                            {formatDate(item.createdAt)}
-                          </Text>
-                          {/* <View
+                  <View style={{ flex: 1 }}>
+                    <View style={styles.lastText}>
+                      <Text style={styles.orangeText}>
+                        {formatDate(item.createdAt)}
+                      </Text>
+                      {/* <View
                             style={{
                               height: 5,
                               width: 5,
@@ -459,24 +424,25 @@ const LearnFavorites = (props) => {
                           <Text style={[styles.orangeText]}>
                             {item.learnTime}
                           </Text> */}
-                        </View>
-                        <View
-                          style={{
-                            backgroundColor: color._primary_orange,
-                            alignSelf: "flex-start",
-                            padding: 3,
-                            borderRadius: 5,
-                            paddingHorizontal: 5,
-                            marginTop: 5,
-                          }}
-                        >
-                          <Text style={{ fontSize: 13, color: "#1F2937" }}>
-                            {item?.labels}
-                          </Text>
-                        </View>
-                      </View>
                     </View>
-                    {/* <View
+                    {/* {console.log("item", JSON.stringify(item))} */}
+                    <View
+                      style={{
+                        backgroundColor: color._primary_orange,
+                        alignSelf: "flex-start",
+                        padding: 3,
+                        borderRadius: 5,
+                        paddingHorizontal: 5,
+                        marginTop: 5,
+                      }}
+                    >
+                      <Text style={{ fontSize: 13, color: "white" }}>
+                        {item?.labels}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                {/* <View
                     // style={{ right: 20 }}
                     >
                       <Image
@@ -484,90 +450,95 @@ const LearnFavorites = (props) => {
                         style={{ height: 40, width: 30, resizeMode: "contain" }}
                       />
                     </View> */}
-                  </View>
-                ) : item.learnType === "64b9239001e60e6d882e737d" ? (
-                  <View style={[styles.card]}>
-                    <Image
-                      source={{
-                        uri: `http://54.92.82.16:3001/data/${item?.coachPic}`,
-                      }}
-                      style={{ height: 85, width: 85, borderRadius: 6 }}
-                    />
-                    <View
-                      style={{
-                        padding: 15,
-                        width: "74%",
-                        // marginTop:15
-                        // flexWrap:'wrap',
-                      }}
-                    >
-                      <Text style={styles.textTitle}>{item.coachName}</Text>
-                      <Text
-                        style={[
-                          styles.textBetween,
-                          { color: "black", marginTop: 5 },
-                        ]}
-                      >
-                        {" "}
-                        {item.coachAddress}
-                      </Text>
-                      <Text
-                        style={[
-                          styles.textBetween,
-                          { color: "black", marginTop: 8 },
-                        ]}
-                      >
-                        {" "}
-                        {item.coachApproach}
-                      </Text>
-
-                      {/* <View style={{ flex: 1, marginTop: 15,justifyContent:'space-between' }}> */}
-                      <View style={[styles.lastText, {}]}>
-                        <Text style={styles.orangeText}>
-                          {formatDate(item.createdAt)}
-                        </Text>
-                        <View
-                          style={{
-                            height: 5,
-                            width: 5,
-                            backgroundColor: "grey",
-                            borderRadius: 10,
-                          }}
-                        ></View>
-                        <Text
-                          style={[
-                            styles.orangeText,
-                            { textTransform: "capitalize" },
-                          ]}
-                        >
-                          {item.coachAvailability}
-                        </Text>
-                      </View>
-                      {/* </View> */}
-                    </View>
-                    <View style={styles.iconWrap}>
-                      <Image
-                        source={Images.WhistleImage}
-                        style={{
-                          height: 15,
-                          width: 16,
-                          resizeMode: "cover",
-                          right: 20,
-                        }}
+              </>
+            ) : item.learnType === "64b9239001e60e6d882e737d" ? (
+              <>
+                <Image
+                  source={{
+                    uri: `http://54.92.82.16:3001/data/${item?.coachPic}`,
+                  }}
+                  style={{ width: 95, height: "85%", borderRadius: 6 }}
+                />
+                <View
+                  style={{
+                    padding: 15,
+                    width: "74%",
+                    // marginTop:15
+                    // flexWrap:'wrap',
+                  }}
+                >
+                  <Text style={{}}>COACH</Text>
+                  <Text style={styles.textTitle}>{item.coachName}</Text>
+                  <Text
+                    style={[
+                      styles.textBetween,
+                      { color: "black", marginTop: 2 },
+                    ]}
+                  >
+                    {" "}
+                    {item.coachAddress}
+                  </Text>
+                  {/* <Text
+                    style={[
+                      styles.textBetween,
+                      { color: "black", marginTop: 8 },
+                    ]}
+                  >
+                    {" "}
+                    {item.coachApproach}
+                  </Text> */}
+                  {/* <View style={{ flex: 1, marginTop: 15,justifyContent:'space-between' }}> */}
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    {/* <Text style={styles.orangeText}>
+                      {formatDate(item.createdAt)}
+                    </Text> */}
+                    <Text style={styles.textLoc}>
+                      <LocationIcon
+                        name="location-pin"
+                        size={15}
+                        color={color._primary_orange}
                       />
-                    </View>
+                      {"Dallas"}
+                    </Text>
+                    <Image
+                      source={require("../../../assets/images/Video.png")}
+                      style={{ width: 15, height: 10, marginHorizontal: 4 }}
+                    />
+                    <Text
+                      style={[
+                        styles.orangeText,
+                        { textTransform: "capitalize" },
+                      ]}
+                    >
+                      {item.coachAvailability}
+                    </Text>
                   </View>
-                ) : (
-                  // Else Block, render a default image or any other content
-                  <Image
-                    source={Images.BallerinaImage}
-                    style={{ height: 85, width: 85, borderRadius: 6 }}
-                  />
-                )}
-              </View>
-            </DropShadow>
-          </TouchableOpacity>
-        </DropShadow>
+                  <View
+                    style={{
+                      backgroundColor: color._primary_orange,
+                      alignSelf: "flex-start",
+                      padding: 3,
+                      borderRadius: 5,
+                      paddingHorizontal: 5,
+                      marginTop: 5,
+                    }}
+                  >
+                    <Text style={{ fontSize: 13, color: "white" }}>
+                      {item?.labels}
+                    </Text>
+                  </View>
+                  {/* </View> */}
+                </View>
+              </>
+            ) : (
+              // Else Block, render a default image or any other content
+              <Image
+                source={Images.BallerinaImage}
+                style={{ height: 85, width: 85, borderRadius: 6 }}
+              />
+            )}
+          </View>
+        </TouchableOpacity>
       </View>
     );
   };

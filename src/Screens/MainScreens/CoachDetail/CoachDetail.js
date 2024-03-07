@@ -61,6 +61,9 @@ const CoachDetail = (props) => {
   // }
 
   const showData = ({ item, index }) => {
+    console.log(item, "[[[[[[");
+    const Item = item?.item !== undefined ? item?.item : item;
+    // const Item = item
     return (
       <View
         key={index}
@@ -79,7 +82,7 @@ const CoachDetail = (props) => {
           }}
         >
           <Image
-            source={{ uri: `http://54.92.82.16:3001/data/${item?.coachPic}` }}
+            source={{ uri: `http://54.92.82.16:3001/data/${Item?.coachPic}` }}
             style={{ height: 72, width: 72, borderRadius: 100 }}
           />
           <View
@@ -105,7 +108,7 @@ const CoachDetail = (props) => {
                 }}
               >
                 {/* {" "} */}
-                {item.coachName}{" "}
+                {Item.coachName}{" "}
               </Text>
               {/* <TouchableOpacity
                 activeOpacity={0.9}
@@ -152,7 +155,7 @@ const CoachDetail = (props) => {
                   size={15}
                   color={color._primary_orange}
                 />{" "}
-                {item.coachAddress}
+                {Item.coachAddress}
               </Text>
               <Image
                 style={{ height: 13, width: 13, marginLeft: 5, marginTop: 2 }}
@@ -168,7 +171,7 @@ const CoachDetail = (props) => {
                   marginLeft: 5,
                 }}
               >
-                {item.coachAvailability}
+                {Item.coachAvailability}
               </Text>
             </View>
             <Text
@@ -181,7 +184,7 @@ const CoachDetail = (props) => {
               }}
             >
               {/* {" "} */}
-              {item.coachApproach}
+              {Item.coachApproach}
             </Text>
           </View>
         </View>
@@ -219,7 +222,7 @@ const CoachDetail = (props) => {
                   fontSize: 12,
                 }}
               >
-                {item.coachLabel[0]}
+                {Item?.coachLabel?.[0]}
               </Text>
             </View>
             <View
@@ -239,7 +242,7 @@ const CoachDetail = (props) => {
                   fontSize: 12,
                 }}
               >
-                {item.coachLabel[1]}
+                {Item?.coachLabel?.[1]}
               </Text>
             </View>
             <View
@@ -260,7 +263,7 @@ const CoachDetail = (props) => {
                   fontSize: 12,
                 }}
               >
-                {item.coachLabel[2]}
+                {Item?.coachLabel?.[2]}
               </Text>
             </View>
           </View>
@@ -283,7 +286,7 @@ const CoachDetail = (props) => {
             lineHeight: 24,
           }}
         >
-          {item.coachDescription}{" "}
+          {Item.coachDescription}{" "}
         </Text>
 
         {/* <DropShadow style={styles.shadowProp}>

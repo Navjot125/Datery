@@ -46,9 +46,11 @@ function* onCardRequest({ data }) {
         yield put(CardAllSuccess(res?.data?.data));
         data.callback(res?.data);
       } else {
-        res.data.message == "Please provide the coridnates."
+        console.log(res?.data, "[[[");
+        // console.log(res?.data);
+        res.data.msg == "Please provide the coridnates."
           ? null
-          : showAlertError(res.data.message);
+          : showAlertError(res.data.msg);
         yield put(CardAllFail());
       }
     } else {
@@ -58,7 +60,7 @@ function* onCardRequest({ data }) {
         : showAlert(res.data.message);
     }
   } catch (err) {
-    console.log("onCardRequest", err?.response?.data);
+    console.log(err, "onCardRequest", err?.response?.data);
     showAlertError(err?.response?.data?.Error);
   }
 }
