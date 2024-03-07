@@ -85,7 +85,7 @@ const AllLearn = (props) => {
             item?._id,
             item?.category == "Coach" ? "coach" : "learn",
             item?.category
-          ),
+          )
             // console.log("PRAMMMMMM_----", item);
             // navigation.navigate(
             //   item.category == "Coach"
@@ -97,7 +97,7 @@ const AllLearn = (props) => {
             //     item,
             //   }
             // );
-            console.log("item----------------learn", item);
+            // console.log("item----------------learn", item);
         }}
         style={styles.cardView}
       >

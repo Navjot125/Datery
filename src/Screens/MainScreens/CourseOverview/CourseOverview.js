@@ -61,7 +61,9 @@ const data = [
 ];
 const CourseOverview = (props) => {
   // console.log('props.route?.params',props.route?.params);
-  const [listData, setListData] = useState([props.route.params]);
+  const [listData, setListData] = useState([
+    props.route.params?.item ? props.route.params?.item : props.route.params,
+  ]);
   const [currentTime, setCurrentTime] = useState(0);
   const [paused, setPaused] = useState(false);
   // const videoPlayer = React.createRef();
@@ -209,7 +211,6 @@ const CourseOverview = (props) => {
       },
     };
     dispatch(playRequest(apiData));
-    // console.log("APPPPPPPP2-----", apiData)
   };
   const centerImage = () => {
     return (
@@ -245,7 +246,6 @@ const CourseOverview = (props) => {
       />
     );
   };
-  console.log("isFavorite", isFavorite);
   const shareImage = () => {
     return (
       <TouchableOpacity
@@ -298,7 +298,7 @@ const CourseOverview = (props) => {
               {/* <ScrollView> */}
               <VideoPlayer
                 source={{
-                  // uri: `http://54.92.82.16:3001/data/${listData?.[0]?.file[0]}`,
+                  uri: `http://54.92.82.16:3001/data/${listData?.[0]?.file[0]}`,
                 }}
                 // Can be a URL or a local file.
                 disableBack

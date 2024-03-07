@@ -56,14 +56,9 @@ const CoachDetail = (props) => {
   const dataa = props.state.learnReducer.details;
   const [result, setResults] = useState(props.route.params);
   const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
-  // {
-  //   console.log("LUUUUUUDDDDD", dataa)
-  // }
 
   const showData = ({ item, index }) => {
-    console.log(item, "[[[[[[");
     const Item = item?.item !== undefined ? item?.item : item;
-    // const Item = item
     return (
       <View
         key={index}
