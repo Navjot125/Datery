@@ -21,7 +21,11 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import { connect, useDispatch, useSelector } from "react-redux";
 import { roleRequest } from "../../../modules/Role/actions";
 import ProfileGuestUser from "../../GuestScreens/ProfileGuestUser/ProfileGuestUser";
-import { signOutRequest, signOutSuccess } from "../../../modules/Login/actions";
+import {
+  removeAll,
+  signOutRequest,
+  signOutSuccess,
+} from "../../../modules/Login/actions";
 import { API_URL } from "../../../Constants/Config";
 import {
   aboutComfilityRequest,
@@ -35,22 +39,20 @@ const Profile = (props) => {
   const navigation = useNavigation();
   const role = props?.state?.roleReducer?.role?.id;
   const dispatch = useDispatch();
+  const { loader } = useSelector((state) => state?.loaderReducer);
   const { userToken, loginData } = useSelector((state) => state.loginReducer);
-  const { Usertoken, signupSucessData } = useSelector(
-    (state) => state.signupReducer
-  );
+  const { signupSucessData } = useSelector((state) => state.signupReducer);
+  const SignupToken = signupSucessData?.Usertoken;
   const [recent, setRecent] = useState();
-
-  const userName = props.state?.loginReducer?.loginData?.userName
-    ? props.state?.loginReducer?.loginData?.userName
-    : props.state?.signupReducer?.signupSucessData?.UserData?.userName;
-  const email = props.state?.loginReducer?.loginData?.email
-    ? props.state?.loginReducer?.loginData?.email
-    : props.state?.signupReducer?.signupSucessData?.UserData?.email;
+  const userName = loginData?.userName
+    ? loginData?.userName
+    : signupSucessData?.UserData?.userName;
+  const email = loginData?.email
+    ? loginData?.email
+    : signupSucessData?.UserData?.email;
   const isFocused = useIsFocused();
 
   useEffect(() => {
-    // props.setLoader(false);
     handleRecentPurchase();
   }, [isFocused]);
 
@@ -58,26 +60,8 @@ const Profile = (props) => {
     {
       id: "1",
       title: "Dating Profile",
-      // onPress: () => navigation.navigate("DatingProfile"),
       onPress: () => {
-        // props.setLoader(true)
         navigation.navigate("DatingProfile");
-        // let params = {
-        //   endpoint: API_URL.getProfile,
-        //   userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        //     props.state?.signupReducer?.signupSucessData?.Usertoken,
-        //   id: {
-        //     userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-        //       props.state?.signupReducer?.signupSucessData?.UserData?._id
-        //   },
-        //   navigation: () => {
-        //     // props.setLoader(false)
-        //     // setTimeout(() => {
-        //     // }, 100)
-        //   }
-        // };
-        // props.datingProfileRequest(params);
-        // console.log(params,'params');
       },
     },
     // {
@@ -145,85 +129,8 @@ const Profile = (props) => {
     {
       id: "13",
       title: "Sign out",
-      // onPress: () => navigation.navigate("Login"),
       onPress: async () => {
         handleSignOut();
-        // try {
-        //   let params = {
-        //     endpoint: API_URL.logOut,
-        //     changeRole: props.roleRequest,
-        //     userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        //       props.state?.signupReducer?.signupSucessData?.Usertoken,
-        //     // props?.state?.loginReducer?.userToken,
-        //     navigation: () =>
-        //       navigation.replace("Login"),
-        //   };
-        //   // signOutRequest()
-        //   dispatch(setLoader(true));
-        //   let res = await axiosClient
-        //     .post(params.endpoint,
-        //       {},
-        //       {
-        //         headers: {
-        //           'Content-Type': 'application/json',
-        //           'Authorization': params.userToken
-        //         }
-        //       })
-        //     .then(function (response) {
-        //       return response;
-        //     })
-        //     .catch(function (error) {
-        //       console.log('onSignOut SAGA ERROR ===>', error);
-        //       return;
-        //     });
-        //   if (res) {
-        //     console.log(res?.data, '....onSignOut Api Response');
-        //     if (res?.data?.status) {
-        //       dispatch(setLoader(false));
-        //       // showAlertSuccess(res?.data?.message);
-        //       dispatch(signOutSuccess());
-        //       // yield put(removeAnswer('all'))
-        //       // Removed because we can use rootReducer
-        //       // yield put(removeAnswer())
-        //       // yield put(removeAll())
-        //       // yield put(removeAllSignupData())
-        //       // yield put(removeAllCart())
-        //       // yield put(removeAllFavourites())
-        //       // yield put(removeAllProfileData())
-        //       //....................................
-        //       // yield put(loginSuccess(res.data));
-        //       // showAlert(res.data.message);
-        //       params.changeRole({ user: 'Guest', id: 1 })
-        //       params.navigation();
-        //       console.log(res?.data?.status, 'onSignOut Api Response status');
-        //     } else {
-        //       // yield put(setLoader(false));
-        //       dispatch(setLoader(false));
-
-        //       console.log(res?.data?.status, 'onSignOutFail Response status');
-        //       // res?.data?.message ?
-        //       //   showAlertError(res?.data?.message) : null  // remove
-        //       // yield put(signOutFail());
-        //       // showAlert(res.data.message);
-        //       console.log(res?.data?.message);  // remove
-        //     }
-        //   } else {
-        //     // yield put(setLoader(false));
-        //     dispatch(setLoader(false));
-
-        //     {
-        //       // res?.data?.message ?
-        //       //   showAlert(res?.data?.message) : null // remove
-        //     }
-        //     console.log(REQUIRED_ERROR_MESSAGE);
-        //   }
-        // } catch (error) {
-        //   console.log("EEEe", error)
-        // }
-
-        // dispatch(signOutRequest(params))
-
-        // props.signOutRequest(params)
       },
     },
   ];
@@ -233,102 +140,35 @@ const Profile = (props) => {
       let params = {
         endpoint: API_URL.logOut,
         changeRole: props.roleRequest,
-        userToken: props?.state?.loginReducer?.userToken
-          ? props?.state?.loginReducer?.userToken
-          : props.state?.signupReducer?.signupSucessData?.Usertoken,
-        // props?.state?.loginReducer?.userToken,
+        userToken: userToken ? userToken : SignupToken,
         navigation: () =>
           navigation.reset({
             index: 0,
             routes: [{ name: "Root", params: { screen: "Profile" } }],
           }),
-        // navigation.navigate('Root', {
-        //   screen: 'Profile',
-        //   // params: { elapsedTime: elapsedTimeInSeconds }
-        // })
-        // onPress={() => navigation.replace("Root")}Profile
-        // navigation.replace("Root"),
       };
-      // // signOutRequest()
-      // dispatch(setLoader(true));
-      // let res = await axiosClient
-      //   .post(params.endpoint,
-      //     {},
-      //     {
-      //       headers: {
-      //         'Content-Type': 'application/json',
-      //         'Authorization': params.userToken
-      //       }
-      //     })
-      //   .then(function (response) {
-      //     return response;
-      //   })
-      //   .catch(function (error) {
-      //     console.log('onSignOut SAGA ERROR ===>', error);
-      //     return;
-      //   });
-      // if (res) {
-      //   console.log(res?.data, '....onSignOut Api Response');
-      //   if (res?.data?.status) {
-      //     // dispatch(setLoader(false));
-      //     // showAlertSuccess(res?.data?.message);
-      dispatch(signOutSuccess());
-      // yield put(removeAnswer('all'))
-      // Removed because we can use rootReducer
-      // yield put(removeAnswer())
-      // yield put(removeAll())
-      // yield put(removeAllSignupData())
-      // yield put(removeAllCart())
-      // yield put(removeAllFavourites())
-      // yield put(removeAllProfileData())
-      //....................................
-      // yield put(loginSuccess(res.data));
-      // showAlert(res.data.message);
-      params.changeRole({ user: "Guest", id: 1 });
-      params.navigation();
-      // console.log(res?.data?.status, 'onSignOut Api Response status');
-      //   } else {
-      //     // yield put(setLoader(false));
-      //     dispatch(setLoader(false));
-
-      //     console.log(res?.data?.status, 'onSignOutFail Response status');
-      //     // res?.data?.message ?
-      //     //   showAlertError(res?.data?.message) : null  // remove
-      //     // yield put(signOutFail());
-      //     // showAlert(res.data.message);
-      //     console.log(res?.data?.message);  // remove
-      //   }
-      // } else {
-      //   // yield put(setLoader(false));
-      //   dispatch(setLoader(false));
-
-      //   {
-      //     // res?.data?.message ?
-      //     //   showAlert(res?.data?.message) : null // remove
-      //   }
-      //   console.log(REQUIRED_ERROR_MESSAGE);
-      // }
+      dispatch(signOutRequest(params));
     } catch (error) {
-      // console.log("EEEe", error)
+      console.log(error?.response?.data, "EEEe in handleSignOut", error);
     }
   };
 
   const handleNavigate = () => {
     navigation.navigate("PurchaseHistory");
   };
-
   const handleRecentPurchase = async () => {
     try {
-      // let query = `?bookedItemId=${props.route.params.bId}`
       const res = await axiosClient.get(API_URL.recentPurchase, {
+        params: { userId: loginData?._id },
         headers: {
-          Authorization: userToken ? userToken : Usertoken,
+          "Content-Type": "application/json",
+          Authorization: userToken ? userToken : SignupToken,
         },
       });
-      // console.log(res.data, "userToken")
       if (res.data.status) setRecent(res.data.cartItem);
+      console.log(res?.data?.cartItem);
     } catch (error) {
-      console.log("ERR", error);
+      console.log("ERR in handleRecentPurchase2", error?.response?.data);
     }
   };
 

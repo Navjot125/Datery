@@ -166,10 +166,10 @@ function* onFavouriteRequest({ navigation }) {
 
 function* onFavouriteListRequest({ navigation }) {
   yield put(setLoader(true));
-  console.log(
-    navigation,
-    "navigation ---------------request of favourites list"
-  );
+  // console.log(
+  //   navigation,
+  //   "navigation ---------------request of favourites list"
+  // );
   let res = yield axiosClient
     .post(navigation.endpoint, {
       userId: navigation.id.userId,
@@ -184,7 +184,7 @@ function* onFavouriteListRequest({ navigation }) {
     });
   if (res) {
     if (res?.data?.status) {
-      console.log(res?.data, "======------------....");
+      // console.log(res?.data, "======------------....");
       yield put(setLoader(false));
       // yield put(merchantDetailsSuccess(res?.data?.data));
       yield put(favouriteListSuccess(res?.data?.data));

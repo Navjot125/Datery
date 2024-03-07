@@ -42,22 +42,16 @@ function* onCardRequest({ data }) {
     });
     if (res) {
       yield put(setLoader(false));
-      console.log(res, "res", "res?.data1----------", res?.data);
       if (res?.data?.status) {
         yield put(CardAllSuccess(res?.data?.data));
         data.callback(res?.data);
       } else {
-        console.log(res, "res", "res?.data2----------", res?.data);
-        data.callback(res?.data);
         res.data.message == "Please provide the coridnates."
           ? null
           : showAlertError(res.data.message);
         yield put(CardAllFail());
-        // console.log(res.data.message);
       }
     } else {
-      console.log(res, "res", "res?.data3----------", res?.data);
-      data.callback(res?.data);
       yield put(setLoader(false));
       res.data.message == "Please provide the coridnates."
         ? null
@@ -66,7 +60,6 @@ function* onCardRequest({ data }) {
   } catch (err) {
     console.log("onCardRequest", err?.response?.data);
     showAlertError(err?.response?.data?.Error);
-    data.callback();
   }
 }
 

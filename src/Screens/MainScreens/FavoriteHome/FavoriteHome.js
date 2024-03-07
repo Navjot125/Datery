@@ -93,7 +93,6 @@ const FavoriteHome = (props) => {
   //   status={checked ? 'checked' : 'unchecked'}
   // // status={types[0] == item.title ? 'checked' : 'unchecked'}
   // />
-  console.log("checkedId", checkedId);
   const renderItemEdit = ({ item }) => {
     const onPressChange = (item) => {
       item?.serviceId == checkedId
@@ -103,7 +102,6 @@ const FavoriteHome = (props) => {
     return (
       <View
         style={[
-          styles.cardView,
           {
             flexDirection: "row",
           },
@@ -120,96 +118,66 @@ const FavoriteHome = (props) => {
           status={checked ? "checked" : "unchecked"}
           // status={types[0] == item.title ? 'checked' : 'unchecked'}
         />
-        <DropShadow
-          style={[styles.shadowProp, { flex: 1, marginHorizontal: 12 }]}
+        {/* <DropShadow style={[styles.shadowProp, { flex: 1 }]}> */}
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => navigation.navigate("ListingDetail")}
+          style={[styles.card, { height: 100 }]}
         >
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => navigation.navigate("ListingDetail")}
-          >
-            <View style={[styles.card]}>
-              {/* <Image
+          {/* <View style={[styles.card]}> */}
+          <FastImage
+            style={{
+              height: 100,
+              width: 100,
+              borderRadius: 6,
+              // padding: 13,
+              // resizeMode: 'contain',
+            }}
+            source={{
+              uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
+            }}
+            // resizeMode="contain"
+          />
+          <View style={{ marginLeft: 10, width: "58%" }}>
+            <Text
+              style={{
+                fontFamily: fonts.BOLD,
+                color: color._black,
+                fontSize: 15,
+                marginTop: 5,
+              }}
+            >
+              {item.providerName?.length > 10
+                ? item.providerName.slice(0, 10)
+                : item.providerName}
+            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                // marginTop: 9,
+              }}
+            >
+              <Text
                 style={{
-                  height: 100,
-                  width: 100,
-                  borderRadius: 6,
-                  // padding: 13,
-                  // resizeMode: 'contain',
+                  fontFamily: fonts.MEDIUM,
+                  color: color._black,
+                  fontSize: 11,
                 }}
-                source={{
-                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
-                }}
-              /> */}
-              <FastImage
-                style={{
-                  height: 100,
-                  width: 100,
-                  borderRadius: 6,
-                  // padding: 13,
-                  // resizeMode: 'contain',
-                }}
-                source={{
-                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
-                }}
-                // resizeMode="contain"
-              />
-              <View style={{ flex: 1, paddingHorizontal: 10 }}>
-                <Text
-                  style={{
-                    fontFamily: fonts.BOLD,
-                    color: color._black,
-                    fontSize: 15,
-                  }}
-                >
-                  {item.providerName}{" "}
-                </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginTop: 9,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontFamily: fonts.MEDIUM,
-                      color: color._black,
-                      fontSize: 11,
-                    }}
-                  >
-                    {item.providerlocationAddress}{" "}
-                    <Text>{item?.Distance.toFixed(2)} mi</Text>
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    marginTop: 9,
-                  }}
-                >
-                  {item.averageRating != 0 ? (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: fonts.REGULAR,
-                          color: color._black,
-                          fontSize: 13,
-                        }}
-                      >
-                        {item.averageRating}{" "}
-                      </Text>
-                      <Atom.Rating
-                        // currentRating={Math.round(item.rating)}
-                        currentRating={Math.round(item.averageRating)}
-                      />
-                    </>
-                  ) : (
-                    <Atom.Rating
-                      // currentRating={Math.round(item.rating)}
-                      currentRating={Math.round(item.averageRating)}
-                    />
-                  )}
+              >
+                {item.providerlocationAddress}{" "}
+                <Text>{item?.Distance.toFixed(2)} mi</Text>
+              </Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                flexWrap: "wrap",
+                marginTop: 5,
+              }}
+            >
+              {item.averageRating != 0 ? (
+                <>
                   <Text
                     style={{
                       fontFamily: fonts.REGULAR,
@@ -217,172 +185,178 @@ const FavoriteHome = (props) => {
                       fontSize: 13,
                     }}
                   >
-                    {" "}
-                    {item.ratingCount} Ratings
+                    {item.averageRating}{" "}
                   </Text>
-                </View>
-
-                <Text
-                  style={{
-                    // marginTop: 9,
-                    // marginBottom: 13,
-                    fontFamily: fonts.SEMI_BOLD,
-                    color: color._border_orange,
-                    fontSize: 13,
-                  }}
-                >
-                  Starting at{" "}
-                  <Text
-                    style={{
-                      // marginTop: 9,
-                      // marginBottom: 14,
-                      fontFamily: fonts.BOLD,
-                      color: color._border_orange,
-                      fontSize: 20,
-                    }}
-                  >
-                    ${item?.price}
-                  </Text>
-                </Text>
-              </View>
+                  <Atom.Rating
+                    // currentRating={Math.round(item.rating)}
+                    currentRating={Math.round(item.averageRating)}
+                  />
+                </>
+              ) : (
+                <Atom.Rating
+                  // currentRating={Math.round(item.rating)}
+                  currentRating={Math.round(item.averageRating)}
+                />
+              )}
+              <Text
+                style={{
+                  fontFamily: fonts.REGULAR,
+                  color: color._black,
+                  fontSize: 13,
+                }}
+              >
+                {" "}
+                {item.ratingCount} Ratings
+              </Text>
             </View>
-          </TouchableOpacity>
-        </DropShadow>
+
+            <Text
+              style={{
+                // marginTop: 9,
+                // marginBottom: 13,
+                fontFamily: fonts.SEMI_BOLD,
+                color: color._border_orange,
+                fontSize: 13,
+              }}
+            >
+              Starting at{" "}
+              <Text
+                style={{
+                  // marginTop: 9,
+                  // marginBottom: 4,
+                  fontFamily: fonts.BOLD,
+                  color: color._border_orange,
+                  fontSize: 15,
+                }}
+              >
+                ${item?.price}
+              </Text>
+            </Text>
+          </View>
+          {/* </View> */}
+        </TouchableOpacity>
+        {/* </DropShadow> */}
       </View>
     );
   };
   const renderItem = ({ item }) => {
     return (
       <View style={styles.cardView}>
-        <DropShadow style={styles.shadowProp}>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => navigation.navigate("ListingDetail")}
-          >
-            <View style={styles.card}>
-              {/* <Image
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => navigation.navigate("ListingDetail")}
+        >
+          <View style={styles.card}>
+            <FastImage
+              style={{
+                height: 100,
+                width: 100,
+                borderRadius: 6,
+                // padding: 13,
+                // resizeMode: 'contain',
+              }}
+              source={{
+                uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
+              }}
+              // resizeMode="contain"
+            />
+            <View style={{ flex: 1, paddingHorizontal: 10 }}>
+              <Text
                 style={{
-                  height: 100,
-                  width: 100,
-                  borderRadius: 6,
-                  // padding: 13,
-                  // resizeMode: 'contain',
+                  fontFamily: fonts.BOLD,
+                  color: color._black,
+                  fontSize: 15,
                 }}
-                source={{
-                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
-                }}
-              /> */}
-              <FastImage
+              >
+                {item.providerName}{" "}
+              </Text>
+              <View
                 style={{
-                  height: 100,
-                  width: 100,
-                  borderRadius: 6,
-                  // padding: 13,
-                  // resizeMode: 'contain',
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: 9,
                 }}
-                source={{
-                  uri: `http://54.92.82.16:3001/data/${item.providerfile}`,
-                }}
-                // resizeMode="contain"
-              />
-              <View style={{ flex: 1, paddingHorizontal: 10 }}>
+              >
                 <Text
                   style={{
-                    fontFamily: fonts.BOLD,
+                    fontFamily: fonts.MEDIUM,
                     color: color._black,
-                    fontSize: 15,
+                    fontSize: 11,
                   }}
                 >
-                  {item.providerName}{" "}
+                  {item.providerlocationAddress}{" "}
+                  <Text>{item?.Distance.toFixed(2)} mi</Text>
                 </Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginTop: 9,
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontFamily: fonts.MEDIUM,
-                      color: color._black,
-                      fontSize: 11,
-                    }}
-                  >
-                    {item.providerlocationAddress}{" "}
-                    <Text>{item?.Distance.toFixed(2)} mi</Text>
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    marginTop: 9,
-                  }}
-                >
-                  {item.averageRating != 0 ? (
-                    <>
-                      <Text
-                        style={{
-                          fontFamily: fonts.REGULAR,
-                          color: color._black,
-                          fontSize: 13,
-                        }}
-                      >
-                        {/* {" "} */}
-                        {item.averageRating}{" "}
-                      </Text>
-                      <Atom.Rating
-                        // currentRating={Math.round(item.rating)}
-                        currentRating={Math.round(item.averageRating)}
-                      />
-                    </>
-                  ) : (
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  marginTop: 9,
+                }}
+              >
+                {item.averageRating != 0 ? (
+                  <>
+                    <Text
+                      style={{
+                        fontFamily: fonts.REGULAR,
+                        color: color._black,
+                        fontSize: 13,
+                      }}
+                    >
+                      {/* {" "} */}
+                      {item.averageRating}{" "}
+                    </Text>
                     <Atom.Rating
                       // currentRating={Math.round(item.rating)}
                       currentRating={Math.round(item.averageRating)}
                     />
-                  )}
-                  <Text
-                    style={{
-                      fontFamily: fonts.REGULAR,
-                      color: color._black,
-                      fontSize: 13,
-                    }}
-                  >
-                    {" "}
-                    {/* {item.ratingCount}{" "}Ratings */}
-                    {item.ratingCount} Ratings
-                  </Text>
-                </View>
-
+                  </>
+                ) : (
+                  <Atom.Rating
+                    // currentRating={Math.round(item.rating)}
+                    currentRating={Math.round(item.averageRating)}
+                  />
+                )}
                 <Text
                   style={{
-                    // marginTop: 9,
-                    // marginBottom: 13,
-                    fontFamily: fonts.SEMI_BOLD,
-                    color: color._border_orange,
+                    fontFamily: fonts.REGULAR,
+                    color: color._black,
                     fontSize: 13,
                   }}
                 >
-                  {/* Starting at ${item.price} */}
-                  Starting at{" "}
-                  <Text
-                    style={{
-                      // marginTop: 9,
-                      // marginBottom: 14,
-                      fontFamily: fonts.BOLD,
-                      color: color._border_orange,
-                      fontSize: 20,
-                    }}
-                  >
-                    ${item.price}
-                  </Text>
+                  {" "}
+                  {/* {item.ratingCount}{" "}Ratings */}
+                  {item.ratingCount} Ratings
                 </Text>
               </View>
+
+              <Text
+                style={{
+                  // marginTop: 9,
+                  // marginBottom: 13,
+                  fontFamily: fonts.SEMI_BOLD,
+                  color: color._border_orange,
+                  fontSize: 13,
+                }}
+              >
+                {/* Starting at ${item.price} */}
+                Starting at{" "}
+                <Text
+                  style={{
+                    // marginTop: 9,
+                    // marginBottom: 14,
+                    fontFamily: fonts.BOLD,
+                    color: color._border_orange,
+                    fontSize: 20,
+                  }}
+                >
+                  ${item.price}
+                </Text>
+              </Text>
             </View>
-          </TouchableOpacity>
-        </DropShadow>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   };

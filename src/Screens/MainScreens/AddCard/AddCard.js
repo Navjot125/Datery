@@ -49,7 +49,7 @@ const AddCard = (props) => {
   const [cardNumber, setCardNumber] = useState();
   const [cvv, setCvv] = useState();
   const [city, setCity] = useState();
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState("mohali");
   const [zipCode, setZipCode] = useState();
   const [state, setState] = useState();
   const [number, setNumber] = useState("");
@@ -441,14 +441,17 @@ const AddCard = (props) => {
               onChangeText={(value) => handleChange("adress", value)}
             /> */}
               <>
-                <View style={{ flex: 1, marginVertical: 10 }}>
+                <View style={{ marginVertical: 10 }}>
                   <GooglePlacesAutocomplete
                     placeholder="Search"
                     enablePoweredByContainer={false}
-                    textInputProps={{ clearButtonMode: "never" }}
+                    // textInputProps={{ clearButtonMode: "never" }}
                     styles={{
                       textInputContainer: {
                         // backgroundColor: "grey",
+                      },
+                      container: {
+                        flex: 0,
                       },
                       textInput: {
                         height: 58,
@@ -457,14 +460,15 @@ const AddCard = (props) => {
                         borderWidth: 1,
                         borderRadius: 16,
                         borderColor: "#DCDCDD",
+                        // backgroundColor:'red',
                       },
                       predefinedPlacesDescription: {
-                        // color: "#1faadb",
+                        color: "#1faadb",
                       },
                     }}
                     fetchDetails={true}
                     onPress={(data, details = null) => {
-                      // console.log(JSON.stringify(details),'[[[[[[[[[[[[[[');
+                      console.log(data, "[[[[[[[[[[[[[[");
                       setError({ ...error, state: "", address: "", city: "" }),
                         setAddress(details?.formatted_address),
                         setCity(details?.address_components[1]?.long_name),
@@ -476,7 +480,7 @@ const AddCard = (props) => {
                       language: "en",
                     }}
                     currentLocation={false}
-                    currentLocationLabel="Current location"
+                    // currentLocationLabel="Current location"
                   />
                 </View>
                 {error?.address ? (

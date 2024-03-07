@@ -11,6 +11,7 @@ import {
   loginFail,
   loginSuccess,
   removeAll,
+  signOutFail,
   signOutSuccess,
 } from "./actions";
 import { API_URL } from "../../Constants/Config";
@@ -56,6 +57,7 @@ function* onLoginRequest({ data, navigation }) {
     data?.cb(param);
   } else {
     console.log("res of false status", res?.data);
+    showAlertError(res?.data?.message);
     yield put(setLoader(false));
     yield put(loginFail());
   }
@@ -104,8 +106,7 @@ function* onChangePasswordRequest({ data, navigation }) {
 
 function* onSignOutRequest({ navigation }) {
   try {
-    // yield put(setLoader(true));
-    // console.log(navigation.endpoint, navigation.userToken, 'navigation --------------- ', "hi");
+    yield put(setLoader(true));
     let res = yield axiosClient
       .post(
         navigation.endpoint,
@@ -121,48 +122,25 @@ function* onSignOutRequest({ navigation }) {
         return response;
       })
       .catch(function (error) {
-        // console.log('onSignOut SAGA ERROR ===>', error);
+        console.log(error?.response?.data, "onSignOut SAGA ERROR ===>", error);
         return;
       });
     if (res) {
-      // console.log(res?.data, '....onSignOut Api Response');
       if (res?.data?.status) {
         yield put(setLoader(false));
-        // showAlertSuccess(res?.data?.message);
         yield put(signOutSuccess());
-        // yield put(removeAnswer('all'))
-        // Removed because we can use rootReducer
-        // yield put(removeAnswer())
-        // yield put(removeAll())
-        // yield put(removeAllSignupData())
-        // yield put(removeAllCart())
-        // yield put(removeAllFavourites())
-        // yield put(removeAllProfileData())
-        //....................................
-        // yield put(loginSuccess(res.data));
-        // showAlert(res.data.message);
         navigation.changeRole({ user: "Guest", id: 1 });
         navigation.navigation();
-        // console.log(res?.data?.status, 'onSignOut Api Response status');
       } else {
         yield put(setLoader(false));
-        // console.log(res?.data?.status, 'onSignOutFail Response status');
-        // res?.data?.message ?
-        //   showAlertError(res?.data?.message) : null  // remove
-        yield put(signOutFail());
-        // showAlert(res.data.message);
-        // console.log(res?.data?.message);  // remove
+        res?.data?.message && showAlertError(res?.data?.message);
+        console.log(res?.data?.message); // remove
       }
     } else {
       yield put(setLoader(false));
-      {
-        // res?.data?.message ?
-        //   showAlert(res?.data?.message) : null // remove
-      }
-      // console.log(REQUIRED_ERROR_MESSAGE);
     }
   } catch (err) {
-    // console.log(err, "SIGNERR")
+    console.log(err, "Catch part of onSignOutRequest", err?.response?.data);
   }
 }
 

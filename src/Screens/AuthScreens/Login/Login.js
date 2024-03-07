@@ -37,6 +37,7 @@ import { put } from "redux-saga/effects";
 
 const Login = memo(
   (props) => {
+    const { loader } = useSelector((state) => state?.loaderReducer);
     const { userToken, loginData } = useSelector((state) => state.loginReducer);
     const { signupSucessData } = useSelector((state) => state.signupReducer);
     const navigation = useNavigation();
@@ -267,6 +268,7 @@ const Login = memo(
                       </Text>
                     </Text>
                     <Atom.Button
+                      loader={loader}
                       onPress={handleSubmit}
                       // onPress={() => {
                       //   navigation.reset({

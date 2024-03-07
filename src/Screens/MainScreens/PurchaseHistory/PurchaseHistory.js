@@ -23,35 +23,35 @@ import { API_URL } from "../../../Constants/Config";
 import axiosClient from "../../../Utils/ApiClient";
 
 const PurchaseHistory = (props) => {
-
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [isLoading, setIsLoading] = useState(true)
-  const { userToken, loginData } = useSelector(state => state.loginReducer)
-  const { Usertoken, signupSucessData } = useSelector(state => state.signupReducer)
-  const [recent, setRecent] = useState()
-  const isFocused = useIsFocused()
-
+  const [isLoading, setIsLoading] = useState(true);
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
+  const [recent, setRecent] = useState();
+  const isFocused = useIsFocused();
 
   const handleRecentPurchase = async () => {
     try {
       const res = await axiosClient.get(API_URL.recentPurchase, {
+        params: { userId: loginData?._id },
         headers: {
-          Authorization: userToken ? userToken :
-            Usertoken
-        }
-      })
-      // console.log(res.data, "userToken")
-      if (res.data.status)
-        setRecent(res.data.cartItem)
+          "Content-Type": "application/json",
+          Authorization: userToken ? userToken : SignupToken,
+        },
+      });
+      if (res.data.status) setRecent(res.data.cartItem);
+      console.log(res?.data?.cartItem);
     } catch (error) {
-      console.log("ERR", error)
+      console.log("ERR in handleRecentPurchase1", error?.response?.data);
     }
-  }
+  };
 
   useEffect(() => {
-    handleRecentPurchase()
-  }, [isFocused])
+    handleRecentPurchase();
+  }, [isFocused]);
 
   const data = [
     {
@@ -80,19 +80,29 @@ const PurchaseHistory = (props) => {
           borderRadius: 15,
           // flex: 1,
           marginVertical: 15,
-          marginHorizontal: 10
+          marginHorizontal: 10,
           // backgroundColor:'red'
         }}
-        onPress={() => { navigation.navigate("PurchasedActivity", { bId: item._id }) }} >
+        onPress={() => {
+          navigation.navigate("PurchasedActivity", { bId: item._id });
+        }}
+      >
         <View style={[styles.card]}>
           <Image
-            source={{ uri: `http://54.92.82.16:3001/data/${item?.providerImage}` }}
-            style={{ height: 95, width: 110, borderRadius: 6, marginHorizontal: 5 }}
+            source={{
+              uri: `http://54.92.82.16:3001/data/${item?.providerImage}`,
+            }}
+            style={{
+              height: 95,
+              width: 110,
+              borderRadius: 6,
+              marginHorizontal: 5,
+            }}
           />
           <View
             style={{
               flex: 1,
-              marginHorizontal: 5
+              marginHorizontal: 5,
               // backgroundColor:'red'
               // padding: 15,
               // width: "80%",
@@ -100,13 +110,14 @@ const PurchaseHistory = (props) => {
           >
             <Text style={styles.textTitle}>{item.serviceName}</Text>
             <Text style={styles.textBetween}> {item.providerName}</Text>
-            <Text style={styles.textLoc}>
-              {"$160"}</Text>
-            <TouchableOpacity
-              activeOpacity={0.9}
-              style={styles.mediaType2}>
+            <Text style={styles.textLoc}>{"$160"}</Text>
+            <TouchableOpacity activeOpacity={0.9} style={styles.mediaType2}>
               <Text style={styles.mediaType}>
-                <Icon name={"calendar-alt"} size={11} color={color._primary_orange} />
+                <Icon
+                  name={"calendar-alt"}
+                  size={11}
+                  color={color._primary_orange}
+                />
                 {"  "}
                 {item?.time ? item?.time : "Buy Now, Book Later"}
               </Text>
@@ -157,9 +168,7 @@ const PurchaseHistory = (props) => {
 
   const rightImage = () => {
     return (
-      <TouchableOpacity
-        activeOpacity={0.9}
-      >
+      <TouchableOpacity activeOpacity={0.9}>
         <Image
           style={{ height: 22, width: 22, tintColor: color._black }}
           source={require("../../../assets/images/Filter.png")}
@@ -167,7 +176,6 @@ const PurchaseHistory = (props) => {
       </TouchableOpacity>
     );
   };
-  
 
   return (
     <SafeAreaView style={styles.scrollView}>
@@ -188,15 +196,14 @@ const PurchaseHistory = (props) => {
       <PopUp.SlideUpPopUp
         isVisible={modalVisible}
         onPress={() => {
-          // navigation.navigate("PurchasedActivity"), 
-          setModalVisible(!modalVisible)
+          // navigation.navigate("PurchasedActivity"),
+          setModalVisible(!modalVisible);
         }}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
         }}
       />
     </SafeAreaView>
-
   );
 };
 

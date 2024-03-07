@@ -1,6 +1,7 @@
-import React from 'react';
-import { TouchableOpacity, View, Text } from 'react-native';
-import styles from './ButtonStyle';
+import React from "react";
+import { TouchableOpacity, View, Text } from "react-native";
+import styles from "./ButtonStyle";
+import CustomLoader from "../CustomLoader/CustomLoader";
 
 const Button = ({
   title,
@@ -9,6 +10,7 @@ const Button = ({
   textStyle,
   containerStyle,
   bottom,
+  loader,
   ...props
 }) => (
   <View style={[styles.submitBtnContainer, containerStyle]}>
@@ -16,8 +18,13 @@ const Button = ({
       activeOpacity={0.9}
       onPress={onPress}
       {...props}
-      style={[bottom ? styles.bottomBtn : styles.container, style]}>
-      <Text style={[styles.btnText, textStyle]}>{title}</Text>
+      style={[bottom ? styles.bottomBtn : styles.container, style]}
+    >
+      {loader ? (
+        <CustomLoader />
+      ) : (
+        <Text style={[styles.btnText, textStyle]}>{title}</Text>
+      )}
     </TouchableOpacity>
   </View>
 );
