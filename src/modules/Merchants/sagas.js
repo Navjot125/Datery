@@ -54,10 +54,10 @@ function* onMerchantRequest({ data }) {
       // console.log(res.data?.data[0], "------------------res");
       if (res?.data?.status) {
         // yield put(setLoader(false));
-        // console.log(
-        //   "res?.data?.data--------------------",
-        //   res?.data?.data
-        // );
+        console.log(data,
+          "res?.data?.data--------------------",
+          res?.data?.data
+        );
         // console.log(res.data.data, ' message from saga merchant onMerchantRequest');
         yield put(merchantSuccess(res?.data?.data, data));
         // if(res?.data?.data?.lenght > 0){
@@ -78,7 +78,12 @@ function* onMerchantRequest({ data }) {
       // console.log(REQUIRED_ERROR_MESSAGE);
     }
   } catch (error) {
-    console.log(error, "error in onMerchantRequest", error?.response?.data);
+    console.log(
+      error,
+      "error in onMerchantRequest",
+      error?.response?.data,
+      data
+    );
   }
   // yield put(setLoader(false));
 }
@@ -179,7 +184,7 @@ function* onFavouriteListRequest({ navigation }) {
       return response;
     })
     .catch(function (error) {
-      console.log('onFavouriteListRequest SAGA ERROR ===>', error?.response);
+      console.log("onFavouriteListRequest SAGA ERROR ===>", error?.response);
       return;
     });
   if (res) {

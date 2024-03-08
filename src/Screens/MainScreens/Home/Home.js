@@ -725,7 +725,6 @@ const Home = (props) => {
     }
     // console.log('page', props.state.merchantReducer.totalMerchant,params,totalMerchant > merchants.length)
   };
-
   const userCity =
     props?.state?.profileReducer?.datingData?.userProfile?.locationAddress;
   const userCords = null;
