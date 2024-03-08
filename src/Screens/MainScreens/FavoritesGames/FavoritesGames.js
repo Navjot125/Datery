@@ -110,47 +110,47 @@ const FavoritesGames = (props) => {
   const showData = ({ item, index }) => {
     return (
       <View style={[styles.cardView, { marginHorizontal: 20 }]}>
-        <DropShadow style={styles.shadowProp}>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={() => navigation.navigate("HowToPlay", [item])}
-            // favorite: true
-          >
-            <View style={[styles.card]}>
-              {/* <Image
+        {/* <DropShadow style={styles.shadowProp}> */}
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() => navigation.navigate("HowToPlay", [item])}
+          // favorite: true
+        >
+          <View style={[styles.card]}>
+            {/* <Image
                 source={{
                   uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
                 }}
                 style={{ height: 66, width: 85, borderRadius: 6 }}
               /> */}
-              <FastImage
-                style={{ width: 85, height: 85, borderRadius: 6 }}
-                source={{
-                  uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
-                }}
-                // resizeMode="contain"
-              />
-              <View style={{ padding: 15, flexDirection: "column" }}>
-                <Text style={[styles.textTitle, { fontWeight: "400" }]}>
-                  {item.category}
-                </Text>
-                <Text style={styles.textTitle}>{item.gameTitle}</Text>
-                <Text style={{ fontSize: 13 }}>{item.shortDescription}</Text>
-                <View style={{ flexDirection: "row" }}>
-                  {item.labels &&
-                    Array.isArray(item.labels) &&
-                    item.labels.map((items) => (
-                      <View style={[styles.newMain, { marginRight: 7 }]}>
-                        <View style={styles.newWrp}>
-                          <Text style={styles.newWrpTxt}>{items}</Text>
-                        </View>
+            <FastImage
+              style={{ width: 85, height: 85, borderRadius: 6 }}
+              source={{
+                uri: `http://54.92.82.16:3001/data/${item?.file[0]}`,
+              }}
+              // resizeMode="contain"
+            />
+            <View style={{ padding: 15, flexDirection: "column" }}>
+              <Text style={[styles.textTitle, { fontWeight: "400" }]}>
+                {item.category}
+              </Text>
+              <Text style={styles.textTitle}>{item.gameTitle}</Text>
+              <Text style={{ fontSize: 13 }}>{item.shortDescription}</Text>
+              <View style={{ flexDirection: "row" }}>
+                {item.labels &&
+                  Array.isArray(item.labels) &&
+                  item.labels.map((items) => (
+                    <View style={[styles.newMain, { marginRight: 7 }]}>
+                      <View style={styles.newWrp}>
+                        <Text style={styles.newWrpTxt}>{items}</Text>
                       </View>
-                    ))}
-                </View>
+                    </View>
+                  ))}
               </View>
             </View>
-          </TouchableOpacity>
-        </DropShadow>
+          </View>
+        </TouchableOpacity>
+        {/* </DropShadow> */}
       </View>
     );
   };
@@ -197,7 +197,7 @@ const FavoritesGames = (props) => {
           }}
         >
           <BackHeader title="Favorites" />
-          <Text
+          {/* <Text
             onPress={() => {
               setIsEditMode(!isEditMode);
             }}
@@ -209,18 +209,18 @@ const FavoritesGames = (props) => {
             }}
           >
             Edit
-          </Text>
+          </Text> */}
           {favData?.length > 0 ? (
             isEditMode ? (
               <>
-                <FlatList
+                {/* <FlatList
                   data={favData}
                   ListEmptyComponent={emptyData}
                   keyExtractor={(item) => item.id}
                   contentContainerStyle={{ flexGrow: 1 }}
                   renderItem={showDataEdit}
                   showsVerticalScrollIndicator={false}
-                />
+                /> */}
                 <TouchableOpacity
                   activeOpacity={0.9}
                   style={[
@@ -249,16 +249,15 @@ const FavoritesGames = (props) => {
                   </Text>
                 </TouchableOpacity>
               </>
-            ) : (
-              <FlatList
-                data={favData}
-                ListEmptyComponent={emptyData}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={{ flexGrow: 1 }}
-                renderItem={showData}
-                showsVerticalScrollIndicator={false}
-              />
-            )
+            ) : null
+            // <FlatList
+            //   data={favData}
+            //   ListEmptyComponent={emptyData}
+            //   keyExtractor={(item) => item.id}
+            //   contentContainerStyle={{ flexGrow: 1 }}
+            //   renderItem={showData}
+            //   showsVerticalScrollIndicator={false}
+            // />
           ) : (
             <Text
               style={{

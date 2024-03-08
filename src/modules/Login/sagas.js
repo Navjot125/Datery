@@ -43,7 +43,7 @@ function* onLoginRequest({ data, navigation }) {
       return;
     });
   if (res?.data?.status) {
-    // console.log(res?.data, "res?.data-------- on login");
+    console.log(res?.data, "res?.data-------- on login");
     yield put(setLoader(false));
     yield put(loginSuccess(res.data));
     yield put(addToCartSuccess(res.data?.cartcount));
@@ -77,7 +77,11 @@ function* onChangePasswordRequest({ data, navigation }) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onChangePasswordRequest SAGA ERROR ===>', error);
+      console.log(
+        error?.response?.data,
+        "onChangePasswordRequest SAGA ERROR ===>",
+        error
+      );
       return;
     });
   if (res) {
@@ -90,8 +94,9 @@ function* onChangePasswordRequest({ data, navigation }) {
       // navigation.navigation();
       navigation.onPlaceOrder();
     } else {
+      console.log(res?.data, "on fail of onChangePasswordRequest");
       yield put(setLoader(false));
-      navigation.onPlaceOrderFail();
+      navigation.onPlaceOrderFail(res.data.message);
       // showAlertError(res?.data?.message)
       yield put(changePasswordFail());
       // showAlert(res.data.message);

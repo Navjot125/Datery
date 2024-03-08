@@ -166,7 +166,6 @@ const Profile = (props) => {
         },
       });
       if (res.data.status) setRecent(res.data.cartItem);
-      console.log(res?.data?.cartItem);
     } catch (error) {
       console.log("ERR in handleRecentPurchase2", error?.response?.data);
     }

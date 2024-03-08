@@ -107,14 +107,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     margin: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 2.22,
-    elevation: 3,
+    // shadowColor: "#000",
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 0,
+    // },
+    // shadowOpacity: 0.2,
+    // shadowRadius: 2.22,
+    // elevation: 3,
   },
   row: {
     paddingHorizontal: 16,

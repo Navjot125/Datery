@@ -166,7 +166,12 @@ const LearnFavorites = (props) => {
         />
         {item?.learnType !== "64b9239001e60e6d882e737d" ? (
           <TouchableOpacity
-            style={[styles.card, { height: 100 }]}
+            style={[
+              styles.card,
+              {
+                height: 110,
+              },
+            ]}
             activeOpacity={0.9}
             onPress={() => {
               navigation.navigate(
@@ -200,6 +205,9 @@ const LearnFavorites = (props) => {
                 width: "59%",
               }}
             >
+              <Text>
+                {item?.learncategories == "Video" ? "VIDEO" : "ARTICLE"}
+              </Text>
               <Text style={styles.textTitle}>
                 {" "}
                 {item?.learnTitle?.length > 14
@@ -241,7 +249,7 @@ const LearnFavorites = (props) => {
                     marginTop: 5,
                   }}
                 >
-                  <Text style={{ fontSize: 13, color: "#1F2937" }}>
+                  <Text style={{ fontSize: 13, color: "white" }}>
                     {item?.labels}
                   </Text>
                 </View>
@@ -266,30 +274,32 @@ const LearnFavorites = (props) => {
             <View
               style={{
                 padding: 15,
-                width: "74%",
+                width: "59%",
                 // marginTop:15
                 // flexWrap:'wrap',
+                height: 110,
               }}
             >
+              <Text style={{}}>COACH</Text>
               <Text style={styles.textTitle}>{item.coachName}</Text>
               <Text
-                style={[styles.textBetween, { color: "black", marginTop: 5 }]}
+                style={[styles.textBetween, { color: "black", marginTop: 2 }]}
               >
                 {" "}
                 {item.coachAddress}
               </Text>
-              <Text
+              {/* <Text
                 style={[styles.textBetween, { color: "black", marginTop: 8 }]}
               >
                 {" "}
                 {item.coachApproach}
-              </Text>
+              </Text> */}
 
               {/* <View style={{ flex: 1, marginTop: 15,justifyContent:'space-between' }}> */}
-              <View style={[styles.lastText, {}]}>
-                <Text style={styles.orangeText}>
+              <View style={[styles.lastText, { marginTop: 6 }]}>
+                {/* <Text style={styles.orangeText}>
                   {formatDate(item.createdAt)}
-                </Text>
+                </Text> */}
                 {/* <View
                           style={{
                             height: 5,
@@ -314,16 +324,16 @@ const LearnFavorites = (props) => {
                   padding: 3,
                   borderRadius: 5,
                   paddingHorizontal: 5,
-                  marginTop: 5,
+                  // marginTop: 5,
                 }}
               >
-                <Text style={{ fontSize: 13, color: "#1F2937" }}>
+                <Text style={{ fontSize: 13, color: "white" }}>
                   {item?.labels}
                 </Text>
               </View>
               {/* </View> */}
             </View>
-            <View style={styles.iconWrap}>
+            {/* <View style={styles.iconWrap}>
               <Image
                 source={Images.WhistleImage}
                 style={{
@@ -333,7 +343,7 @@ const LearnFavorites = (props) => {
                   right: 20,
                 }}
               />
-            </View>
+            </View> */}
           </View>
         ) : (
           <Image

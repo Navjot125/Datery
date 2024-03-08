@@ -24,6 +24,7 @@ const INITIAL_STATE = {
   deviceToken: null,
   userToken: null,
   datingData: [],
+  loginDatingData: null,
 };
 
 // {user: 'Guest', id: 1}
@@ -42,6 +43,7 @@ export default (state = INITIAL_STATE, action) => {
         loginData: action.data.UserData,
         userToken: action.data.Usertoken,
         datingData: action.data.userProfile,
+        loginDatingData: action.data.datingData,
         role: null,
       };
 

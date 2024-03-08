@@ -57,7 +57,10 @@ const Play = (props) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   const [loader, setLoader] = useState(true);
-  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { userToken, loginData, loginDatingData } = useSelector(
+    (state) => state.loginReducer
+  );
+  const loginCordinates = loginDatingData?.locationCordinates?.coordinates;
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
@@ -256,11 +259,12 @@ const Play = (props) => {
     page += 1;
     let params = {
       endpoint: API_URL.fetchAllServices,
-      coordinates: tempCords
-        ? tempCords
-        : userCords[0] !== undefined
-        ? userCords
-        : null,
+      coordinates: loginCordinates,
+      // tempCords
+      //   ? tempCords
+      //   : userCords[0] !== undefined
+      //   ? userCords
+      //   : null,
       gametype:
         allData.filter((val) => val.id === selectedItemIndex)[0].id == "2"
           ? "Dating"

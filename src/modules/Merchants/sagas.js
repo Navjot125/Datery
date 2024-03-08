@@ -54,10 +54,10 @@ function* onMerchantRequest({ data }) {
       // console.log(res.data?.data[0], "------------------res");
       if (res?.data?.status) {
         // yield put(setLoader(false));
-        console.log(data,
-          "res?.data?.data--------------------",
-          res?.data?.data
-        );
+        // console.log(data,
+        //   "res?.data?.data--------------------",
+        //   res?.data?.data
+        // );
         // console.log(res.data.data, ' message from saga merchant onMerchantRequest');
         yield put(merchantSuccess(res?.data?.data, data));
         // if(res?.data?.data?.lenght > 0){

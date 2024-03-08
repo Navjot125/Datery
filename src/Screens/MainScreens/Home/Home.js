@@ -69,7 +69,11 @@ import CustomIcon from "../../../assets/CustomIcon";
 let page = 0;
 
 const Home = (props) => {
-  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { userToken, loginData, loginDatingData } = useSelector(
+    (state) => state.loginReducer
+  );
+  const dataa = useSelector((state) => state.loginReducer);
+  console.log();
   const { signupSucessData } = useSelector((state) => state.signupReducer);
   const SignupToken = signupSucessData?.Usertoken;
   const navigation = useNavigation();
@@ -89,7 +93,7 @@ const Home = (props) => {
     (state) => state.merchantReducer
   );
   const [selectedFilter, setSelectedFilters] = useState([]);
-
+  const loginCordinates = loginDatingData?.locationCordinates?.coordinates;
   const list = [
     {
       id: 1,
@@ -561,11 +565,12 @@ const Home = (props) => {
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
-      coordinates: tempCords
-        ? tempCords
-        : userCords[0] !== undefined
-        ? userCords
-        : null,
+      coordinates: loginCordinates,
+      // tempCords
+      //   ? tempCords
+      //   : userCords[0] !== undefined
+      //   ? userCords
+      //   : null,
       category:
         listData.filter((val) => val.id === selectedItemIndex)[0].id == "2"
           ? "Food"
@@ -644,17 +649,17 @@ const Home = (props) => {
   }, [props.state.merchantReducer?.merchants]);
 
   const getApiRes = (item) => {
-    console.log(item, "pp");
     page = 0;
     const token = userToken ? userToken : SignupToken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
-      coordinates: tempCords
-        ? tempCords
-        : userCords[0] !== undefined
-        ? userCords
-        : null,
+      coordinates: loginCordinates,
+      // tempCords
+      //   ? tempCords
+      //   : userCords[0] !== undefined
+      //   ? userCords
+      //   : null,
       category: item?.title == "All" ? null : item?.title,
       offset: page,
       // sortby: list[selectedItem - 1]?.title || ""
@@ -676,11 +681,12 @@ const Home = (props) => {
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
-      coordinates: tempCords
-        ? tempCords
-        : userCords[0] !== undefined
-        ? userCords
-        : null,
+      coordinates: loginCordinates,
+      // tempCords
+      //   ? tempCords
+      //   : userCords[0] !== undefined
+      //   ? userCords
+      //   : null,
       // serviceType: listData.filter(val => val.id === selectedItemIndex)[0].id == "2" ? "6479bae337177e3f0a74c234" : listData.filter(val => val.id === selectedItemIndex)[0].id == '3' ? "649161e44755a8d0372968a1" :
       //   listData.filter(val => val.id === selectedItemIndex)[0].id == '4' ? "6482cc84dd8801bd2034316b" : null,
       category: item?.title || null,
@@ -700,11 +706,12 @@ const Home = (props) => {
       let params = {
         token,
         endpoint: API_URL.fetchAllServices,
-        coordinates: tempCords
-          ? tempCords
-          : userCords[0] !== undefined
-          ? userCords
-          : null,
+        coordinates: loginCordinates,
+        // tempCords
+        //   ? tempCords
+        //   : userCords[0] !== undefined
+        //   ? userCords
+        //   : null,
         category:
           listData.filter((val) => val.id === selectedItemIndex)[0].id == "2"
             ? "Food"

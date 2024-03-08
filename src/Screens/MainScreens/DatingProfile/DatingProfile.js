@@ -253,7 +253,8 @@ const DatingProfile = (props) => {
         <Text style={styles.textinputStyle}>{props.titleText}</Text>
         <Dropdown
           style={styles.dropdown}
-          // defaultButtonText
+          // defaultButtonText={props?.defaultButtonText}
+          defaultButtonText={"wwdwqwdqw"}
           placeholderStyle={styles.placeholderStyle}
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
@@ -539,6 +540,8 @@ const DatingProfile = (props) => {
                 {/* {console.log(updateDatingData, 'kdfndkjsbfsddnsa')} */}
                 <DropDown
                   titleText={"Gender Identity"}
+                  // Gender Identity
+                  defaultButtonText={gender ? gender : "Door Bars"}
                   data={genderData}
                   value={gender}
                   // setValue={setGender}

@@ -65,7 +65,8 @@ const Learn = (props) => {
   const [index, setIndex] = React.useState(0);
   const [loader, setLoader] = useState(true);
   const isFocused = useIsFocused();
-  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { userToken, loginData, loginDatingData } = useSelector((state) => state.loginReducer);
+  const loginCordinates = loginDatingData?.locationCordinates?.coordinates;
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
@@ -128,7 +129,7 @@ const Learn = (props) => {
 
   const getSortRes = (item) => {
     console.log(item, "hhh");
-const token = userToken ? userToken : Usertoken;
+    const token = userToken ? userToken : Usertoken;
     let params = {
       endpoint: API_URL.fetchAllLearn,
       token,
@@ -173,13 +174,14 @@ const token = userToken ? userToken : Usertoken;
     const token = userToken ? userToken : Usertoken;
 
     let params = {
-      endpoint: API_URL.fetchAllServices,
+      endpoint: API_URL.fetchAllServices, 
       token,
-      coordinates: tempCords
-        ? tempCords
-        : userCords[0] !== undefined
-        ? userCords
-        : null,
+      coordinates: loginCordinates,
+      // tempCords
+      //   ? tempCords
+      //   : userCords[0] !== undefined
+      //   ? userCords
+      //   : null,
       category:
         allData.filter((val) => val.id === selectedItemIndex)[0].id == "2"
           ? "6479bae337177e3f0a74c234"

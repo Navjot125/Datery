@@ -388,7 +388,7 @@ const EditCard = (props) => {
         }}
         onPressYes={() => {
           // setLoader(true)
-          handleDelete(card?._id);
+          handleDelete(card?._id), setModalVisible(!modalVisible);
           // setModalVisible(!modalVisible);
           // navigation.navigate("PaymentMethods");
         }}

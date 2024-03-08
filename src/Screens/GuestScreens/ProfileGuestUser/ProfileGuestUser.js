@@ -29,6 +29,7 @@ const ProfileGuestUser = (props) => {
     {
       id: "1",
       title: "Location",
+      onPress: () => navigation.navigate("LocationSetting"),
     },
     {
       id: "2",

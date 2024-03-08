@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
   card: {
-    backgroundColor: "white",
+    // backgroundColor: "red",
     borderRadius: 10,
     width: "100%",
     flexDirection: "row",
@@ -80,6 +80,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // padding: 13,
     padding: 5,
+    
+    shadowColor: "rgba(0, 0, 0, 0.05)",
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
   },
 
   shadowProp: {
