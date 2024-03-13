@@ -665,7 +665,6 @@ const Home = (props) => {
       // sortby: list[selectedItem - 1]?.title || ""
     };
     props.merchantRequest(params);
-    console.log(params, "PARAMSSSSSS");
   };
 
   const getFilterValue = (head) => {

@@ -265,7 +265,7 @@ const LearnFavorites = (props) => {
           </TouchableOpacity>
         ) : item.learnType === "64b9239001e60e6d882e737d" ? (
           <View style={[styles.card]}>
-            <Image
+            <FastImage
               source={{
                 uri: `http://54.92.82.16:3001/data/${item?.coachPic}`,
               }}
@@ -346,7 +346,7 @@ const LearnFavorites = (props) => {
             </View> */}
           </View>
         ) : (
-          <Image
+          <FastImage
             source={Images.BallerinaImage}
             style={{ height: 85, width: 85, borderRadius: 6 }}
           />
@@ -463,7 +463,7 @@ const LearnFavorites = (props) => {
               </>
             ) : item.learnType === "64b9239001e60e6d882e737d" ? (
               <>
-                <Image
+                <FastImage
                   source={{
                     uri: `http://54.92.82.16:3001/data/${item?.coachPic}`,
                   }}
@@ -510,7 +510,7 @@ const LearnFavorites = (props) => {
                       />
                       {"Dallas"}
                     </Text>
-                    <Image
+                    <FastImage
                       source={require("../../../assets/images/Video.png")}
                       style={{ width: 15, height: 10, marginHorizontal: 4 }}
                     />
@@ -542,7 +542,7 @@ const LearnFavorites = (props) => {
               </>
             ) : (
               // Else Block, render a default image or any other content
-              <Image
+              <FastImage
                 source={Images.BallerinaImage}
                 style={{ height: 85, width: 85, borderRadius: 6 }}
               />
@@ -577,7 +577,7 @@ const LearnFavorites = (props) => {
         style={[styles.actionButton, styles.deleteButton]}
         onPress={() => handleDelete(dataItem.item._id)}
       >
-        <Image
+        <FastImage
           style={{ height: 20, width: 20 }}
           source={require("../../../assets/images/deleteCard.png")}
         />

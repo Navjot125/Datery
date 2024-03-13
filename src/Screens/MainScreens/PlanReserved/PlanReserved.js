@@ -142,6 +142,19 @@ const PlanReserved = (props) => {
     dispatch(PlanAllRequest(apiData));
   };
 
+  const getTotalRecordsLength = () => {
+    let totalLength = 0;
+    for (const month in plan) {
+      if (plan.hasOwnProperty(month)) {
+        totalLength += plan[month].length;
+      }
+    }
+
+    return totalLength;
+  };
+
+  const totalRecordsLength = getTotalRecordsLength();
+
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       handleResPlan();
@@ -196,7 +209,7 @@ const PlanReserved = (props) => {
               <Text style={styles.textBetween}>
                 {item?.records[0].serviceName}
               </Text>
-              <Text style={styles.textLoc}> 
+              <Text style={styles.textLoc}>
                 <LocationIcon
                   name="location-pin"
                   size={15}
@@ -410,8 +423,7 @@ const PlanReserved = (props) => {
                   <>
                     {plan && Object.keys(plan).length > 0 && (
                       <Text style={[styles.textTitle, { marginTop: 10 }]}>
-                        {/* Upcoming ({Object.keys(plan).length}) */}
-                        Upcoming (6)
+                        Upcoming ( {totalRecordsLength} )
                       </Text>
                     )}
                     {/* <Text style={styles.textTitle}>Selected Date</Text> */}
