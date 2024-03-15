@@ -385,6 +385,8 @@ PODS:
     - React-Core
   - react-native-geolocation (3.0.6):
     - React-Core
+  - react-native-geolocation-service (5.3.1):
+    - React
   - react-native-google-maps (1.10.3):
     - Google-Maps-iOS-Utils (= 4.2.2)
     - GoogleMaps (= 7.4.0)
@@ -633,6 +635,7 @@ DEPENDENCIES:
   - React-logger (from `../node_modules/react-native/ReactCommon/logger`)
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - "react-native-geolocation (from `../node_modules/@react-native-community/geolocation`)"
+  - react-native-geolocation-service (from `../node_modules/react-native-geolocation-service`)
   - react-native-google-maps (from `../node_modules/react-native-maps`)
   - react-native-maps (from `../node_modules/react-native-maps`)
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
@@ -746,6 +749,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-date-picker"
   react-native-geolocation:
     :path: "../node_modules/@react-native-community/geolocation"
+  react-native-geolocation-service:
+    :path: "../node_modules/react-native-geolocation-service"
   react-native-google-maps:
     :path: "../node_modules/react-native-maps"
   react-native-maps:
@@ -851,6 +856,7 @@ SPEC CHECKSUMS:
   React-logger: 9332c3e7b4ef007a0211c0a9868253aac3e1da82
   react-native-date-picker: 1d61c76315098a6ad4c643a356f005916c7d4875
   react-native-geolocation: 0f7fe8a4c2de477e278b0365cce27d089a8c5903
+  react-native-geolocation-service: 608e1da71a1ac31b4de64d9ef2815f697978c55b
   react-native-google-maps: 1bcc1f9f13f798fcf230db7fe476f3566d0bc0a3
   react-native-maps: 72a8a903f8a1b53e2c777ba79102078ab502e0bf
   react-native-pager-view: 0ccb8bf60e2ebd38b1f3669fa3650ecce81db2df

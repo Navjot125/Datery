@@ -46,22 +46,22 @@ function* onMerchantRequest({ data }) {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: data?.token,
+          Authorization: data?.token, 
         },
       }
     );
     if (res) {
-      // console.log(res.data?.data[0], "------------------res");
       if (res?.data?.status) {
         // yield put(setLoader(false));
-        // console.log(data,
-        //   "res?.data?.data--------------------",
-        //   res?.data?.data
-        // );
-        // console.log(res.data.data, ' message from saga merchant onMerchantRequest');
-        yield put(merchantSuccess(res?.data?.data, data));
-        // if(res?.data?.data?.lenght > 0){
-        // }
+        console.log(
+          res?.data?.data?.[0]?.data,
+          "message from saga merchant onMerchantRequest"
+        );
+        if(res?.data?.data?.lenght > 0){
+          yield put(merchantSuccess(res?.data?.data, data))
+        }else{
+          yield put(merchantSuccess([]))
+        }
       } else {
         // yield put(setLoader(false));
         // yield put(merchantFail());

@@ -44,7 +44,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 const AddCard = (props) => {
   const [modalVisibleUpdate, setModalVisibleUpdate] = useState(false);
   const fromOnboarding = props?.route?.params?.fromOnboarding;
-  console.log(props?.route?.params?.fromOnboarding,'[[======', fromOnboarding? 'true':'false');
+  // console.log(props?.route?.params?.fromOnboarding,'[[======', fromOnboarding? 'true':'false');
   const [isFromOnboarding, setIsFromOnboarding] = useState(
     props?.route?.params?.fromOnboarding
   );

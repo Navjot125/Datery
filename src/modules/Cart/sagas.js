@@ -102,7 +102,7 @@ function* onCartListRequest({ data }) {
       return;
     });
   if (res) {
-    console.log(res.data, "....");
+    console.log(res.data, "res of onCartListRequest");
     if (res?.data?.status) {
       // yield put(setLoader(false));
       yield put(CartListSuccess(res?.data?.data));

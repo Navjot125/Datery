@@ -46,7 +46,7 @@ function* onCardRequest({ data }) {
         yield put(CardAllSuccess(res?.data?.data));
         data.callback(res?.data);
       } else {
-        console.log(res?.data, "[[[");
+        console.log(res?.data, "res of onCardRequest");
         // console.log(res?.data);
         res.data.msg == "Please provide the coridnates."
           ? null
@@ -60,7 +60,7 @@ function* onCardRequest({ data }) {
         : showAlert(res.data.message);
     }
   } catch (err) {
-    console.log(err, "onCardRequest", err?.response?.data);
+    console.log(err, "err onCardRequest", err?.response?.data);
     showAlertError(err?.response?.data?.Error);
   }
 }

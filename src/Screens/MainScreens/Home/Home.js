@@ -9,7 +9,6 @@ import {
   useWindowDimensions,
   Pressable,
   StyleSheet,
-  PermissionsAndroid,
   Alert,
   Dimensions,
 } from "react-native";
@@ -37,7 +36,7 @@ import {
   useNavigation,
 } from "@react-navigation/native";
 import Cart from "../Cart";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import * as Models from "../../../Components/models";
 import { roleRequest } from "../../../modules/Role/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
@@ -69,11 +68,11 @@ import CustomIcon from "../../../assets/CustomIcon";
 let page = 0;
 
 const Home = (props) => {
+  const dispatch = useDispatch();
   const { userToken, loginData, loginDatingData } = useSelector(
     (state) => state.loginReducer
   );
   const dataa = useSelector((state) => state.loginReducer);
-  console.log();
   const { signupSucessData } = useSelector((state) => state.signupReducer);
   const SignupToken = signupSucessData?.Usertoken;
   const navigation = useNavigation();
@@ -94,6 +93,8 @@ const Home = (props) => {
   );
   const [selectedFilter, setSelectedFilters] = useState([]);
   const loginCordinates = loginDatingData?.locationCordinates?.coordinates;
+  const { datingData } = useSelector((state) => state?.profileReducer);
+  const coordinates = datingData?.locationCordinates?.coordinates;
   const list = [
     {
       id: 1,
@@ -552,9 +553,8 @@ const Home = (props) => {
     let apiData = {
       endpoint: API_URL.getProfile,
       token: userToken ? userToken : SignupToken,
-      id: loginData._id ? loginData._id : signupSucessData?.UserData?._id,
     };
-    role == 2 ? props.datingProfileRequest(apiData) : null;
+    role == 2 ? dispatch(datingProfileRequest(apiData)) : null;
     props.setLoader(false);
   };
 
@@ -565,7 +565,8 @@ const Home = (props) => {
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
-      coordinates: loginCordinates,
+      coordinates: coordinates,
+      // loginCordinates,
       // tempCords
       //   ? tempCords
       //   : userCords[0] !== undefined
@@ -654,7 +655,8 @@ const Home = (props) => {
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
-      coordinates: loginCordinates,
+      coordinates: coordinates,
+      // loginCordinates,
       // tempCords
       //   ? tempCords
       //   : userCords[0] !== undefined
@@ -673,14 +675,24 @@ const Home = (props) => {
       ? selectedFilter.filter((item) => item?.title === head)[0]
       : {};
   };
+  const getCat = (data) => {
+    return data?.filter((item) => (item?.title === "Category" ? true : false));
+  };
   const getSortRes = (item) => {
-    console.log(item, "hhh");
+    // console.log(
+    //   item,
+    //   "hhhome-----",
+    //   selectedFilter,
+    //   "-------------------",
+    //   selectedFilter ? getCat(selectedFilter)?.[0]?.value : item?.title || null
+    // );
     page = 0;
     const token = userToken ? userToken : SignupToken;
     let params = {
       token,
       endpoint: API_URL.fetchAllServices,
-      coordinates: loginCordinates,
+      coordinates: coordinates,
+      //  loginCordinates,
       // tempCords
       //   ? tempCords
       //   : userCords[0] !== undefined
@@ -688,13 +700,16 @@ const Home = (props) => {
       //   : null,
       // serviceType: listData.filter(val => val.id === selectedItemIndex)[0].id == "2" ? "6479bae337177e3f0a74c234" : listData.filter(val => val.id === selectedItemIndex)[0].id == '3' ? "649161e44755a8d0372968a1" :
       //   listData.filter(val => val.id === selectedItemIndex)[0].id == '4' ? "6482cc84dd8801bd2034316b" : null,
-      category: item?.title || null,
+      category: selectedFilter
+        ? getCat(selectedFilter)?.[0]?.value
+        : item?.title || null,
       sortby: getFilterValue("Sort By")?.value,
       priceRange: getFilterValue("Price")?.value,
       rating: getFilterValue("Rating")?.sortyBy,
       distance: getFilterValue("Distance")?.sortyBy,
       offset: page,
     };
+    console.log("params----======", params);
     // console.log('param of fetchAllSerrvices', params, null, 2)
     props.merchantRequest(params);
   };
@@ -705,7 +720,8 @@ const Home = (props) => {
       let params = {
         token,
         endpoint: API_URL.fetchAllServices,
-        coordinates: loginCordinates,
+        coordinates: coordinates,
+        //  loginCordinates,
         // tempCords
         //   ? tempCords
         //   : userCords[0] !== undefined
@@ -779,7 +795,7 @@ const Home = (props) => {
           onPress={() => {
             setSelectedItem(item.id);
             // getApiRes(item)
-            getSortRes(item);
+            // getSortRes(item); // On Category
             // props.setFilter(item.name), console.log('hello', item.name);
           }}
         >
@@ -969,7 +985,7 @@ const Home = (props) => {
             {/* </Pressable> */}
             <Pressable
               onPress={() => {
-                getSortRes();
+                getSortRes(); //On Done
                 rbSheetRef.current.close();
               }}
             >

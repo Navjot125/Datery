@@ -125,7 +125,7 @@ function* onAnswerRequest({ data }) {
     .catch(function (error) {
       // yield put(setLoader(false));
       // data?.error(error)
-      // console.log(error, "-------------onAnswerRequest error saga",data?.endpoint, 'obj------------',data?.mergedObject);
+      console.log(error, "-------------onAnswerRequest error saga", error?.response?.data);
       return;
     });
   if (res?.data?.status) {

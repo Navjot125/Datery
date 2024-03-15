@@ -63,13 +63,15 @@ export const API_URL = {
   cancelReservation: "cancelReservation",
   socialSignUp: "socialSignUp",
   fetchFavoriteGame: "fetchFavoriteGame",
-};
+}; 
 
 // PRODUCTION URL's
 // export const BASE_URL = 'http://44.213.177.113:8005';
 // export const BASE_URL = 'http://54.234.92.24:3001';
-export const BASE_URL = "http://54.92.82.16:3001";
-export const IMAGE_URL = "http://44.213.177.113:8005/easyinjob/";
+// export const BASE_URL = "http://54.92.82.16:3001";
+export const BASE_URL = "http://192.168.1.20:3002";
+// export const IMAGE_URL = "http://44.213.177.113:8005/easyinjob/";
+export const IMAGE_URL = "http://54.92.82.16:3001/data/";
 export const SOCKET_URL = "http://44.213.177.113:3002";
 
 // export const SOCKET_URL = 'SOCKET_URL';

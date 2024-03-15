@@ -9,7 +9,6 @@ import {
   useWindowDimensions,
   Pressable,
   StyleSheet,
-  PermissionsAndroid,
   Alert,
 } from "react-native";
 import * as Models from "../../../Components/models";

@@ -27,11 +27,13 @@ import { merchantRequest } from "../../../modules/Merchants/actions";
 
 const Welcome = (props) => {
   const navigation = useNavigation();
-  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { userToken, loginData, loginDatingData } = useSelector(
+    (state) => state.loginReducer
+  );
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
-
+  // console.log('loginDatingData-----',loginDatingData?.locationAddress);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainView}>
@@ -89,20 +91,16 @@ const Welcome = (props) => {
                   token,
                 };
                 props.merchantRequest(data, params);
-                navigation.reset({
-                  index: 0,
-                  routes: [{ name: "Root", params: { screen: "Home" } }],
-                });
-                // navigation.navigate('Root', {
-                //   screen: 'Home',
-                //   // params: { elapsedTime: elapsedTimeInSeconds }
-                // })
-                // navigation.navigate("HomeTab", { screen: "Home" })
               }}
             >
               <Text
                 onPress={() => {
-                  navigation.navigate("Location");
+                  loginDatingData?.locationAddress
+                    ? navigation.reset({
+                        index: 0,
+                        routes: [{ name: "Root", params: { screen: "Home" } }],
+                      })
+                    : navigation.navigate("Location");
                 }}
                 style={styles.orangeText}
               >

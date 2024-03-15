@@ -109,23 +109,23 @@ export const HomeNavigator = (props) => {
         },
       }}
       // initialRouteName='TabHome'
-      tabBarOptions={{
-        // tintColor: colors._dark_gray_50,
-        // activeTintColor: colors._splash_back_blue,
-        style: {
-          // paddingBottom: bottom + 4,
-          paddingTop: 4,
-          // shadowColor: colors._splash_back_blue,
-          shadowOffset: {
-            width: 0,
-            height: 3,
-          },
-          shadowOpacity: 0.27,
-          shadowRadius: 4.65,
-          elevation: 6,
-        },
-        lazy: false,
-      }}
+      // tabBarOptions={{
+      //   // tintColor: colors._dark_gray_50,
+      //   // activeTintColor: colors._splash_back_blue,
+      //   style: {
+      //     // paddingBottom: bottom + 4,
+      //     paddingTop: 4,
+      //     // shadowColor: colors._splash_back_blue,
+      //     shadowOffset: {
+      //       width: 0,
+      //       height: 3,
+      //     },
+      //     shadowOpacity: 0.27,
+      //     shadowRadius: 4.65,
+      //     elevation: 6,
+      //   },
+      //   lazy: false,
+      // }}
     >
       <Tab.Screen
         name={"HomeTab"}

@@ -398,11 +398,11 @@ const DatingProfile = (props) => {
       userToken: props?.state?.loginReducer?.userToken
         ? props?.state?.loginReducer?.userToken
         : props.state?.signupReducer?.signupSucessData?.Usertoken,
-      id: {
-        userId: props.state.loginReducer?.loginData._id
-          ? props.state.loginReducer?.loginData._id
-          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-      },
+      // id: {
+      //   userId: props.state.loginReducer?.loginData._id
+      //     ? props.state.loginReducer?.loginData._id
+      //     : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+      // },
     };
     role == 2
       ? (props.datingProfileRequest(apiData), console.log("workinf"))
@@ -530,7 +530,6 @@ const DatingProfile = (props) => {
                   // labelField="label"
                   // value={value}
                   // setValue={setAge}
-                  // setValue={(value) => { setAge(value), setUpdateDatingData([...updateDatingData, { 'age': value }]) }}
                   // setValue={(value) => { setAge(value), onChangeDropDown({ key: 'age', age: value }) }}
                   setValue={(value) => {
                     setAge(value),
@@ -701,7 +700,7 @@ const DatingProfile = (props) => {
                         alignSelf: "flex-end",
                       },
                       textInput: {
-                        placeholderTextColor: "red",
+                        // placeholderTextColor: "red",
                         borderRadius: 50,
                         height: 36,
                         fontFamily: fonts.REGULAR,
@@ -734,13 +733,7 @@ const DatingProfile = (props) => {
                     }}
                   />
                 </View>
-                {/* <DropDown
-              titleText={"Current City"}
-              data={ageData}
-              value={city}
-              // setValue={setCity}
-              setValue={(value) => { setCity(value), setUpdateDatingData({ ...updateDatingData, locationCordinates: value }) }}
-            /> */}
+             
                 <DropDown
                   titleText={"Seek advice from a dating/relationship coach"}
                   data={DatingCoachData}

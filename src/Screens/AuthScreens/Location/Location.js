@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -20,7 +20,7 @@ import * as Atom from "../../../Components/atoms";
 import * as Molecules from "../../../Components/molecules";
 import { APPLE_LOGO, GOOGLE_LOGO, LOGO_ORANGE } from "../../../assets";
 import styles from "./LocationStyle";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import {
   answerRequest,
   removeAnswer,
@@ -31,6 +31,12 @@ import { API_URL } from "../../../Constants/Config";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const Location = (props) => {
+  const dispatch = useDispatch();
+  const [city, setCity] = useState();
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const Usertoken = useSelector(
+    (state) => state?.signupReducer?.signupSucessData?.Usertoken
+  );
   const navigation = useNavigation();
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => {
@@ -47,6 +53,39 @@ const Location = (props) => {
     mergedObject = Object.assign({}, ...filteredArray);
   };
   let datingData;
+
+  const setLoc = (details) => {
+    setCity({
+      ...city,
+      city: [
+        { locationName: details?.formatted_address },
+        {
+          latlong: [
+            details?.geometry?.location.lng,
+            details?.geometry?.location.lat,
+          ],
+        },
+        { placeId: details?.place_id },
+      ],
+    });
+  };
+  const insertData2 = () => {
+    const token = userToken ? userToken : Usertoken;
+    let params = {
+      mergedObject: city,
+      endpoint: API_URL.datingDataInsert,
+      token,
+      id: props?.state?.loginReducer?.UserData?._id
+        ? props?.state?.loginReducer?.UserData?._id
+        : props.state?.signupReducer?.signupSucessData?.UserData?._id
+        ? props.state?.signupReducer?.signupSucessData?.UserData?._id
+        : props.state?.loginReducer?.loginData?._id,
+      navigation: () => navigation.navigate("Root", { screen: "Home" }),
+    };
+    console.log("mergedObject", params);
+    dispatch(answerRequest(params));
+    // props.answerRequest(mergedObject, params);
+  };
 
   const insertData = () => {
     let params = {
@@ -131,67 +170,75 @@ const Location = (props) => {
       <View style={styles.mainView}>
         <BackHeader />
         <View style={{ marginTop: 29 }}>
-          <ProgressBar
+          {/* <ProgressBar
             progress={1}
             color={color._primary_orange}
             style={styles.progressBox}
-          />
+          /> */}
 
-          <Text style={styles.textStyle}>13 of 13</Text>
+          {/* <Text style={styles.textStyle}>13 of 13</Text> */}
         </View>
         <Text style={styles.textHeading}>What city do you live in?</Text>
         <View style={{ flex: 1, marginTop: "8%" }}>
-          {/* <Searchbar
-            placeholder="Search for a city"
-            placeholderTextColor={'grey'} 
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-            iconColor={color._primary_orange}
-            style={{
-              backgroundColor: "#F8F7FA",
-              height: 40,
-            }}
-            inputStyle={{
-              fontFamily: fonts.REGULAR,
-              fontSize: 16,
-              // color: "#000000",
-              color:'black',
-              alignSelf: "center",
-              // opacity: 0.4,
-              // lineHeight: 11,
-              justifyContent:'center',
-              alignItems:'center',
-            }}
-          /> */}
           <GooglePlacesAutocomplete
-            placeholder="Search"
+            placeholder={"Search"}
             fetchDetails={true}
-            onPress={(data, details = null) => {
-              props.setCity({
-                city: [
-                  { locationName: details?.formatted_address },
-                  {
-                    latlong: [
-                      details?.geometry?.location.lng,
-                      details?.geometry?.location.lat,
-                    ],
-                  },
-                  { placeId: details?.place_id },
-                ],
-              });
+            onPress={(data, details) => {
+              setLoc(details);
             }}
             query={{
               key: "AIzaSyCWbsC3b6QgedZG8VQe2ux5lovNGxTptZM",
               language: "en",
             }}
+            enablePoweredByContainer={false}
             currentLocation={true}
+            textInputProps={{
+              placeholderTextColor: "black",
+              returnKeyType: "search",
+            }}
             currentLocationLabel="Current location"
+            styles={{
+              textInputContainer: {
+                height: 50,
+                // width: 164,
+                padding: 5,
+                borderWidth: 1,
+                borderColor: "#DCDCDD",
+                borderRadius: 50,
+                alignSelf: "flex-end",
+              },
+              textInput: {
+                borderRadius: 50,
+                height: 36,
+                fontFamily: fonts.REGULAR,
+                alignSelf: "center",
+                fontSize: 12,
+                color: color._black,
+                top: 2,
+              },
+              listView: {
+              },
+              row: {
+                height: 40,
+                flexDirection: "row",
+              },
+              separator: {
+                height: 0.5,
+                backgroundColor: "#c8c7cc",
+              },
+              loader: {
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                height: 20,
+              },
+            }}
           />
         </View>
         <Atom.Button
           onPress={() => {
+            insertData2();
             // insertData()
-            navigation.navigate("Root", { screen: "Home" });
+            // navigation.navigate("Root", { screen: "Home" });
           }}
           containerStyle={{
             marginBottom: "8%",

@@ -9,7 +9,6 @@ import {
   useWindowDimensions,
   Pressable,
   StyleSheet,
-  PermissionsAndroid,
 } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 import React, { memo, useEffect, useState } from "react";

@@ -60,7 +60,7 @@ function* onLearnRequest({ data }) {
         return response;
       })
       .catch(function (error) {
-        console.log("onMerchantListRequest SAGA ERROR ===>", error);
+        console.log("onLearnRequest onMerchantListRequest SAGA ERROR ===>", error);
         return;
       });
     if (res) {
@@ -82,11 +82,11 @@ function* onLearnRequest({ data }) {
       res?.data?.message == "Please provide the coridnates."
         ? null
         : // showAlert(res?.data?.message)
-          console.log("error alert");
+          console.log("error alert onLearnRequest");
       // console.log(res.data.message);
     }
   } catch (error) {
-    console.log(error);
+    console.log(error,'error in onLearnRequest');
   }
   // yield put(setLoader(false));
 }
@@ -160,7 +160,7 @@ function* onLearnFavouriteRequest({ navigation }) {
     // console.log("---------------LEARNFAVOURITE_REQUESTED");
     if (res?.data?.status) {
       yield put(setLoader(false));
-      console.log(res?.data, "res of add fav");
+      console.log(res?.data, "res of onLearnFavouriteRequest fav");
       // yield put(merchantDetailsSuccess(res?.data?.data));
       // navigation.navigation()
       // yield put(onLearnFavouriteListRequest({
@@ -203,7 +203,7 @@ function* onLearnFavouriteListRequest({ navigation }) {
       // yield put(merchantDetailsSuccess(res?.data?.data));
       yield put(LearnfavouriteListSuccess(res?.data?.data));
       // navigation.navigation()
-      console.log(res?.data, " message from saga merchant details");
+      console.log(res?.data, "res of onLearnFavouriteListRequest 1");
     } else {
       // yield put(setLoader(false));
       // showAlertError(res.data.message)
@@ -249,7 +249,7 @@ function* onLearnRemoveFavouriteRequest({ navigation }) {
     console.log("erro in LEARN_REMOVE_FAVOURITE_REQUESTED");
     yield put(setLoader(false));
     // showAlert(res?.data?.message)
-    console.log(REQUIRED_ERROR_MESSAGE);
+    console.log(REQUIRED_ERROR_MESSAGE,'onLearnRemoveFavouriteRequest error -');
   }
   // yield put(setLoader(false));
 }

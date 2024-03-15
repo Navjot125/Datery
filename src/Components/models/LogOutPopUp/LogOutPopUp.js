@@ -1,14 +1,14 @@
-import React from 'react';
-import {View, Text, Image} from 'react-native';
-import styles from './LogOutPopUpStyle';
-import Modal from 'react-native-modal';
+import React from "react";
+import { View, Text, Image } from "react-native";
+import styles from "./LogOutPopUpStyle";
+import Modal from "react-native-modal";
 // import * as resources from "../../../resources";
-import * as Atoms from '../../atoms';
+import * as Atoms from "../../atoms";
 
-export const LoginAutoPopup = props => {
+export const LoginAutoPopup = (props) => {
   const [modalVisible, setModalVisible] = React.useState(false);
 
-  const {isVisible, onRequestClose, onRef, OnRightPress, OnLeftPress} = props;
+  const { isVisible, onRequestClose, onRef, OnRightPress, OnLeftPress } = props;
 
   React.useEffect(() => {
     setModalVisible(isVisible);
@@ -28,7 +28,8 @@ export const LoginAutoPopup = props => {
         }}
         animationIn="zoomIn"
         animationOut="zoomOut"
-        style={{justifyContent: 'center'}}>
+        style={{ justifyContent: "center" }}
+      >
         <View style={styles.flex}>
           <View style={styles.bodyContainer}>
             <View style={styles.titleContainer}>
@@ -43,14 +44,14 @@ export const LoginAutoPopup = props => {
               </View>
             </View>
             <View style={styles.container}>
-              <Text style={styles.titileTxt}>{'Hold on!'}</Text>
+              <Text style={styles.titileTxt}>{"Hold on!"}</Text>
               <Text style={styles.descriptionTxt}>
-                {'Are You Sure You Want to Logout?'}
+                {"Are You Sure You Want to Logout?"}
               </Text>
             </View>
             <View style={styles.btnBox}>
               <Atoms.Button
-                title={'Cancel'}
+                title={"Cancel"}
                 style={styles.button1}
                 textStyle={styles.butTxt}
                 onPress={() => {
@@ -58,7 +59,7 @@ export const LoginAutoPopup = props => {
                 }}
               />
               <Atoms.Button
-                title={'YES'}
+                title={"YES"}
                 style={styles.button}
                 textStyle={styles.butTxt1}
                 onPress={() => {

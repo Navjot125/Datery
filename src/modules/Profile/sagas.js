@@ -61,7 +61,8 @@ function* onDatingProfileRequest({ navigation }) {
     let res = yield axiosClient
       .post(
         navigation.endpoint,
-        { userId: navigation?.id },
+        // { userId: navigation?.id },
+        {},
         {
           headers: {
             "Content-Type": "application/json",
@@ -73,12 +74,17 @@ function* onDatingProfileRequest({ navigation }) {
         return res;
       })
       .catch(function (error) {
-        console.log("onDatingProfileRequest SAGA ERROR ===>", error);
+        console.log(
+          error?.response?.data,
+          "onDatingProfileRequest SAGA ERROR ===>",
+          error
+        );
         return;
       });
     if (res?.data?.status) {
+      // console.log(res?.data,'res of datingProfileRequest');
       yield put(setLoader(false));
-      yield put(datingProfileSuccess(res.data));
+      yield put(datingProfileSuccess(res.data?.userProfile));
       // navigation?.navigation();
     } else {
       yield put(setLoader(false));
@@ -86,7 +92,11 @@ function* onDatingProfileRequest({ navigation }) {
       console.log(res.data.message);
     }
   } catch (error) {
-    console.log(error, "error in onDatingProfileRequest"),
+    console.log(
+      error,
+      "error in onDatingProfileRequest",
+      error?.response?.data
+    ),
       yield put(setLoader(false));
   }
 }

@@ -24,7 +24,7 @@ import {
 } from "../../../modules/learn/actions";
 import Images from "../../../assets/Images";
 import CustomIcon from "../../../assets/CustomIcon";
-import { API_URL } from "../../../Constants/Config";
+import { API_URL, IMAGE_URL } from "../../../Constants/Config";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -109,9 +109,9 @@ const AllLearn = (props) => {
                   <Image
                     source={
                       !isVideo
-                        ? { uri: `http://54.92.82.16:3001/data/${item?.file}` }
+                        ? { uri: `${IMAGE_URL}${item?.file}` }
                         : {
-                            uri: `http://54.92.82.16:3001/data/${item?.thumbnailFile}`,
+                            uri: `${IMAGE_URL}${item?.thumbnailFile}`,
                           }
                     }
                     style={{ height: "100%", width: "100%", borderRadius: 6 }}
