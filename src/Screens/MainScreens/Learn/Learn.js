@@ -65,7 +65,9 @@ const Learn = (props) => {
   const [index, setIndex] = React.useState(0);
   const [loader, setLoader] = useState(true);
   const isFocused = useIsFocused();
-  const { userToken, loginData, loginDatingData } = useSelector((state) => state.loginReducer);
+  const { userToken, loginData, loginDatingData } = useSelector(
+    (state) => state.loginReducer
+  );
   const loginCordinates = loginDatingData?.locationCordinates?.coordinates;
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
@@ -128,7 +130,7 @@ const Learn = (props) => {
   };
 
   const getSortRes = (item) => {
-    console.log(item, "hhh");
+    // console.log(item, "hhh");
     const token = userToken ? userToken : Usertoken;
     let params = {
       endpoint: API_URL.fetchAllLearn,
@@ -146,7 +148,8 @@ const Learn = (props) => {
           : allData.filter((val) => val.id === selectedItemIndex)[0].id == "6"
           ? "Love"
           : null,
-      labels: item.name,
+      // labels: item.name,
+      labels: item?.name,
     };
     dispatch(LearnAllRequest(params));
     // console.log("PPPP+++", params)
@@ -174,7 +177,7 @@ const Learn = (props) => {
     const token = userToken ? userToken : Usertoken;
 
     let params = {
-      endpoint: API_URL.fetchAllServices, 
+      endpoint: API_URL.fetchAllServices,
       token,
       coordinates: loginCordinates,
       // tempCords
@@ -307,8 +310,10 @@ const Learn = (props) => {
               selectedItem === index + 1 ? color._black : "#FFFF",
           }}
           onPress={() => {
-            setSelectedItem(item._id);
-            getSortRes(item);
+            item?._id === selectedItem
+              ? (setSelectedItem(), getSortRes((item = { name: null })))
+              : setSelectedItem(item._id),
+              getSortRes(item);
             // props.setFilter(item.name), console.log('hello', item.name);
           }}
         >
@@ -372,12 +377,13 @@ const Learn = (props) => {
         {loader ? (
           <ActivityIndicator color={color._primary_orange} size={"large"} />
         ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            bounces={false}
-            alwaysBounceVertical={false}
-            overScrollMode="never"
-          >
+          // <ScrollView
+          //   showsVerticalScrollIndicator={false}
+          //   bounces={false}
+          //   alwaysBounceVertical={false}
+          //   overScrollMode="never"
+          // >
+          <View style={{ flex: 1 }}>
             <View
               style={
                 {
@@ -411,7 +417,8 @@ const Learn = (props) => {
               {/* </View> */}
             </View>
             {<AllLearn setFilter={setFilter} endReached={endReached} />}
-          </ScrollView>
+            {/* </ScrollView> */}
+          </View>
         )}
       </View>
     </SafeAreaView>

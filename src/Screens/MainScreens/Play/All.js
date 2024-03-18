@@ -21,51 +21,55 @@ import Images from "../../../assets/Images";
 import { API_URL } from "../../../Constants/Config";
 const width = Dimensions.get("window").width;
 const All = (props) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-  const [list, setList] = useState([])
-  const { play } = useSelector(state => state.playReducer)
+  const [list, setList] = useState([]);
+  const { play } = useSelector((state) => state.playReducer);
   useEffect(() => {
-    setList(play)
-  }, [play])
-  
+    setList(play?.data);
+  }, [play]);
+
   const showList = ({ item }) => {
-    const callDetailAppi = (id)=>{
-      const param ={
-        gameId:id,
+    const callDetailAppi = (id) => {
+      const param = {
+        gameId: id,
         endpoint: API_URL.fetchSingleGame,
-        userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-          props.state?.signupReducer?.signupSucessData?.Usertoken,
-          cb: (data) => {
-            navigation.navigate("HowToPlay", item = data )
-            // navigation.navigate("HowToPlay")
-          },
-      }
-      dispatch(playDetailsRequest(param))
-    }
+        userToken: props?.state?.loginReducer?.userToken
+          ? props?.state?.loginReducer?.userToken
+          : props.state?.signupReducer?.signupSucessData?.Usertoken,
+        cb: (data) => {
+          navigation.navigate("HowToPlay", (item = data));
+          // navigation.navigate("HowToPlay")
+        },
+      };
+      dispatch(playDetailsRequest(param));
+    };
     return (
       <View
+        key={item?._id}
         style={{
           flex: 1,
-          backgroundColor: 'white',
-          marginVertical: 10
+          backgroundColor: "white",
+          marginVertical: 10,
         }}
       >
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => callDetailAppi(item?._id)}
           style={{
-            marginHorizontal: 10, flexDirection: "row", alignItems: 'center'
+            marginHorizontal: 10,
+            flexDirection: "row",
+            alignItems: "center",
           }}
         >
           <View style={{ height: 90, width: 90 }}>
             <Image
               style={{
                 width: "100%",
-                height: '100%',
+                height: "100%",
                 // marginLeft: 9,
-                resizeMode: 'cover',
-                borderRadius: 10
+                resizeMode: "cover",
+                borderRadius: 10,
               }}
               source={{ uri: `http://54.92.82.16:3001/data/${item?.file[0]}` }}
             />
@@ -76,15 +80,19 @@ const All = (props) => {
                 // marginTop: 3,
                 color: color._font_grey,
                 fontSize: 12,
-                textAlign: 'justify',
-                textTransform: 'uppercase'
+                textAlign: "justify",
+                textTransform: "uppercase",
               }}
               numberOfLines={2}
             >
               {item.category}
             </Text>
             <View
-              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
             >
               <Text
                 style={{
@@ -97,40 +105,40 @@ const All = (props) => {
               >
                 {item.gameTitle}
               </Text>
-              {
-                Array.from({ length: item.chilliCount }, () =>
-                  <Image
-                    source={Images.pepperImage}
-                    style={{ height: 15, width: 15, left: 5, tintColor: color._primary_orange }}
-                  />)}
-              {/* <Image
-                source={Images.pepperImage}
-                style={{ height: 15, width: 15, left: 5, tintColor: color._primary_orange }}
-              />
-              <Image
-                source={Images.pepperImage}
-                style={{ height: 15, width: 15, left: 5, tintColor: color._primary_orange }}
-              /> */}
+              {Array.from({ length: item.chilliCount }, (_, index) => (
+                <Image
+                  key={index}
+                  source={Images.pepperImage}
+                  style={{
+                    height: 15,
+                    width: 15,
+                    left: 5,
+                    tintColor: color._primary_orange,
+                  }}
+                />
+              ))}
             </View>
             <Text
               style={{
                 marginTop: 3,
                 color: color._font_grey,
                 fontSize: 12,
-                textAlign: 'justify'
+                textAlign: "justify",
               }}
               numberOfLines={2}
             >
               {item.shortDescription}
             </Text>
             <View style={styles.newMain}>
-              {item.labels && Array.isArray(item.labels) && item.labels.map((items) => (
-                <View style={styles.newMain}>
-                  <View style={styles.newWrp}>
-                    <Text style={styles.newWrpTxt}>{items}</Text>
+              {item.labels &&
+                Array.isArray(item.labels) &&
+                item.labels.map((items, index) => (
+                  <View key={index} style={styles.newMain}>
+                    <View style={styles.newWrp}>
+                      <Text style={styles.newWrpTxt}>{items}</Text>
+                    </View>
                   </View>
-                </View>
-              ))}
+                ))}
             </View>
             {/* <View style={styles.newMain}>
 
@@ -142,8 +150,8 @@ const All = (props) => {
               </View> */}
             {/* </View>  */}
           </View>
-        </TouchableOpacity >
-      </View >
+        </TouchableOpacity>
+      </View>
     );
   };
   const Item = ({ item }) => (
@@ -162,12 +170,12 @@ const All = (props) => {
           item.selected
             ? { height: 45 }
             : {
-              borderWidth: 1,
-              backgroundColor: "#FFF",
-              borderColor: "#9796A1",
-              height: 37,
-              paddingHorizontal: 26,
-            }
+                borderWidth: 1,
+                backgroundColor: "#FFF",
+                borderColor: "#9796A1",
+                height: 37,
+                paddingHorizontal: 26,
+              }
         }
         textStyle={
           item.selected
@@ -222,17 +230,16 @@ const All = (props) => {
   };
   return (
     <View style={{ flex: 1, marginHorizontal: 10 }}>
-      {
-        list?.data && list?.data[0] == null ? null :
-          <FlatList
-            data={list.data}
-            keyExtractor={(item) => item._id}
-            renderItem={showList}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ marginTop: 10, flexGrow: 1 }}
-            key={"?"}
-          />
-      }
+      {list && list[0] == null ? null : (
+        <FlatList
+          data={list}
+          keyExtractor={(item) => item._id}
+          renderItem={showList}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ marginTop: 10, flexGrow: 1 }}
+          key={"?"}
+        />
+      )}
     </View>
   );
 };
@@ -240,7 +247,8 @@ const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => ({
   setLoader: (data) => dispatch(setLoader(data)),
   playRequest: (data, navigation) => dispatch(playRequest(data, navigation)),
-  playDetailsRequest: (data, navigation) => dispatch(playDetailsRequest(data, navigation)),
+  playDetailsRequest: (data, navigation) =>
+    dispatch(playDetailsRequest(data, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(All);
 const styles = StyleSheet.create({
@@ -397,23 +405,22 @@ const styles = StyleSheet.create({
     height: 25,
     borderRadius: 8,
     paddingHorizontal: 10,
-    alignItems: 'center',
-    flexDirection: 'row'
+    alignItems: "center",
+    flexDirection: "row",
   },
 
   newWrpTxt: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: "700",
     color: color._font_white,
     fontFamily: fonts.SEMI_BOLD,
-    textAlign: 'justify'
+    textAlign: "justify",
   },
 
   newMain: {
     flexDirection: "row",
-    alignItems: 'center',
+    alignItems: "center",
     gap: 10,
-    marginTop: '2%'
-  }
+    marginTop: "2%",
+  },
 });
-

@@ -41,19 +41,9 @@ const Play = (props) => {
   const dispatch = useDispatch();
   const userCity =
     props?.state?.profileReducer?.datingData?.userProfile?.locationAddress;
-  const userCords = null;
-  const [modalVisible, setModalVisible] = useState(false);
   const [filter, setFilter] = useState("");
-  const [error, setError] = useState(false);
-  const [geoCityName, setGeoCityName] = useState("");
-  const [geoCityShortName, setGeoCityShortName] = useState("");
-  // let [text, setText] = useState('');
-  const [text, setText] = useState("");
-  let [loc, setLoc] = useState("");
-  // const [result, setResult] = useState(data[0]);
   const [selectedItemIndex, setSelectedItemIndex] = useState("1");
   const [selectedItem, setSelectedItem] = useState("");
-  // const [result, setResult] = useState(data[0]);
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   const [loader, setLoader] = useState(true);
@@ -98,34 +88,12 @@ const Play = (props) => {
     };
   }, []);
 
-  // const getApiRes = (item) => {
-  //   console.log('ITTTTTT', item)
-  //   try {
-  //     let query = `?category=${item.id == "2" ? "Q%26A" : item.id == '3' ? "Physical" :
-  //       item.id == '4' ? "Solo" : ""}`
-  //     let params = {
-  //       endpoint: API_URL.fetchAllGame + query,
-  //       sortby: allData[selectedItem - 1]?.name || ""
-  //     };
-  //     dispatch(playRequest(params))
-  //     console.log("PPPP+++", params)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-
-  //   // props.LearnAllRequest(params)
-  // }
-
   useEffect(() => {
     getSortRes(selectedItem, selectedItemIndex);
   }, [selectedItem, selectedItemIndex]);
 
   const getSortRes = (sortItem, allItem) => {
-    console.log("Isss", sortItem, allItem);
-    console.log("selecteditem ", selectedItem);
     try {
-      // let query = `?category=${item.id == "2" ? "Q%26A" : item.id == '3' ? "Physical" :
-      //   item.id == '4' ? "Solo" : ""}`
       let params = {
         userToken: props?.state?.loginReducer?.userToken
           ? props?.state?.loginReducer?.userToken
@@ -145,15 +113,11 @@ const Play = (props) => {
                     allData[allItem - 1]?.title
                   ).replace("&", "%26")}`
             }`,
-
-        // endpoint: `${allItem == "1" ?API_URL.fetchAllGame : `${API_URL?.fetchAllGame}?category=${String(allData[allItem-1]?.title).replace('&','%26')}`}&labels=${sortData[sortItem-1]?.name}`,
-        // labels: allData.filter(val => val.id === selectedItemIndex)[0].title,
-        // sortby: allData[selectedItem - 1]?.name || ""
       };
       dispatch(playRequest(params));
-      console.log("PssP+++", params);
+      // console.log("PssP+++", params);
     } catch (error) {
-      console.log(error);
+      console.log(error,'error in getSortRes in play');
     }
     // dispatch(playRequest(params))
   };
@@ -262,8 +226,6 @@ const Play = (props) => {
       coordinates: loginCordinates,
       // tempCords
       //   ? tempCords
-      //   : userCords[0] !== undefined
-      //   ? userCords
       //   : null,
       gametype:
         allData.filter((val) => val.id === selectedItemIndex)[0].id == "2"

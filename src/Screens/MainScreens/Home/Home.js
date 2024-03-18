@@ -95,6 +95,7 @@ const Home = (props) => {
   const loginCordinates = loginDatingData?.locationCordinates?.coordinates;
   const { datingData } = useSelector((state) => state?.profileReducer);
   const coordinates = datingData?.locationCordinates?.coordinates;
+  const { loader } = useSelector((state) => state?.loaderReducer);
   const list = [
     {
       id: 1,
@@ -557,10 +558,9 @@ const Home = (props) => {
     role == 2 ? dispatch(datingProfileRequest(apiData)) : null;
     props.setLoader(false);
   };
-
   const requestMerchants = async () => {
     let coords = await getCurrentCity();
-
+    // console.log("requestMerchants on work");
     const token = userToken ? userToken : SignupToken;
     let params = {
       token,
@@ -585,9 +585,9 @@ const Home = (props) => {
       sortby: filterData[selectedItem - 1]?.name || "",
       offset: page,
     };
-    if (coords) {
-      params.coordinates = coords.coordinates;
-    }
+    // if (coords) {
+    //   params.coordinates = coords.coordinates;
+    // }
     props.merchantRequest(params);
   };
 
@@ -650,6 +650,7 @@ const Home = (props) => {
   }, [props.state.merchantReducer?.merchants]);
 
   const getApiRes = (item) => {
+    // console.log("getApiRes on work");
     page = 0;
     const token = userToken ? userToken : SignupToken;
     let params = {
@@ -664,7 +665,8 @@ const Home = (props) => {
       //   : null,
       category: item?.title == "All" ? null : item?.title,
       offset: page,
-      // sortby: list[selectedItem - 1]?.title || ""
+      sortby: getFilterValue("Sort By")?.value,
+      // list[selectedItem - 1]?.title || ""
     };
     props.merchantRequest(params);
   };
@@ -709,11 +711,12 @@ const Home = (props) => {
       distance: getFilterValue("Distance")?.sortyBy,
       offset: page,
     };
-    console.log("params----======", params);
+    // console.log("getSortRes params----======", params);
     // console.log('param of fetchAllSerrvices', params, null, 2)
     props.merchantRequest(params);
   };
   const endReached = () => {
+    // console.log("endReached on work", totalMerchant, merchants.length);
     if (totalMerchant > merchants.length) {
       page += 1;
       const token = userToken ? userToken : SignupToken;
@@ -740,10 +743,11 @@ const Home = (props) => {
               "5"
             ? "Arts"
             : null,
-        sortby: filterData[selectedItem - 1]?.name || "",
+        sortby: getFilterValue("Sort By")?.value,
         offset: page,
       };
-      props.merchantRequest(params);
+      merchants?.length == 0 ? null : props.merchantRequest(params);
+      dispatch(setLoader(false));
     }
     // console.log('page', props.state.merchantReducer.totalMerchant,params,totalMerchant > merchants.length)
   };
@@ -758,8 +762,6 @@ const Home = (props) => {
     role == 1
       ? props.state?.profileReducer?.tempLocatioName
       : props.state?.profileReducer?.userTempLocatioName;
-
-  const [loadMore, setLoadMore] = useState(false);
 
   const renderItem = ({ item, index }) => {
     let isHeadSelected =
@@ -847,10 +849,15 @@ const Home = (props) => {
       </View>
     );
   };
-
+  // console.log(
+  //   loader,
+  //   "loader-----",
+  //   JSON.stringify(props.state.merchantReducer)
+  // );
   return (
     <SafeAreaView style={styles.scrollView}>
-      {props.state.loaderReducer?.loader && (
+      {/* {props.state.loaderReducer?.loader && ( */}
+      {loader && (
         <View
           style={{
             position: "absolute",
@@ -888,7 +895,8 @@ const Home = (props) => {
             //   <ActivityIndicator size={'large'} color={color._primary_orange} /> : null)
           }}
           ListFooterComponent={() => {
-            return props.state.merchantReducer.totalMerchant >
+            return props.state.merchantReducer?.merchants.length ==
+              0 ? null : props.state.merchantReducer.totalMerchant >
               props.state.merchantReducer?.merchants.length ? (
               <ActivityIndicator size={"large"} color={color._primary_orange} />
             ) : null;
@@ -896,11 +904,6 @@ const Home = (props) => {
           // onEndReachedThreshold={100}
           data={[0]}
           onEndReached={() => {
-            // console.log("hlo")
-            // setLoadMore(true)
-            // setTimeout(() => {
-            //   setLoadMore(false)
-            // }, 3000)
             endReached();
           }}
           renderItem={() => (
@@ -954,11 +957,34 @@ const Home = (props) => {
               <View style={{ alignItems: "center", marginTop: 20 }}>
                 {/* <CommonCrousal /> */}
               </View>
-              <AllHome
-                page={page}
-                endReached={endReached}
-                setFilter={setFilter}
-              />
+              {merchants.length > 0 ? (
+                <AllHome
+                  page={page}
+                  endReached={endReached}
+                  setFilter={setFilter}
+                />
+              ) : (
+                <View
+                  style={{
+                    height: "80%",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginHorizontal: 20,
+                    // backgroundColor:'red',
+                  }}
+                >
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      fontSize: 16,
+                      fontWeight: "600",
+                    }}
+                  >
+                    merchants are not available within your location or filter
+                    you applied
+                  </Text>
+                </View>
+              )}
             </>
           )}
         />

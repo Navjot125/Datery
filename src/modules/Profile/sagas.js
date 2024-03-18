@@ -77,7 +77,7 @@ function* onDatingProfileRequest({ navigation }) {
         console.log(
           error?.response?.data,
           "onDatingProfileRequest SAGA ERROR ===>",
-          error
+          error, 'navigation---',navigation
         );
         return;
       });

@@ -64,10 +64,12 @@ const AllLearn = (props) => {
         cb: (data) => {
           navigation.navigate(
             type == "Coach"
-          ? "CoachDetail"
-          : type ==  "Article"
-          ? "AdviceDetail"
-          : type ==  "Video" ? "CourseOverview" : null,
+              ? "CoachDetail"
+              : type == "Article"
+              ? "AdviceDetail"
+              : type == "Video"
+              ? "CourseOverview"
+              : null,
             // : "CourseOverview",
             (item = data)
           );
@@ -78,6 +80,7 @@ const AllLearn = (props) => {
     return (
       // CourseOverview
       <TouchableOpacity
+        key={item?._id}
         activeOpacity={0.9}
         onPress={() => {
           // console.log(item?.category,'item?.category');
@@ -85,19 +88,19 @@ const AllLearn = (props) => {
             item?._id,
             item?.category == "Coach" ? "coach" : "learn",
             item?.category
-          )
-            // console.log("PRAMMMMMM_----", item);
-            // navigation.navigate(
-            //   item.category == "Coach"
-            //     ? "CoachDetail"
-            //     : !isVideo
-            //     ? "AdviceDetail"
-            //     : "CourseOverview",
-            //   {
-            //     item,
-            //   }
-            // );
-            // console.log("item----------------learn", item);
+          );
+          // console.log("PRAMMMMMM_----", item);
+          // navigation.navigate(
+          //   item.category == "Coach"
+          //     ? "CoachDetail"
+          //     : !isVideo
+          //     ? "AdviceDetail"
+          //     : "CourseOverview",
+          //   {
+          //     item,
+          //   }
+          // );
+          // console.log("item----------------learn", item);
         }}
         style={styles.cardView}
       >
@@ -146,8 +149,8 @@ const AllLearn = (props) => {
                       <View style={styles.newMain}>
                         {item.labels &&
                           Array.isArray(item.labels) &&
-                          item.labels.map((items) => (
-                            <View style={styles.newMain}>
+                          item.labels.map((items, index) => (
+                            <View key={index} style={styles.newMain}>
                               <View style={styles.newWrp}>
                                 <Text style={styles.newWrpTxt}>{items}</Text>
                               </View>
@@ -158,8 +161,8 @@ const AllLearn = (props) => {
                       <View style={styles.newMain}>
                         {item.labels &&
                           Array.isArray(item.labels) &&
-                          item.labels.map((items) => (
-                            <View style={styles.newMain}>
+                          item.labels.map((items, index) => (
+                            <View key={index} style={styles.newMain}>
                               <View style={styles.newWrp}>
                                 <Text style={styles.newWrpTxt}>{items}</Text>
                               </View>
@@ -214,8 +217,8 @@ const AllLearn = (props) => {
                     <View style={styles.newMain}>
                       {item.labels &&
                         Array.isArray(item.labels) &&
-                        item.labels.map((items) => (
-                          <View style={styles.newMain}>
+                        item.labels.map((items, index) => (
+                          <View key={index} style={styles.newMain}>
                             <View style={styles.newWrp}>
                               <Text style={styles.newWrpTxt}>{items}</Text>
                             </View>
@@ -241,8 +244,7 @@ const AllLearn = (props) => {
   return (
     <SafeAreaView style={styles.scrollView}>
       <View style={styles.mainView}>
-        {/* {console.log("LIST______", list)} */}
-
+        {/* {console.log("LIST____-__", JSON.stringify(list))} */}
         {list && (
           <FlatList
             data={list}
@@ -251,11 +253,11 @@ const AllLearn = (props) => {
             keyExtractor={(item) => item._id}
             renderItem={showList}
             // numColumns={2}
+            key={(item) => item._id}
             showsVerticalScrollIndicator={false}
             scrollEnabled={true}
             // showsHorizontalScrollIndicator={false}
             // horizontal
-            key="_"
             // onEndReached={() => { props.endReached() }}
             onEndReachedThreshold={0.8}
           />

@@ -38,46 +38,37 @@ function* onMerchantRequest({ data }) {
         name: data?.name,
         offset: data?.offset,
         priceRange: data?.priceRange,
-        // rating: data?.rating ? data?.rating : ""
         rating: data?.rating || null,
-        // rating: 4,
         distance: data?.distance ? data?.distance : "",
       },
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: data?.token, 
+          Authorization: data?.token,
         },
       }
     );
     if (res) {
       if (res?.data?.status) {
-        // yield put(setLoader(false));
-        console.log(
-          res?.data?.data?.[0]?.data,
-          "message from saga merchant onMerchantRequest"
-        );
-        if(res?.data?.data?.lenght > 0){
-          yield put(merchantSuccess(res?.data?.data, data))
-        }else{
-          yield put(merchantSuccess([]))
+        yield put(setLoader(false));
+        if (res?.data?.data?.length == 0) {
+          yield put(merchantFail());
+        } else {
+          yield put(merchantSuccess(res?.data?.data, data));
         }
       } else {
         // yield put(setLoader(false));
-        // yield put(merchantFail());
         res.data.message == "Please provide the coridnates."
           ? null
-          : // showAlertError(res.data.message)
-            yield put(merchantFail());
-        // console.log(res.data.message);
+          : yield put(merchantFail());
       }
     } else {
       yield put(setLoader(false));
       res.data.message == "Please provide the coridnates.";
       // showAlert(res.data.message)
-      // console.log(REQUIRED_ERROR_MESSAGE);
     }
   } catch (error) {
+    yield put(setLoader(false));
     console.log(
       error,
       "error in onMerchantRequest",
@@ -85,7 +76,6 @@ function* onMerchantRequest({ data }) {
       data
     );
   }
-  // yield put(setLoader(false));
 }
 
 function* onMerchantDetailsRequest({ navigation }) {

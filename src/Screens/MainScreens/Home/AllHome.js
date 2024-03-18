@@ -34,6 +34,7 @@ import { Alert } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
 import { AirbnbRating } from "@rneui/themed";
 import CustomIcon from "../../../assets/CustomIcon";
+import FastImage from "react-native-fast-image";
 
 const AllHome = (props) => {
   const navigation = useNavigation();
@@ -95,6 +96,7 @@ const AllHome = (props) => {
               justifyContent: "flex-start",
               flex: 1,
               left: -3,
+              flexWrap: "wrap",
             }}
           >
             <LocationIcon
@@ -106,17 +108,30 @@ const AllHome = (props) => {
             <Text
               style={{
                 fontFamily: fonts.MEDIUM,
-                // color: "#505050",
-                fontSize: 10,
+                fontSize: 14,
                 color: color._font_grey,
-                // flex:1,
-                // alignSelf:'flex-start',
-                // backgroundColor:'red'
               }}
             >
-              {item.address} {"\u2022"} {item?.Distance.toFixed(2)} mi
-              {/* {item.address}{" "} */}
+              {item.address}
             </Text>
+            {item?.typeOfVisit?.map((item, index) => (
+              <View
+                style={{
+                  marginHorizontal: 5,
+                  flexDirection: "row",
+                }}
+              >
+                <FastImage
+                  style={{ height: 15, width: 15, marginRight: 5 }}
+                  source={
+                    item == "Onsite"
+                      ? require("../../../assets/images/onsite.png")
+                      : require("../../../assets/images/travel.png")
+                  }
+                />
+                <Text style={{ fontSize: 14 }}>{item}</Text>
+              </View>
+            ))}
           </View>
           <View
             style={{
@@ -291,6 +306,7 @@ const AllHome = (props) => {
   return (
     <View style={{ flex: 1 }}>
       {/* {console.log(props.state.merchantReducer?.merchants.length)} */}
+      {/* {console.log("merchants----===-=", JSON.stringify(merchants))} */}
       {merchants[0] == null ? null : (
         <FlatList
           data={merchants}
