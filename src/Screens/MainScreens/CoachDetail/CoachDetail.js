@@ -39,6 +39,7 @@ import {
 } from "../../../modules/Cart/actions";
 import { API_URL } from "../../../Constants/Config";
 import {
+  LearnAllRequest,
   LearnfavouriteListRequest,
   LearnfavouriteRequest,
   LearnguestFavouriteRequest,
@@ -46,7 +47,6 @@ import {
   LearnremoveGuestFavouriteRequest,
 } from "../../../modules/learn/actions";
 import CustomIcon from "../../../assets/CustomIcon";
-import { playRequest } from "../../../modules/play/actions";
 
 const CoachDetail = (props) => {
   dispatch = useDispatch();
@@ -507,7 +507,7 @@ const CoachDetail = (props) => {
           : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData));
+    dispatch(LearnAllRequest(apiData));
     // console.log("APPPPPPPP2-----", apiData)
   };
   const centerImage = () => {

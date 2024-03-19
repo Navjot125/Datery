@@ -42,6 +42,11 @@ const AllHome = (props) => {
   const { merchants, totalMerchant } = useSelector(
     (state) => state.merchantReducer
   );
+  const { userToken, loginData, loginDatingData } = useSelector(
+    (state) => state.loginReducer
+  );
+  const { signupSucessData } = useSelector((state) => state.signupReducer);
+  const SignupToken = signupSucessData?.Usertoken;
   const showList = ({ item, index }) => {
     return (
       <View
@@ -57,9 +62,7 @@ const AllHome = (props) => {
             let param = {
               endpoint: API_URL.fetchSingleService,
               serviceId: { serviceId: item?._id },
-              userToken: props?.state?.loginReducer?.userToken
-                ? props?.state?.loginReducer?.userToken
-                : props.state?.signupReducer?.signupSucessData?.Usertoken,
+              userToken: userToken ? userToken : SignupToken,
               navigation: () => navigation.navigate("ListingDetail", item),
               cb: (data) => {
                 navigation.navigate("ListingDetail", (item = data));

@@ -17,21 +17,33 @@ import DropShadow from "react-native-drop-shadow";
 import { connect, useDispatch } from "react-redux";
 import { BackHeader } from "../../../Components/molecules";
 import Images from "../../../assets/Images";
-import { CartListRequest, addToCartGuestRequest, addToCartRequest } from "../../../modules/Cart/actions";
-import { showAlertError, showAlertSuccess } from "../../../Common/Functions/CommonFunctions";
+import {
+  CartListRequest,
+  addToCartGuestRequest,
+  addToCartRequest,
+} from "../../../modules/Cart/actions";
+import {
+  showAlertError,
+  showAlertSuccess,
+} from "../../../Common/Functions/CommonFunctions";
 import { API_URL } from "../../../Constants/Config";
-import { LearnfavouriteListRequest, LearnfavouriteRequest, LearnguestFavouriteRequest, LearnremoveFavouriteRequest, LearnremoveGuestFavouriteRequest } from "../../../modules/learn/actions";
+import {
+  LearnAllRequest,
+  LearnfavouriteListRequest,
+  LearnfavouriteRequest,
+  LearnguestFavouriteRequest,
+  LearnremoveFavouriteRequest,
+  LearnremoveGuestFavouriteRequest,
+} from "../../../modules/learn/actions";
 import CustomIcon from "../../../assets/CustomIcon";
-import Icon from 'react-native-vector-icons/AntDesign';
+import Icon from "react-native-vector-icons/AntDesign";
 import Navigation from "../../../Navigation";
 import { useNavigation } from "@react-navigation/native";
-import { playRequest } from "../../../modules/play/actions";
 const AdviceDetail = (props) => {
-
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   // console.log("PROSSSSS++++", props.route.params);
-  const role = props.state.roleReducer.role.id
-  const dataa = props.state.learnReducer.details
+  const role = props.state.roleReducer.role.id;
+  const dataa = props.state.learnReducer.details;
   const [result, setResults] = useState(props.route.params);
   const [selectedValue, setSelectedValue] = useState();
   const [selectedValueName, setSelectedValueName] = useState();
@@ -40,19 +52,19 @@ const AdviceDetail = (props) => {
   const [date, setDate] = useState();
   const [emptyCart, setEmptyCart] = useState(false);
   const [valueDropdown, setValueDropdown] = useState(null);
-  const [listData, setListData] = useState([props.route.params])
-  const [imgChng, setImgChng] = useState('false')
+  const [listData, setListData] = useState([props.route.params]);
+  const [imgChng, setImgChng] = useState("false");
   const [isFavorite, setIsFavorite] = useState(props.route?.params?.isFavorite);
-  dispatch = useDispatch()
+  dispatch = useDispatch();
   const likeImage = () => {
     return (
       <CustomIcon
-        type={'FontAwesome'}
-        name={!imgChng ? 'thumbs-up' : 'thumbs-o-up'}
+        type={"FontAwesome"}
+        name={!imgChng ? "thumbs-up" : "thumbs-o-up"}
         size={20}
         color={!imgChng ? color._primary_orange : color._black}
         onPress={() => {
-          setImgChng(!imgChng)
+          setImgChng(!imgChng);
         }}
       />
       // <TouchableOpacity
@@ -89,7 +101,6 @@ const AdviceDetail = (props) => {
     );
   };
 
-  
   const handleFavListing = () => {
     dispatch(
       LearnfavouriteListRequest({
@@ -98,7 +109,7 @@ const AdviceDetail = (props) => {
       })
     );
   };
-  
+
   const handleDelete = (id) => {
     // console.log(id, "IIDDDDd");
     // setData((prevData) => prevData.filter((item) => item.id !== id));
@@ -117,7 +128,7 @@ const AdviceDetail = (props) => {
     role == 2
       ? props.LearnremoveFavouriteRequest(param)
       : props.LearnremoveGuestFavouriteRequest(serviceId);
-      setIsFavorite(!isFavorite)
+    setIsFavorite(!isFavorite);
     showAlertSuccess(`Item removed from your favourite list`);
     setTimeout(() => {
       handleFavListing();
@@ -128,16 +139,18 @@ const AdviceDetail = (props) => {
   const onLoad = async () => {
     let apiData = {
       endpoint: API_URL.fetchAllLearn,
-      userToken: props?.state?.loginReducer?.userToken ? props?.state?.loginReducer?.userToken :
-        props.state?.signupReducer?.signupSucessData?.Usertoken,
+      userToken: props?.state?.loginReducer?.userToken
+        ? props?.state?.loginReducer?.userToken
+        : props.state?.signupReducer?.signupSucessData?.Usertoken,
       id: {
-        userId: props.state.loginReducer?.loginData._id ? props.state.loginReducer?.loginData._id :
-          props.state?.signupReducer?.signupSucessData?.UserData?._id
+        userId: props.state.loginReducer?.loginData._id
+          ? props.state.loginReducer?.loginData._id
+          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData))  
+    dispatch(LearnAllRequest(apiData));
     // console.log("APPPPPPPP2-----", apiData)
-  }
+  };
 
   const centerImage = () => {
     return (
@@ -148,8 +161,8 @@ const AdviceDetail = (props) => {
         color={isFavorite ? color._primary_orange : null}
         onPress={async () => {
           if (!isFavorite) {
-            onLoad()
-            console.log('yes is favorite 2');
+            onLoad();
+            console.log("yes is favorite 2");
             let param = {
               endpoint: API_URL.favoritiesInsert,
               id: {
@@ -160,16 +173,14 @@ const AdviceDetail = (props) => {
               },
             };
             if (role == 2) {
-              console.log('role is 2 2');
+              console.log("role is 2 2");
               await props.LearnfavouriteRequest(param);
-              setIsFavorite(!isFavorite)
+              setIsFavorite(!isFavorite);
             } else if (existingFavourite(result?._id)) {
               showAlertError(`Item already exist in your favourite list`);
             } else showAlertError(`Please login to add favourites`);
           } else {
-            onLoad(),
-            console.log('not in favorite'),
-            handleDelete(result?._id);
+            onLoad(), console.log("not in favorite"), handleDelete(result?._id);
           }
         }}
       />
@@ -218,31 +229,36 @@ const AdviceDetail = (props) => {
       <TouchableOpacity
         activeOpacity={0.9}
 
-      // style = {{backgroundColor:'red'}}
-      // onPress={async () => {
-      //   let param = {
-      //     endpoint: API_URL.favoritiesInsert,
-      //     id: {
-      //       userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
-      //         props.state?.signupReducer?.signupSucessData?.UserData?._id,
-      //       serviceId: result?._id
-      //     },
-      //   }
-      //   // console.log(JSON.stringify(result, null, 2), "PARARARAR")
+        // style = {{backgroundColor:'red'}}
+        // onPress={async () => {
+        //   let param = {
+        //     endpoint: API_URL.favoritiesInsert,
+        //     id: {
+        //       userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
+        //         props.state?.signupReducer?.signupSucessData?.UserData?._id,
+        //       serviceId: result?._id
+        //     },
+        //   }
+        //   // console.log(JSON.stringify(result, null, 2), "PARARARAR")
 
-      //   if (role == 2 && !existingFavourite(result?._id)) {
-      //     await props.LearnfavouriteRequest(param)
-      //     // console.log("LearnApi", res)
-      //     // showAlertSuccess(`Item added to your favourite list`)
-      //   }
-      //   else if (existingFavourite(result?._id)) {
-      //     showAlertError(`Item already exist in your favourite list`)
-      //   } else
-      //     showAlertError(`Please login to add favourites`)
-      // }}
+        //   if (role == 2 && !existingFavourite(result?._id)) {
+        //     await props.LearnfavouriteRequest(param)
+        //     // console.log("LearnApi", res)
+        //     // showAlertSuccess(`Item added to your favourite list`)
+        //   }
+        //   else if (existingFavourite(result?._id)) {
+        //     showAlertError(`Item already exist in your favourite list`)
+        //   } else
+        //     showAlertError(`Please login to add favourites`)
+        // }}
       >
         <Image
-          style={{ height: 16, width: 16, resizeMode: "contain", tintColor: color._black }}
+          style={{
+            height: 16,
+            width: 16,
+            resizeMode: "contain",
+            tintColor: color._black,
+          }}
           source={require("../../../assets/images/Share.png")}
         />
       </TouchableOpacity>
@@ -250,19 +266,25 @@ const AdviceDetail = (props) => {
   };
 
   function existingFavourite(id) {
-    const exist = role === 1 ? props.state.learnReducer.favourites.find(item => item.serviceId === id) : props.state.learnReducer.favouritesGuest.find(item => item.serviceId === id)
+    const exist =
+      role === 1
+        ? props.state.learnReducer.favourites.find(
+            (item) => item.serviceId === id
+          )
+        : props.state.learnReducer.favouritesGuest.find(
+            (item) => item.serviceId === id
+          );
     return exist ? true : false;
   }
   function getLabelById(id) {
-    const radioButton = result.radioButtonsData.find(item => item._id === id);
+    const radioButton = result.radioButtonsData.find((item) => item._id === id);
     return radioButton ? radioButton.label : null;
   }
 
   function getPriceById(id) {
-    const radioButton = result.radioButtonsData.find(item => item._id === id);
+    const radioButton = result.radioButtonsData.find((item) => item._id === id);
     return radioButton ? radioButton.price : null;
   }
-
 
   const showData = ({ item }) => {
     const formatDate = (isoDateString) => {
@@ -298,8 +320,7 @@ const AdviceDetail = (props) => {
             backgroundColor: color._primary_orange,
             alignSelf: "flex-start",
           }}
-        >
-        </View>
+        ></View>
         <Text
           style={{
             color: color._black,
@@ -398,15 +419,32 @@ const AdviceDetail = (props) => {
 
   return (
     <SafeAreaView style={styles.scrollView}>
-      <View style={{ flexDirection: "row", justifyContent: 'space-between', paddingVertical: 10, paddingHorizontal: 10, alignItems: 'center' }}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingVertical: 10,
+          paddingHorizontal: 10,
+          alignItems: "center",
+        }}
+      >
         <CustomIcon
-          type={'AntDesign'}
-          name={'arrowleft'}
+          type={"AntDesign"}
+          name={"arrowleft"}
           size={24}
           color={color._black}
-          onPress={() => { navigation.goBack() }}
+          onPress={() => {
+            navigation.goBack();
+          }}
         />
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly', flex: 0.35 }}>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            flex: 0.35,
+          }}
+        >
           {likeImage()}
           {centerImage()}
           {shareImage()}
@@ -426,19 +464,22 @@ const AdviceDetail = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-  state: state
+  state: state,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   LearnfavouriteRequest: (data) => dispatch(LearnfavouriteRequest(data)),
-  addToCartRequest: (data, navigation) => dispatch(addToCartRequest(data, navigation)),
-  addToCartGuestRequest: (data, navigation) => dispatch(addToCartGuestRequest(data, navigation)),
+  addToCartRequest: (data, navigation) =>
+    dispatch(addToCartRequest(data, navigation)),
+  addToCartGuestRequest: (data, navigation) =>
+    dispatch(addToCartGuestRequest(data, navigation)),
   CartListRequest: (data) => dispatch(CartListRequest(data)),
-  LearnguestFavouriteRequest: (data) => dispatch(LearnguestFavouriteRequest(data)),
+  LearnguestFavouriteRequest: (data) =>
+    dispatch(LearnguestFavouriteRequest(data)),
   LearnremoveFavouriteRequest: (navigation) =>
     dispatch(LearnremoveFavouriteRequest(navigation)),
-    LearnremoveGuestFavouriteRequest: (data) =>
-      dispatch(LearnremoveGuestFavouriteRequest(data)),
+  LearnremoveGuestFavouriteRequest: (data) =>
+    dispatch(LearnremoveGuestFavouriteRequest(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AdviceDetail);

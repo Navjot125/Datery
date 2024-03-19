@@ -37,16 +37,15 @@ import { setLoader } from "../Loader/actions";
 import { API_URL } from "../../Constants/Config";
 
 function* onLearnRequest({ data }) {
-  // console.log("onLearnRequest--------------------------onLearnRequest",data?.endpoint, data?.token);
+  // console.log("onLearnRequest--------------------------onLearnRequest", data);
   try {
     let res = yield axiosClient
       .post(
         data?.endpoint,
         {
-          coordinates: data?.coordinates,
           labels: data?.labels ? data?.labels : "",
-          category: data?.category,
-          name: data?.name,
+          category: data?.category ? data?.category : "",
+          name: data?.name ? data?.name : "",
         },
         {
           headers: {
@@ -60,12 +59,17 @@ function* onLearnRequest({ data }) {
         return response;
       })
       .catch(function (error) {
-        console.log("onLearnRequest onMerchantListRequest SAGA ERROR ===>", error);
+        console.log(
+          error?.response?.data,
+          "onLearnRequest onMerchantListRequest SAGA ERROR ===>",
+          error
+        );
         return;
       });
     if (res) {
       // console.log(res?.data, "----------------------------rrrrreeeeeessssss");
       if (res?.data?.status) {
+        // console.log(res?.data, "----------------------------onLearnRequest",data);
         // yield put(setLoader(false));
         yield put(LearnAllSuccess(res?.data?.data));
       } else {
@@ -86,12 +90,13 @@ function* onLearnRequest({ data }) {
       // console.log(res.data.message);
     }
   } catch (error) {
-    console.log(error,'error in onLearnRequest');
+    console.log(error, "error in onLearnRequest");
   }
   // yield put(setLoader(false));
 }
 
 function* onLearnDetailsRequest({ navigation }) {
+  // console.log('onLearnDetailsRequest navigation0-----',navigation);
   // yield put(setLoader(true));
   try {
     let res = yield axiosClient
@@ -113,7 +118,11 @@ function* onLearnDetailsRequest({ navigation }) {
         return response;
       })
       .catch(function (error) {
-        console.log("onLearnDetailsRequest SAGA ERROR ===>", error);
+        console.log(
+          error?.response?.data,
+          "onLearnDetailsRequest SAGA ERROR ===>",
+          error
+        );
         return;
       });
     if (res) {
@@ -249,7 +258,10 @@ function* onLearnRemoveFavouriteRequest({ navigation }) {
     console.log("erro in LEARN_REMOVE_FAVOURITE_REQUESTED");
     yield put(setLoader(false));
     // showAlert(res?.data?.message)
-    console.log(REQUIRED_ERROR_MESSAGE,'onLearnRemoveFavouriteRequest error -');
+    console.log(
+      REQUIRED_ERROR_MESSAGE,
+      "onLearnRemoveFavouriteRequest error -"
+    );
   }
   // yield put(setLoader(false));
 }

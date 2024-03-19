@@ -25,6 +25,7 @@ import {
 import Images from "../../../assets/Images";
 import CustomIcon from "../../../assets/CustomIcon";
 import { API_URL, IMAGE_URL } from "../../../Constants/Config";
+import FastImage from "react-native-fast-image";
 
 const screenWidth = Dimensions.get("window").width;
 const screenHeight = Dimensions.get("window").height;
@@ -109,7 +110,7 @@ const AllLearn = (props) => {
             {item?.category !== "Coach" ? (
               <View style={[styles.card]}>
                 <View style={{ height: 120, width: 120 }}>
-                  <Image
+                  <FastImage
                     source={
                       !isVideo
                         ? { uri: `${IMAGE_URL}${item?.file}` }
@@ -176,7 +177,7 @@ const AllLearn = (props) => {
             ) : item.category === "Coach" ? (
               <View style={[styles.card]}>
                 <View style={{ height: 120, width: 120 }}>
-                  <Image
+                  <FastImage
                     source={{
                       uri: `http://54.92.82.16:3001/data/${item?.coachPic}`,
                     }}
@@ -230,7 +231,7 @@ const AllLearn = (props) => {
               </View>
             ) : (
               // Else Block, render a default image or any other content
-              <Image
+              <FastImage
                 source={Images.BallerinaImage}
                 style={{ height: 85, width: 85, borderRadius: 6 }}
               />

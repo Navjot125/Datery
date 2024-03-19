@@ -62,12 +62,12 @@ import CustomIcon from "../../../assets/CustomIcon";
 import ReviewTab from "../ReviewTab/ReviewTab";
 import base from "../../../Constants/CommonStyle";
 import {
+  LearnAllRequest,
   LearnfavouriteListRequest,
   LearnfavouriteRequest,
   LearnremoveFavouriteRequest,
   LearnremoveGuestFavouriteRequest,
 } from "../../../modules/learn/actions";
-import { playRequest } from "../../../modules/play/actions";
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
@@ -192,7 +192,7 @@ const ListingDetail = (props) => {
   const [selectedTime, setSelectedTime] = React.useState("");
   const navigation = useNavigation();
   const [isFavorite, setIsFavorite] = useState(props.route.params?.isFavorite);
-  // console.log('props.route?.params?.item', pro ps.route?.params?.item);
+  // console.log('props.route?.params?.item', props.route?.params?.item);
   dispatch = useDispatch();
   const onPress = (page) => {
     navigation.navigate(page);
@@ -201,7 +201,6 @@ const ListingDetail = (props) => {
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
-  // console.log(props.state.merchantReducer.favouritesGuest);
 
   let lattitude =
     props.state.merchantReducer?.details?.locationCordinates?.coordinates[0] ||
@@ -280,102 +279,42 @@ const ListingDetail = (props) => {
     setTimeout(() => {
       handleFavListing();
     }, 250);
-    // console.log('sfsf',id);
-  };
-
-  const onLoad = async () => {
-    let apiData = {
-      endpoint: API_URL.fetchAllLearn,
-      userToken: props?.state?.loginReducer?.userToken
-        ? props?.state?.loginReducer?.userToken
-        : props.state?.signupReducer?.signupSucessData?.Usertoken,
-      id: {
-        userId: props.state.loginReducer?.loginData._id
-          ? props.state.loginReducer?.loginData._id
-          : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-      },
-    };
-    dispatch(playRequest(apiData));
-    console.log("", apiData);
   };
 
   const centerImage = () => {
-    // return (
-    //   <TouchableOpacity
-    //     activeOpacity={0.9}
-    //     // style = {{backgroundColor:'red'}}
-    //     onPress={() => {
-    //       let param = {
-    //         endpoint: API_URL.favoritiesInsert,
-    //         id: {
-    //           userId: props.state?.loginReducer?.loginData?._id
-    //             ? props.state?.loginReducer?.loginData?._id
-    //             : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-    //           serviceId: props.state?.merchantReducer?.details?._id,
-    //         },
-    //       };
-    //       let data = {
-    //         averageRating: result?.averageRating,
-    //         price: result?.radioButtonsData[0]?.price,
-    //         providerName: result?.title,
-    //         providerfile: result?.image,
-    //         providerlocationAddress: result?.address,
-    //         ratingCount: result?.ratingCount,
-    //         serviceId: result?._id,
-    //       };
-    //       props.state.roleReducer.role.id == 2
-    //         ? props.favouriteRequest(param)
-    //         : // : showAlert(`Please login as a user`, 4000)
-    //         !existingFavourite(result?._id)
-    //         ? (props.guestFavouriteRequest(data),
-    //           data
-    //             ? showAlertSuccess(`Item added to your favourite list`)
-    //             : null)
-    //         : showAlertError(`Item already exist in your favourite list`);
-    //     }}
-    //   >
-    //     <Image
-    //       style={{
-    //         height: 15,
-    //         width: 16,
-    //         resizeMode: "contain",
-    //         marginRight: 10,
-    //       }}
-    //       source={require("../../../assets/images/WhiteHeart.png")}
-    //     />
-    //   </TouchableOpacity>
-    // );
     return (
-      <CustomIcon
-        type={"Entypo"}
-        name={isFavorite ? "heart" : "heart-outlined"}
-        size={25}
-        color={isFavorite ? color._primary_orange : null}
-        onPress={async () => {
-          if (!isFavorite) {
-            onLoad();
-            console.log("yes is favorite 2");
-            let param = {
-              endpoint: API_URL.favoritiesInsert,
-              id: {
-                userId: props.state?.loginReducer?.loginData?._id
-                  ? props.state?.loginReducer?.loginData?._id
-                  : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-                serviceId: result?._id,
-              },
-            };
-            if (role == 2) {
-              console.log("role is 2 2");
-              await props.LearnfavouriteRequest(param);
-              setIsFavorite(!isFavorite);
-            } else if (existingFavourite(result?._id)) {
-              showAlertError(`Item already exist in your favourite list`);
-            } else showAlertError(`Please login to add favourites`);
-          } else {
-            onLoad(), console.log("not in favorite"), handleDelete(result?._id);
-          }
-        }}
-      />
+      <View style={{ left: -10 }}>
+        <CustomIcon
+          type={"Entypo"}
+          name={isFavorite ? "heart" : "heart-outlined"}
+          size={25}
+          color={isFavorite ? color._primary_orange : "white"}
+          onPress={async () => {
+            if (!isFavorite) {
+              console.log("yes is favorite 2");
+              let param = {
+                endpoint: API_URL.favoritiesInsert,
+                id: {
+                  userId: props.state?.loginReducer?.loginData?._id
+                    ? props.state?.loginReducer?.loginData?._id
+                    : props.state?.signupReducer?.signupSucessData?.UserData
+                        ?._id,
+                  serviceId: result?._id,
+                },
+              };
+              if (role == 2) {
+                console.log("role is 2 2");
+                await props.LearnfavouriteRequest(param);
+                setIsFavorite(!isFavorite);
+              } else if (existingFavourite(result?._id)) {
+                showAlertError(`Item already exist in your favourite list`);
+              } else showAlertError(`Please login to add favourites`);
+            } else {
+              console.log("not in favorite"), handleDelete(result?._id);
+            }
+          }}
+        />
+      </View>
     );
   };
   // console.log('---------------------', result);
@@ -385,9 +324,6 @@ const ListingDetail = (props) => {
       <TouchableOpacity
         activeOpacity={0.9}
         onPress={() => {
-          // Alert.alert('hello')
-          // navigation.navigate("ReviewCart")
-          // navigation.navigate('ReviewCart')
           const token = userToken ? userToken : Usertoken;
 
           let param = {
@@ -410,36 +346,12 @@ const ListingDetail = (props) => {
               : (props.CartListRequest(param),
                 // console.log(param, "pcxppp"),
                 navigation.navigate("ReviewCart"))
-            : // navigation.navigate('FavoriteHome')
-            // navigation.navigate("ReviewCart")
-            props.state.cartReducer?.cartCount == null
+            : props.state.cartReducer?.cartCount == null
             ? setEmptyCart(true)
             : props.state.cartReducer?.cartCount == 0
             ? setEmptyCart(true)
             : navigation.navigate("ReviewCart");
-          // console.log(props.state.cartReducer?.cartCount, '[[[[[[[[[[[[[[', role)
         }}
-        // onPress={() => {
-        //   // let param = {
-        //   //   endpoint: API_URL.getCartItem,
-        //   //   userId: {
-        //   //     userId: props.state?.loginReducer?.loginData?._id ? props.state?.loginReducer?.loginData?._id :
-        //   //       props.state?.signupReducer?.signupSucessData?.UserData?._id,
-        //   //   },
-        //   // navigation: () => {
-        //   navigation.navigate("ReviewCart")
-        //   // }
-        //   // }
-        //   // role == 2 ?
-        //   //   props.state.cartReducer?.cartCount == null ? setEmptyCart(true) : props.state.cartReducer?.cartCount == 0 ?
-        //   //     setEmptyCart(true) :
-        //   //     props.CartListRequest(param)
-        //   //   : props.state.cartReducer?.cartCount == null ? setEmptyCart(true) : props.state.cartReducer?.cartCount == 0 ?
-        //   //     setEmptyCart(true) :
-        //   //     navigation.navigate("ReviewCart")
-        //   // }
-        // }
-        // }
       >
         <Text
           style={{
@@ -461,7 +373,7 @@ const ListingDetail = (props) => {
             : 0}
         </Text>
         <Image
-          style={{ height: 15, width: 16, marginRight: 10 }}
+          style={{ height: 20, width: 20, marginRight: 10 }}
           source={require("../../../assets/images/CartListing.png")}
         />
       </TouchableOpacity>
@@ -472,8 +384,8 @@ const ListingDetail = (props) => {
       <TouchableOpacity activeOpacity={0.9}>
         <Image
           style={{
-            height: 15,
-            width: 16,
+            height: 20,
+            width: 20,
             resizeMode: "contain",
             marginRight: 10,
           }}
@@ -616,10 +528,10 @@ const ListingDetail = (props) => {
               zIndex: 1,
               justifyContent: "space-between",
               flexDirection: "row",
-              top: "13%",
+              top: "3%",
             }}
           >
-            <View style={[base.horizontal, base.center]}>
+            <View>
               <TouchableOpacity
                 activeOpacity={0.9}
                 style={[base.horizontal, { position: "absolute", left: 0 }]}
@@ -640,6 +552,8 @@ const ListingDetail = (props) => {
                 marginRight: 10,
                 position: "absolute",
                 right: 0,
+                alignItems: "center",
+                paddingHorizontal: 15,
               }}
             >
               {centerImage()}
@@ -709,27 +623,28 @@ const ListingDetail = (props) => {
                     {" "}
                     ({result?.ratingCount}){" "}
                   </Text>
-
-                  <View
-                    style={{
-                      backgroundColor: color._primary_orange,
-                      padding: 3,
-                      borderRadius: 5,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginLeft: 25,
-                    }}
-                  >
-                    <Text
+                  {result?.labels?.map((item, index) => (
+                    <View
                       style={{
-                        fontSize: 12,
-                        fontWeight: "700",
-                        color: color._white,
+                        backgroundColor: color._primary_orange,
+                        padding: 5,
+                        borderRadius: 5,
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginLeft: 15,
                       }}
                     >
-                      Jamaican
-                    </Text>
-                  </View>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          fontWeight: "700",
+                          color: color._white,
+                        }}
+                      >
+                        {item}
+                      </Text>
+                    </View>
+                  ))}
                 </View>
               ) : null}
               <View
@@ -824,7 +739,6 @@ const ListingDetail = (props) => {
                       : null
                   } */}
               </View>
-
               {/* <TouchableOpacity
                 activeOpacity={0.9}
                 style={[styles.item, { backgroundColor: color._dusty_white }]}
@@ -978,11 +892,9 @@ const ListingDetail = (props) => {
                   </Text>
 
                   <Text style={styles.boldText}>Notes</Text>
-
                   {/* <FlatList
                       data={result?.aboutDatingPackage?.points}
                       renderItem={renderAbout}
-
                       keyExtractor={(item) => item.id}
                     /> */}
                 </>

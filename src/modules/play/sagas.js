@@ -80,20 +80,21 @@ import { setLoader } from "../Loader/actions";
 function* onplayRequest({ data }) {
   try {
     const config = {
-      params: {
-        coordinates: data?.coordinates,
-        sortby: data?.sortby || "",
-        gametype: data?.gametype || null,
-        name: data?.name,
-      },
+      // params: {
+      //   coordinates: data?.coordinates,
+      //   sortby: data?.sortby || "",
+      //   gametype: data?.gametype || null,
+      //   name: data?.name,
+      // },
       headers: {
         "Content-Type": "application/json",
         Authorization: data?.userToken,
       },
     };
+    console.log("data----", data, "config----", config);
     const res = yield axiosClient.get(data?.endpoint, config);
     if (res?.data) {
-      // console.log(res.data, "------Play res");
+      console.log(res.data, "------Play res");
       if (res.data.status) {
         yield put(playSuccess(res.data));
       } else if (res.data.message !== "Please provide the coordinates.") {
@@ -121,16 +122,13 @@ function* onplayDetailsRequest({ navigation }) {
   try {
     // yield put(setLoader(true));
     let res = yield axiosClient
-      .get(
-        navigation.endpoint,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: navigation?.userToken,
-          },
-       params:{ gameId: navigation?.gameId },
+      .get(navigation.endpoint, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: navigation?.userToken,
         },
-      )
+        params: { gameId: navigation?.gameId },
+      })
       .then(function (response) {
         return response;
       })

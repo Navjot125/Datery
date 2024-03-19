@@ -34,6 +34,7 @@ import ReviewTab from "../ReviewTab";
 import Images from "../../../assets/Images";
 import { API_URL } from "../../../Constants/Config";
 import {
+  LearnAllRequest,
   LearnfavouriteListRequest,
   LearnfavouriteRequest,
   LearnguestFavouriteRequest,
@@ -50,7 +51,6 @@ import {
   showAlertError,
   showAlertSuccess,
 } from "../../../Common/Functions/CommonFunctions";
-import { playRequest } from "../../../modules/play/actions";
 const data = [
   {
     id: 1,
@@ -210,7 +210,7 @@ const CourseOverview = (props) => {
           : props.state?.signupReducer?.signupSucessData?.UserData?._id,
       },
     };
-    dispatch(playRequest(apiData));
+    dispatch(LearnAllRequest(apiData));
   };
   const centerImage = () => {
     return (

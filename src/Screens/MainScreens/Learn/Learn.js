@@ -31,6 +31,7 @@ import {
 } from "../../../modules/learn/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
 import { roleRequest } from "../../../modules/Role/actions";
+import FastImage from "react-native-fast-image";
 
 let page = 1;
 
@@ -61,6 +62,8 @@ const Learn = (props) => {
   const [searchQuery, setSearchQuery] = React.useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
   const [selectedItemIndex, setSelectedItemIndex] = useState("1");
+  const [cat, setCat] = useState();
+  const [label, setLabel] = useState();
   const [selectedItem, setSelectedItem] = useState(null);
   const [index, setIndex] = React.useState(0);
   const [loader, setLoader] = useState(true);
@@ -124,54 +127,22 @@ const Learn = (props) => {
       // offset: 1,
       // sortby: allData[selectedItem - 1]?.name || ""
     };
-    dispatch(LearnAllRequest(params));
-    // console.log("PPPP+++", params)
+    // dispatch(LearnAllRequest(params));
+    console.log("PPPP+++", params);
     // props.LearnAllRequest(params)
   };
 
-  const getSortRes = (item) => {
-    // console.log(item, "hhh");
+  const getSortRes = (cat, item) => {
     const token = userToken ? userToken : Usertoken;
     let params = {
       endpoint: API_URL.fetchAllLearn,
       token,
-      // coordinates: tempCords ? tempCords : userCords[0] !== undefined ? userCords : null,
-      labels:
-        allData.filter((val) => val.id === selectedItemIndex)[0].id == "2"
-          ? "Conflict"
-          : allData.filter((val) => val.id === selectedItemIndex)[0].id == "3"
-          ? "Dating"
-          : allData.filter((val) => val.id === selectedItemIndex)[0].id == "4"
-          ? "Marriage"
-          : allData.filter((val) => val.id === selectedItemIndex)[0].id == "5"
-          ? "Support"
-          : allData.filter((val) => val.id === selectedItemIndex)[0].id == "6"
-          ? "Love"
-          : null,
-      // labels: item.name,
-      labels: item?.name,
+      category: cat?.title === "All" ? null : cat?.title,
+      labels: item?.name ? item?.name : "",
     };
     dispatch(LearnAllRequest(params));
-    // console.log("PPPP+++", params)
   };
 
-  // const data = [
-  //   {
-  //     id: 1,
-  //     title: "First Dates",
-  //     intro:
-  //       "As a species, we’re changing everyday. This then that or something else. As a species, we’re changing everyday. This then that or something else. As a species, we’re changing everyday. This then that or something else. As a species, we’re changing everyday. This then that or something else.",
-  //     rulesHeading: "How to Play",
-
-  //     content1: "1. Ask your partner the question.",
-
-  //     content2: "2. Allow your partner up to a minute to answer the question.",
-
-  //     content3: "3. Ask your partner the question.",
-
-  //     content4: "4. Allow your partner up to a minute to answer the question. ",
-  //   },
-  // ];
   const endReached = () => {
     page += 1;
     const token = userToken ? userToken : Usertoken;
@@ -258,8 +229,10 @@ const Learn = (props) => {
             borderColor: color._dusty_white,
           }}
           onPress={() => {
-            getApiRes(item);
+            // getApiRes(item, selectedItem);
             setSelectedItemIndex(item.id);
+            setCat(item);
+            getSortRes(item, label);
           }}
         >
           <Text
@@ -310,10 +283,14 @@ const Learn = (props) => {
               selectedItem === index + 1 ? color._black : "#FFFF",
           }}
           onPress={() => {
+            setLabel(item);
             item?._id === selectedItem
-              ? (setSelectedItem(), getSortRes((item = { name: null })))
+              ? (setSelectedItem(),
+                setLabel(),
+                getSortRes(cat, (item = { name: null })))
               : setSelectedItem(item._id),
-              getSortRes(item);
+              setLabel(item),
+              getSortRes(cat, item);
             // props.setFilter(item.name), console.log('hello', item.name);
           }}
         >

@@ -19,6 +19,7 @@ import { setLoader } from "../../../modules/Loader/actions";
 import { connect, useDispatch, useSelector } from "react-redux";
 import Images from "../../../assets/Images";
 import { API_URL } from "../../../Constants/Config";
+import FastImage from "react-native-fast-image";
 const width = Dimensions.get("window").width;
 const All = (props) => {
   const dispatch = useDispatch();
@@ -63,7 +64,7 @@ const All = (props) => {
           }}
         >
           <View style={{ height: 90, width: 90 }}>
-            <Image
+            <FastImage
               style={{
                 width: "100%",
                 height: "100%",

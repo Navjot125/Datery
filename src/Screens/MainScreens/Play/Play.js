@@ -2,19 +2,16 @@ import {
   SafeAreaView,
   Text,
   View,
-  Image,
   TouchableOpacity,
-  FlatList,
-  ImageBackground,
-  useWindowDimensions,
   Pressable,
   InteractionManager,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 import React, { useEffect, useState } from "react";
 import styles from "./PlayStyles";
-import { Searchbar, TextInput } from "react-native-paper";
+import { Searchbar } from "react-native-paper";
 import fonts from "../../../Constants/Fonts";
 import color from "../../../Constants/Color";
 import { useNavigation } from "@react-navigation/native";
@@ -31,8 +28,8 @@ import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
 import { roleRequest } from "../../../modules/Role/actions";
-import axiosClient from "../../../Utils/ApiClient";
 import { useFocusEffect } from "@react-navigation/native";
+import FastImage from "react-native-fast-image";
 
 let page = 1;
 
@@ -92,34 +89,35 @@ const Play = (props) => {
     getSortRes(selectedItem, selectedItemIndex);
   }, [selectedItem, selectedItemIndex]);
 
-  const getSortRes = (sortItem, allItem) => {
+  const getSortRes = (sortItem, cat) => {
+    console.log(sortData[sortItem - 1]?.name, "sortItem", sortItem, "cat", cat);
     try {
       let params = {
         userToken: props?.state?.loginReducer?.userToken
           ? props?.state?.loginReducer?.userToken
           : props.state?.signupReducer?.signupSucessData?.Usertoken,
         endpoint: sortData[sortItem - 1]?.name
-          ? `${
-              allItem == "1"
-                ? API_URL.fetchAllGame
-                : `${API_URL?.fetchAllGame}?category=${String(
-                    allData[allItem - 1]?.title
-                  ).replace("&", "%26")}`
-            }&labels=${sortData[sortItem - 1]?.name}`
+          ? cat == "1"
+            ? `${`${API_URL?.fetchAllGame}`}?labels=${
+                sortData[sortItem - 1]?.name
+              }`
+            : `${`${API_URL?.fetchAllGame}?category=${String(
+                allData[cat - 1]?.title
+              ).replace("&", "%26")}`}&labels=${sortData[sortItem - 1]?.name}`
           : `${
-              allItem == "1"
+              cat == "1"
                 ? API_URL.fetchAllGame
                 : `${API_URL?.fetchAllGame}?category=${String(
-                    allData[allItem - 1]?.title
+                    allData[cat - 1]?.title
                   ).replace("&", "%26")}`
             }`,
       };
+      // console.log("params-------------==", params);
       dispatch(playRequest(params));
       // console.log("PssP+++", params);
     } catch (error) {
-      console.log(error,'error in getSortRes in play');
+      console.log(error, "error in getSortRes in play");
     }
-    // dispatch(playRequest(params))
   };
 
   const allData = [
@@ -200,7 +198,9 @@ const Play = (props) => {
               selectedItem === index + 1 ? color._black : "#FFFF",
           }}
           onPress={() => {
-            setSelectedItem(item._id);
+            selectedItem === item?._id
+              ? setSelectedItem()
+              : setSelectedItem(item._id);
 
             // props.setFilter(item.name), console.log('hello', item.name);
           }}
