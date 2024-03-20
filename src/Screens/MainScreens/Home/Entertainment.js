@@ -93,6 +93,7 @@ const Entertainment = (props) => {
               serviceId: { serviceId: item?._id },
               navigation: () => navigation.navigate("ListingDetail")
             }
+            console.log('Working merchantDetailsRequest in Entertainment Home');
             props.merchantDetailsRequest(param)
           }}
         >

@@ -85,15 +85,11 @@ const styles = StyleSheet.create({
     // shadowRadius: 3,
   },
   mediaType2: {
-    // borderRadius: 50,
-    // backgroundColor: color._primary_orange,
     color: color._black,
-    fontFamily: fonts.BOLD,
-    fontSize: 10,
+    // fontFamily: fonts.BOLD,
+    fontSize: 13,
     alignSelf: "flex-start",
-    // paddingVertical: 5,
-    // width: 122,
-    // textAlign: "center",
+    fontWeight: "400",
   },
   mediaType: {
     borderRadius: 5,
@@ -103,7 +99,7 @@ const styles = StyleSheet.create({
     // fontSize: 10,
     alignSelf: "flex-start",
     paddingVertical: 7,
-    paddingHorizontal: 7,
+    paddingHorizontal: 5,
     marginTop: 5,
     // width: 122,
     // textAlign: "center",
@@ -118,7 +114,7 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     fontFamily: fonts.BOLD,
-    fontSize: 12,
+    fontSize: 14,
     color: color._font_grey,
     lineHeight: 18,
     // marginHorizontal: 10
@@ -126,11 +122,11 @@ const styles = StyleSheet.create({
   },
   orangeText: {
     fontFamily: fonts.BOLD,
-    fontSize: 14,
+    fontSize: 17,
     color: color._font_grey,
     // top: 2,
     alignSelf: "flex-start",
-    fontWeight: "600",
+    fontWeight: "700",
     lineHeight: 21,
   },
   lastText: {
@@ -142,7 +138,7 @@ const styles = StyleSheet.create({
   },
   leftTitle: {
     fontFamily: fonts.MEDIUM,
-    fontSize: 14,
+    fontSize: 16,
     color: color._black,
     paddingVertical: 10,
   },
@@ -207,11 +203,11 @@ const styles = StyleSheet.create({
   },
   textLoc: {
     fontFamily: fonts.SEMI_BOLD,
-    fontSize: 12,
+    fontSize: 15,
     color: color._font_grey,
     // top: 2,
     alignSelf: "flex-start",
-    fontWeight: "600",
+    fontWeight: "700",
     lineHeight: 21,
     // textAlign: 'left'
     // paddingRight:-20

@@ -58,6 +58,7 @@ const Food = (props) => {
               serviceId: { serviceId: item?._id },
               navigation: () => navigation.navigate("ListingDetail")
             }
+            console.log('Working merchantDetailsRequest in Food Home');
             props.merchantDetailsRequest(param)
           }}
         >

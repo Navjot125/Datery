@@ -58,6 +58,7 @@ const PurchasedActivity = (props) => {
   const [selectedTime, setSelectedTime] = React.useState("");
   const role = props.state.roleReducer.role.id;
   const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const userId = loginData?._id;
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
@@ -342,6 +343,7 @@ const PurchasedActivity = (props) => {
               let param = {
                 endpoint: "fetchSingleService",
                 serviceId: { serviceId: "64f1719333e81ab3540ad4b3" },
+                userId,
                 navigation: () => navigation.navigate("ListingDetail", item),
                 cb: (data) => {
                   navigation.navigate("ListingDetail", (item = data));
@@ -637,17 +639,17 @@ const PurchasedActivity = (props) => {
                 placeholderTextColor={"#505050"}
                 placeholder="Sed ut perspiciatis unde omnis iste natus"
               /> */}
-                <Atom.TextInputSimple
-                  keyboardType={"numeric"}
-                  style={styles.input}
-                  textFieldStyle={styles.textField}
-                  // textFieldStyle={{ height: 48, width: 70 }} 
-                  placeholderTextColor={"#505050"}
+              <Atom.TextInputSimple
+                keyboardType={"numeric"}
+                style={styles.input}
+                textFieldStyle={styles.textField}
+                // textFieldStyle={{ height: 48, width: 70 }}
+                placeholderTextColor={"#505050"}
                 placeholder="Sed ut perspiciatis unde omnis iste natus"
-                  value={review && review?.title}
-                  onChangeText={(value) => handleChange("title", value)}
-                />
-                {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
+                value={review && review?.title}
+                onChangeText={(value) => handleChange("title", value)}
+              />
+              {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
               <Text style={styles.headings}>Summary</Text>
               {/* <TextInput
                 style={styles.input}
@@ -658,15 +660,15 @@ const PurchasedActivity = (props) => {
                 multiline
               /> */}
               <Atom.TextInputSimple
-                  keyboardType={"numeric"}
-                  style={styles.input}
-                  textFieldStyle={styles.textField}
-                  value={review && review?.summary}
+                keyboardType={"numeric"}
+                style={styles.input}
+                textFieldStyle={styles.textField}
+                value={review && review?.summary}
                 onChangeText={(value) => handleChange("summary", value)}
                 placeholderTextColor={"#505050"}
                 placeholder="The experience was amazing. My husband and I loved the outcome of the meal."
                 multiline
-                />
+              />
               <Text style={styles.headings}>Photos</Text>
               <View style={styles.uploadImage}>
                 <Image

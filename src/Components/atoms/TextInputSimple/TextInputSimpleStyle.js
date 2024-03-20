@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     position: "relative",
     marginBottom: 18,
     width: "100%",
-    borderRadius: 16,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#DCDCDD",
   },

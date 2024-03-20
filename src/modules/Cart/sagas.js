@@ -27,25 +27,35 @@ import { REQUIRED_ERROR_MESSAGE } from "../../Constants/ErrorMessages";
 
 function* onAddToCartRequest({ data, navigation }) {
   yield put(setLoader(true));
-  // console.log(navigation, 'navigation ---------------request for add to cart User', data);
+  console.log(
+    navigation,
+    "navigation ---------------request for add to cart User",
+    data
+  );
   let res = yield axiosClient
     .post(navigation.endpoint, data)
     .then(function (response) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onAddToCartRequest SAGA ERROR ===>', error);
+      console.log(
+        error?.response?.data,
+        "onAddToCartRequest SAGA ERROR ===>",
+        error
+      );
       return;
     });
   if (res) {
     // console.log(res.data, '....');
     if (res?.data?.status) {
       yield put(setLoader(false));
+      console.log("res?.data in add ton cart", res?.data);
       yield put(addToCartSuccess(res?.data?.cartcount));
       // navigation.navigation()
       // showAlertSuccess(res.data.message)
       // console.log(res.data, ' message from saga merchant details');
     } else {
+      console.log("res?.data in add ton cart with false status", res?.data);
       yield put(setLoader(false));
       // showAlertError(res.data.message)
       // yield put(merchantDetailsFail());
@@ -87,7 +97,7 @@ function* onRemoveFromCartGuestRequest({ data }) {
 
 function* onCartListRequest({ data }) {
   // yield put(setLoader(true));
-  // console.log(data, 'navigation ---------------request for cart list');
+  console.log(data, "navigation ---------------request for cart list");
   let res = yield axiosClient
     .post(data.endpoint, data.userId, {
       headers: {
@@ -128,12 +138,16 @@ function* onRemoveItemFromCartRequest({ data }) {
   // console.log(data, 'navigation ---------------request for cart list');
   let res = yield axiosClient
     // .post(data.endpoint, data._id)
-    .post(data.endpoint, "657947e597300470e6c56a3f")
+    .post(data.endpoint, { cartId: data?.id, userId: data?.userId })
     .then(function (response) {
       return response;
     })
     .catch(function (error) {
-      // console.log('onRemoveItemFromCartRequest SAGA ERROR ===>', error);
+      console.log(
+        error?.response?.data,
+        "onRemoveItemFromCartRequest SAGA ERROR ===>",
+        error
+      );
       return;
     });
   if (res) {
@@ -141,14 +155,16 @@ function* onRemoveItemFromCartRequest({ data }) {
     if (res?.data?.status) {
       yield put(setLoader(false));
       let removeData = {
-        cartId: data._id,
-        cartCount: res.data.cartcount,
+        cartId: data?.id,
+        cartCount: res?.data?.cartcount,
       };
+      console.log(removeData,"on remove cart item", res?.data);
       yield put(removeItemFromCartSuccess(removeData));
       // navigation.navigation()
       // showAlertSuccess(res.data.message)
       // console.log(res.data, ' message from saga cart remove item');
     } else {
+      console.log("on remove cart item with false status", res?.data);
       yield put(setLoader(false));
       // showAlertError(res.data.message)
       yield put(removeItemFromCartFail());

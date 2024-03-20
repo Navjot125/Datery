@@ -15,6 +15,7 @@ import Cross from "react-native-vector-icons/AntDesign";
 import * as Atom from "../../../Components/atoms";
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "react-native";
+import FastImage from "react-native-fast-image";
 // import { ScrollView } from "react-native-gesture-handler";
 
 const timeShown = [
@@ -48,6 +49,9 @@ export const SlideUpPopUp = (props) => {
     selectedTime,
     cancelTitle,
     buttonText,
+    setSelectedType,
+    selectedType,
+    typeOfVisit,
   } = props;
 
   React.useEffect(() => {
@@ -158,8 +162,49 @@ export const SlideUpPopUp = (props) => {
             alignItems: "center",
           }}
         >
-          <Text>Type</Text>
-          <View
+          <Text>Select Type</Text>
+          <View style={{ flexDirection: "row" }}>
+            {typeOfVisit?.map((item, index) => (
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  marginTop: 5,
+                  backgroundColor:
+                    selectedType === item ? color?._primary_orange : null,
+                  margin: 15,
+                  padding: 7,
+                  borderRadius: 12,
+                }}
+                onPress={() => {
+                  setSelectedType(item);
+                }}
+              >
+                <Image
+                  style={{
+                    height: 20,
+                    width: 15,
+                    tintColor: selectedType === item ? "white" : "#969FA2",
+                  }}
+                  source={
+                    item == "Onsite"
+                      ? require("../../../assets/images/onsite.png")
+                      : require("../../../assets/images/travel.png")
+                  }
+                />
+                <Text
+                  style={{
+                    fontSize: 16,
+                    marginHorizontal: 5,
+                    color: selectedType === item ? "white" : "#969FA2",
+                    fontWeight: "600",
+                  }}
+                >
+                  {item}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          {/* <View
             style={{
               flexDirection: "row",
               backgroundColor: color._primary_orange,
@@ -173,7 +218,7 @@ export const SlideUpPopUp = (props) => {
               source={require("../../../assets/images/wtravel.png")}
             />
             <Text style={{ fontSize: 12, color: "white" }}>Travels to You</Text>
-          </View>
+          </View> */}
         </View>
         {props?.cancelTitle && (
           <TouchableOpacity activeOpacity={0.9} onPress={() => onPressCancel()}>

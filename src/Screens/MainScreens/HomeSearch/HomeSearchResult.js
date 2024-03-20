@@ -23,7 +23,7 @@ import LocationIcon from "react-native-vector-icons/Entypo";
 import CartIcon from "react-native-vector-icons/AntDesign";
 import { useNavigation } from "@react-navigation/native";
 import Cart from "../Cart";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import * as Models from "../../../Components/models";
 import { API_URL } from "../../../Constants/Config";
 import {
@@ -42,6 +42,11 @@ const HomeSearchResult = (props) => {
   const autocompleteRef = useRef();
   const navigation = useNavigation();
   const dispatch = useDispatch();
+  
+  const { userToken, loginData, loginDatingData } = useSelector(
+    (state) => state.loginReducer)
+    const userId = loginData?._id 
+
   const [modalVisible, setModalVisible] = useState(false);
   const [merchantData, setMerchantData] = useState(
     props.state.merchantReducer?.merchants
@@ -265,6 +270,7 @@ const HomeSearchResult = (props) => {
         let param = {
           endpoint: API_URL.fetchSingleService,
           serviceId: { serviceId: item?._id },
+          userId,
           userToken: props?.state?.loginReducer?.userToken
             ? props?.state?.loginReducer?.userToken
             : props.state?.signupReducer?.signupSucessData?.Usertoken,
@@ -273,6 +279,7 @@ const HomeSearchResult = (props) => {
             navigation.navigate("ListingDetail", (item = data));
           },
         };
+        console.log('Working merchantDetailsRequest in HomeSearchResult');
         props.merchantDetailsRequest(param);
       }}
     >

@@ -37,7 +37,7 @@ const CheckBox = ({
             onPress(!isChecked);
           }
         }}
-      // style={{margin: 0, padding: 0, backgroundColor: 'red'}}
+        // style={{margin: 0, padding: 0, backgroundColor: 'red'}}
       />
       <Text style={[styles.label, labelStyle]}>{label ? label : ""}</Text>
     </View>

@@ -23,7 +23,7 @@ import * as Atom from "../../../Components/atoms";
 import * as Model from "../../../Components/models";
 import { ActivityIndicator, RadioButton } from "react-native-paper";
 import { useIsFocused, useNavigation } from "@react-navigation/native";
-import { connect, useSelector } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import * as PopUp from "../../../Components/models";
 import * as Models from "../../../Components/models";
 import { roleRequest } from "../../../modules/Role/actions";
@@ -39,6 +39,7 @@ import {
   showAlertSuccess,
 } from "../../../Common/Functions/CommonFunctions";
 import LocationIcon from "react-native-vector-icons/Entypo";
+import { scale } from "react-native-size-matters";
 
 const dataArray = [
   {
@@ -53,6 +54,7 @@ const dataArray = [
   },
 ];
 const ReviewCart = (props) => {
+  const dispatch = useDispatch();
   const isFocused = useIsFocused();
   const role = props.state.roleReducer.role.id;
   const navigation = useNavigation();
@@ -64,18 +66,25 @@ const ReviewCart = (props) => {
       ? props.state?.cartReducer?.cartListUser
       : null
   );
+  const documents = useSelector(
+    (state) => state?.cartReducer?.cartListUser?.cartItem?.documents
+  );
+  const totalPrice = useSelector(
+    (state) => state?.cartReducer?.cartListUser?.cartItem?.totalPrice
+  );
   const [modalVisibleSuccess, setModalVisibleSuccess] = React.useState(false);
   const [modalVisibleFailed, setModalVisibleFailed] = React.useState(false);
   const [modalVisibleAvailablity, setModalVisibleAvailablity] =
     React.useState(false);
   const [selectedDate, setSelectedDate] = React.useState("");
-
   const [modalVisible, setModalVisible] = React.useState(false);
   const [alertmodal, setAlertModal] = React.useState(false);
+  const [idToRemove, setIdToRemove] = React.useState(false);
   const [counter, setCounter] = React.useState(
     props.state.cartReducer.cartList
   );
   const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const userId = loginData?._id;
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
@@ -88,6 +97,15 @@ const ReviewCart = (props) => {
     ZipCode: "",
     Dietary: "",
   });
+
+  const RemoveFromCart = () => {
+    const param = {
+      endpoint: API_URL?.deleteItem,
+      id: idToRemove,
+      userId,
+    };
+    dispatch(removeItemFromCartRequest(param));
+  };
 
   const handleChange = (name, value) => {
     setCardDetails({ ...cardDetails, [name]: value });
@@ -216,8 +234,7 @@ const ReviewCart = (props) => {
           <View style={[styles.card]}>
             <Text style={styles.leftTitle}>{props.leftTitle}</Text>
             <Text style={styles.leftTitle}>
-              {props.dollar}
-              {props.rightTitle}
+              {props.dollar} {props.rightTitle}
             </Text>
           </View>
         </DropShadow>
@@ -238,7 +255,6 @@ const ReviewCart = (props) => {
     //   day: "2-digit",
     // });
 
-    // console.log(formattedDate, "FFFFF");
     try {
       const res = await axiosClient.post(
         API_URL.pay,
@@ -299,8 +315,8 @@ const ReviewCart = (props) => {
               uri: `http://54.92.82.16:3001/data/${item?.providerimages}`,
             }}
             style={{
-              height: 95,
-              width: 110,
+              height: scale(115),
+              width: scale(115),
               borderRadius: 6,
               resizeMode: "cover",
             }}
@@ -314,20 +330,34 @@ const ReviewCart = (props) => {
             }}
           >
             <Text style={styles.textTitle}>{item.serviceName}</Text>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
               <LocationIcon
                 name="location-pin"
-                size={15}
+                size={17}
                 color={color._primary_orange}
               />
-              <Text style={{ fontSize: 12 }}>Dallas, TX</Text>
-              <Image
-                style={{ height: 15, width: 15, marginHorizontal: 5 }}
-                source={require("../../../assets/images/travel.png")}
-              />
-              <Text style={{ fontSize: 12 }}>Travels to You</Text>
+              <Text style={{ fontSize: 14 }}>{item?.locationAddress}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  marginLeft: 5,
+                }}
+              >
+                <Image
+                  style={{ height: 15, width: 15 }}
+                  source={
+                    item?.typeOfVisit == "Onsite"
+                      ? require("../../../assets/images/onsite.png")
+                      : require("../../../assets/images/travel.png")
+                  }
+                />
+                <Text style={{ fontSize: 14, marginLeft: 5 }}>
+                  {item?.typeOfVisit}
+                </Text>
+              </View>
             </View>
-            {/* <Text style={styles.textBetween}> {item.providerName}</Text> */}
             <Text style={styles.orangeText}>
               ${role == 1 ? item?.servicePrice : item?.itemPrice}
             </Text>
@@ -340,41 +370,21 @@ const ReviewCart = (props) => {
                 {"  "}
                 <Icon
                   name={"calendar-alt"}
-                  size={11}
+                  size={12}
                   color={color._dusty_white}
                 />
                 {"  "}
-                {/* {item.schedule} */}
-                {moment(item?.createdAt).format("ddd, MMM Do [at] h:mm A")}
-                {/* {selectedDate ? selectedDate : "Buy Now, Book Later"} {selectedTime ? selectedTime.title : ""} */}
+                {moment(item?.date).format("ddd, MMM Do [at] ")}
+                {item?.time}
               </Text>
             </TouchableOpacity>
-            {/* <View style={{ flexDirection: "row", }}>
-              <TouchableOpacity
-                activeOpacity={0.9}
-
-                onPress={() => decrementCounter(item)}>
-                <View style={styles.buttons}>
-                  <Minus name="minus" size={14} color={color._white} />
-                </View>
-              </TouchableOpacity>
-              <Text style={styles.counterText}>{item.quantity}</Text>
-              <TouchableOpacity
-                activeOpacity={0.9}
-
-                style={styles.buttons}
-                onPress={() => (incrementCounter(item))}
-              >
-                <Plus name="plus" size={14} color={color._white} />
-              </TouchableOpacity>
-            </View> */}
           </View>
         </View>
         <View
           style={{
             flexDirection: "row",
             alignItems: "center",
-            marginVertical: 5,
+            marginTop: 10,
           }}
         >
           <LocationIcon
@@ -386,66 +396,67 @@ const ReviewCart = (props) => {
           <Text style={styles.textLoc}>Desired Activity Location</Text>
         </View>
         <View style={{ flex: 1, marginTop: 10 }}>
-          <Text style={styles.headings}>Address</Text>
+          {item?.typeOfVisit == "Travels to You" ? (
+            <>
+              <Text style={styles.headings}>Address</Text>
+              <Atom.TextInputSimple
+                textFieldStyle={styles.textField}
+                value={cardDetails.adress}
+                name={"adress"}
+                onChangeText={(value) => handleChange("adress", value)}
+              />
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={{ flex: 0.4 }}>
+                  <Text style={styles.headings}>City</Text>
+                  <Atom.TextInputSimple
+                    value={cardDetails.city}
+                    textFieldStyle={styles.textField}
+                    onChangeText={(value) => handleChange("city", value)}
+                  />
+                </View>
+                <View style={{ flex: 0.2 }}>
+                  <Text style={styles.headings}>State</Text>
+                  <Atom.TextInputSimple
+                    value={cardDetails.state}
+                    textFieldStyle={styles.textField}
+                    onChangeText={(value) => handleChange("state", value)}
+                  />
+                </View>
+                <View style={{ flex: 0.35 }}>
+                  <Text style={styles.headings}>Zip Code</Text>
+                  <Atom.TextInputSimple
+                    keyboardType={"numeric"}
+                    textFieldStyle={styles.textField}
+                    value={cardDetails.ZipCode}
+                    onChangeText={(value) => handleChange("Zip Code", value)}
+                  />
+                </View>
+              </View>
+            </>
+          ) : null}
+          <Text style={styles.headings}>Accommodations / Restrictions</Text>
           <Atom.TextInputSimple
             textFieldStyle={styles.textField}
-            value={cardDetails.adress}
-            name={"adress"}
-            onChangeText={(value) => handleChange("adress", value)}
+            value={cardDetails.Dietary}
+            name={"Dietary"}
+            onChangeText={(value) => handleChange("Dietary", value)}
           />
-          <View style={{ flex: 1 }}>
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
-              <View style={{ flex: 0.4 }}>
-                <Text style={styles.headings}>city</Text>
-                <Atom.TextInputSimple
-                  value={cardDetails.city}
-                  textFieldStyle={styles.textField}
-                  // textFieldStyle={{ height: 48, width: 156 }}
-                  onChangeText={(value) => handleChange("city", value)}
-                />
-              </View>
-              <View style={{ flex: 0.2 }}>
-                <Text style={styles.headings}>state</Text>
-                <Atom.TextInputSimple
-                  value={cardDetails.state}
-                  textFieldStyle={styles.textField}
-                  // textFieldStyle={{ height: 48, width: 70 }}
-                  onChangeText={(value) => handleChange("state", value)}
-                />
-              </View>
-              <View style={{ flex: 0.35 }}>
-                <Text style={styles.headings}>Zip Code</Text>
-                <Atom.TextInputSimple
-                  keyboardType={"numeric"}
-                  textFieldStyle={styles.textField}
-                  // textFieldStyle={{ height: 48, width: 70 }}
-                  value={cardDetails.ZipCode}
-                  onChangeText={(value) => handleChange("Zip Code", value)}
-                />
-                {/* {errors.cvv ? <Text>{errors.cvv}</Text> : null} */}
-              </View>
-            </View>
-            <Text style={styles.headings}>Accommodations / Restrictions</Text>
-            <Atom.TextInputSimple
-              textFieldStyle={styles.textField}
-              value={cardDetails.Dietary}
-              name={"Dietary"}
-              onChangeText={(value) => handleChange("Dietary", value)}
-            />
-          </View>
         </View>
         <TouchableOpacity
           onPress={() => {
-            setAlertModal(true);
+            setAlertModal(true), setIdToRemove(item?._id);
           }}
         >
           <Text
             style={{
               alignSelf: "flex-end",
               color: color._primary_orange,
-              margin: 10,
+              margin: 5,
             }}
           >
             Remove
@@ -516,7 +527,7 @@ const ReviewCart = (props) => {
             showsVerticalScrollIndicator={false}
           >
             <FlatList
-              data={cartList.cartItem.documents}
+              data={documents}
               keyExtractor={(item) => item.id}
               contentContainerStyle={{ flexGrow: 1 }}
               renderItem={showData}
@@ -527,14 +538,19 @@ const ReviewCart = (props) => {
                 backgroundColor: color._white,
                 elevation: 2,
                 borderRadius: 10,
-                marginHorizontal: 2,
+                marginHorizontal: 5,
+                paddingHorizontal: 5,
                 marginVertical: 10,
+                shadowColor: "rgba(0, 0, 0, 0.15)",
+                shadowOffset: { width: 3, height: 3 },
+                shadowOpacity: 0.6,
+                shadowRadius: 6,
               }}
             >
               <ShowTextInput
                 leftTitle={"Total Price"}
                 dollar={"$"}
-                rightTitle={cartList.cartItem.totalPrice}
+                rightTitle={totalPrice}
               />
             </View>
             <Text style={styles.summaryTitle}>Payment Method</Text>
@@ -790,7 +806,8 @@ const ReviewCart = (props) => {
           setAlertModal(!alertmodal);
         }}
         onPressYes={() => {
-          // handleDelete(props.route.params.uId?._id)
+          RemoveFromCart();
+          // handleDelete(props.route.params.uId?._id);
           setAlertModal(!alertmodal);
         }}
       />

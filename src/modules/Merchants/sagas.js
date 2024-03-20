@@ -85,10 +85,10 @@ function* onMerchantDetailsRequest({ navigation }) {
       "Content-Type": "application/json",
       Authorization: navigation?.userToken,
     };
-
     const config = {
-      headers,
+      // headers,
       params: {
+        userId: navigation?.userId,
         serviceId: navigation?.serviceId?.serviceId,
       },
     };

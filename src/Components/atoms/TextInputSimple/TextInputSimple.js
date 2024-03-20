@@ -48,13 +48,15 @@ const TextInputSimple = ({
           selectionColor={color._blue}
           maxLength={length}
           keyboardType={keyboardType ? keyboardType : "default"}
-          secureTextEntry={ hideEye ? true : typePassword ? !showPassword : false}
+          secureTextEntry={
+            hideEye ? true : typePassword ? !showPassword : false
+          }
           style={[styles.input, textFieldStyle, error ? { color: "red" } : {}]}
           underlineColorAndroid={"transparent"}
           onChangeText={(text) => {
             // onChangeText(text);
             // if (onChangeText !== undefined) {
-              onChangeText(text);
+            onChangeText(text);
             // }
           }}
           value={value}

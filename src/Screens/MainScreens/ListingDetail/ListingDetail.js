@@ -13,7 +13,7 @@ import {
 import React, { useState } from "react";
 import styles from "./ListingDetailStyles";
 import * as Atom from "../../../Components/atoms";
-import { Searchbar, TextInput } from "react-native-paper";
+import { Checkbox, Searchbar, TextInput } from "react-native-paper";
 import fonts from "../../../Constants/Fonts";
 import color from "../../../Constants/Color";
 import Plus from "react-native-vector-icons/Entypo";
@@ -68,6 +68,9 @@ import {
   LearnremoveFavouriteRequest,
   LearnremoveGuestFavouriteRequest,
 } from "../../../modules/learn/actions";
+import { CheckBox } from "@rneui/base";
+import { scale } from "react-native-size-matters";
+import FastImage from "react-native-fast-image";
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
@@ -181,6 +184,7 @@ const ListingDetail = (props) => {
   const dataa = props.route.params;
   const [result, setResults] = useState(props.route.params);
   const [selectedValue, setSelectedValue] = useState();
+  const [itemId, setItemId] = useState();
   const [selectedValueName, setSelectedValueName] = useState();
   const [selectedValuePrice, setSelectedValuePrice] = useState();
   const [modalVisible, setModalVisible] = useState(false);
@@ -190,10 +194,11 @@ const ListingDetail = (props) => {
   const [counter, setCounter] = React.useState(1);
   const [selectedDate, setSelectedDate] = React.useState("");
   const [selectedTime, setSelectedTime] = React.useState("");
+  const [selectedType, setSelectedType] = React.useState("");
   const navigation = useNavigation();
   const [isFavorite, setIsFavorite] = useState(props.route.params?.isFavorite);
   // console.log('props.route?.params?.item', props.route?.params?.item);
-  dispatch = useDispatch();
+  const dispatch = useDispatch();
   const onPress = (page) => {
     navigation.navigate(page);
   };
@@ -201,7 +206,7 @@ const ListingDetail = (props) => {
   const { Usertoken, signupSucessData } = useSelector(
     (state) => state.signupReducer
   );
-
+  const userId = loginData?._id;
   let lattitude =
     props.state.merchantReducer?.details?.locationCordinates?.coordinates[0] ||
     0;
@@ -221,14 +226,12 @@ const ListingDetail = (props) => {
   };
   const handleAddToCart = () => {
     let values = {
-      userId: props.state?.loginReducer?.loginData?._id
-        ? props.state?.loginReducer?.loginData?._id
-        : props.state?.signupReducer?.signupSucessData?.UserData?._id,
+      userId,
       serviceId: result._id,
-      itemId: selectedValue,
-      quantity: counter,
+      itemId: itemId,
       time: selectedTime.title,
       date: selectedDate,
+      typeOfVisit: selectedType,
     };
     let valuesGuest = {
       serviceId: result._id,
@@ -238,6 +241,7 @@ const ListingDetail = (props) => {
       servicePrice: selectedValuePrice,
       providerName: result.title,
       providerimages: result.image,
+      typeOfVisit: selectedType,
     };
     let param = {
       endpoint: API_URL.addItemToCart,
@@ -249,7 +253,7 @@ const ListingDetail = (props) => {
     {
       selectedValue
         ? props.state.roleReducer.role.id == 2
-          ? props.addToCartRequest(values, param)
+          ? dispatch(addToCartRequest(values, param))
           : !existingId(selectedValue)
           ? props.addToCartGuestRequest(valuesGuest, param)
           : showAlertError(`Item already exist in your cart`)
@@ -562,9 +566,8 @@ const ListingDetail = (props) => {
             </View>
           </View>
           <View>
-            <Image
+            <FastImage
               source={{ uri: `http://54.92.82.16:3001/data/${result?.image}` }}
-              // source={data[0].media}
               style={{
                 height: 196,
                 width: "100%",
@@ -588,11 +591,34 @@ const ListingDetail = (props) => {
                   color={color._primary_orange}
                 />
                 <Text style={{ marginVertical: 10, color: color._font_grey }}>
-                  {result?.address} {"\u2022"} 2.2 mi
+                  {result?.address}
                 </Text>
               </View>
+              <View style={{ flexDirection: "row" }}>
+                {result?.typeOfVisit?.map((item, index) => (
+                  <View style={{ flexDirection: "row" }}>
+                    <FastImage
+                      style={{ height: 15, width: 15 }}
+                      source={
+                        item == "Onsite"
+                          ? require("../../../assets/images/onsite.png")
+                          : require("../../../assets/images/travel.png")
+                      }
+                    />
+                    <Text style={{ fontSize: 14, marginHorizontal: 5 }}>
+                      {item}
+                    </Text>
+                  </View>
+                ))}
+              </View>
               {result?.averageRating !== 0 ? (
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginTop: 5,
+                  }}
+                >
                   <Text
                     style={{
                       color: color._font_grey,
@@ -647,7 +673,36 @@ const ListingDetail = (props) => {
                   ))}
                 </View>
               ) : null}
-              <View
+              <View>
+                {result?.radioButtonsData?.map((item, index) => (
+                  <View
+                    style={{
+                      // backgroundColor: "red",
+                      flexDirection: "row",
+                      // alignItems: "center",
+                    }}
+                  >
+                    <Checkbox.Android
+                      uncheckedColor={color._primary_orange}
+                      color={color._primary_orange}
+                      status={itemId === item?._id ? "checked" : "unchecked"}
+                      onPress={() => {
+                        setSelectedValue(item), setItemId(item?._id);
+                        setSelectedValueName(getLabelById(item)),
+                          setSelectedValuePrice(getPriceById(item));
+                      }}
+                    />
+                    <Text style={{ fontSize: 14, marginTop: scale(8) }}>
+                      {item?.label}
+                      {"\n"}
+                      <Text style={{ fontSize: 16, fontWeight: "700" }}>
+                        ${item?.price}
+                      </Text>
+                    </Text>
+                  </View>
+                ))}
+              </View>
+              {/* <View
                 style={{
                   // alignSelf: 'flex-start',
                   marginTop: 10,
@@ -666,6 +721,7 @@ const ListingDetail = (props) => {
                   }}
                   value={selectedValue}
                 >
+                  {console.log('resulteeep-----',result)}
                   {result?.radioButtonsData.map((item) => (
                     <>
                       <RadioButton.Item
@@ -715,99 +771,7 @@ const ListingDetail = (props) => {
                     </>
                   ))}
                 </RadioButton.Group>
-                {/* {
-                    selectedValue === item._id ?
-                      <View style={{ flexDirection: "row", marginVertical: 10 }}>
-                        <TouchableOpacity
-                          activeOpacity={0.9}
-
-                          onPress={() => decrementCounter()}>
-                          <View style={styles.buttons}>
-                            <Minus name="minus" size={14} color={color._white} />
-                          </View>
-                        </TouchableOpacity>
-                        <Text style={styles.counterText}>{counter}</Text>
-                        <TouchableOpacity
-                          activeOpacity={0.9}
-
-                          style={styles.buttons}
-                          onPress={() => incrementCounter()}
-                        >
-                          <Plus name="plus" size={14} color={color._white} />
-                        </TouchableOpacity>
-                      </View>
-                      : null
-                  } */}
-              </View>
-              {/* <TouchableOpacity
-                activeOpacity={0.9}
-                style={[styles.item, { backgroundColor: color._dusty_white }]}
-                onPress={() => {
-                  let values = {
-                    userId: props.state?.loginReducer?.loginData?._id
-                      ? props.state?.loginReducer?.loginData?._id
-                      : props.state?.signupReducer?.signupSucessData?.UserData
-                          ?._id,
-                    serviceId: result._id,
-                    itemId: selectedValue,
-                    quantity: counter,
-                    time: selectedTime.title,
-                    date: selectedDate,
-                  };
-                  let valuesGuest = {
-                    serviceId: result._id,
-                    itemId: selectedValue,
-                    quantity: counter,
-                    serviceName: selectedValueName,
-                    servicePrice: selectedValuePrice,
-                    providerName: result.title,
-                    providerimages: result.image,
-                  };
-                  let param = {
-                    endpoint: API_URL.addItemToCart,
-                    navigation: () => {
-                      navigation.navigate("ReviewCart");
-                      // props.state.roleReducer.role.id == 2 ? navigation.navigate("ReviewCart") :  navigation.navigate("ReviewCart")
-                    },
-                  };
-                  {
-                    selectedValue
-                      ? props.state.roleReducer.role.id == 2
-                        ? props.addToCartRequest(values, param)
-                        : !existingId(selectedValue)
-                        ? props.addToCartGuestRequest(valuesGuest, param)
-                        : showAlertError(`Item already exist in your cart`)
-                      : showAlert(
-                          `Please choose category before adding to cart`,
-                          4000
-                        );
-                  }
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Icons
-                    name={"calendar-alt"}
-                    size={15}
-                    color={color._primary_orange}
-                  />
-                  <Text
-                    style={[
-                      styles.title,
-                      { color: color._font_grey, left: 10, fontWeight: "600" },
-                    ]}
-                  >
-                    {selectedDate ? selectedDate : "Buy Now, Book Later"}{" "}
-                    {selectedTime ? selectedTime.title : ""}
-                  </Text>
-                </View>
-              </TouchableOpacity> */}
-
+              </View> */}
               <Text style={styles.boldText}>
                 About
                 {/* {result?.title} */}
@@ -1143,11 +1107,14 @@ const ListingDetail = (props) => {
       <PopUp.SlideUpPopUp
         // isVisible={modalVisible}
         isVisible={modalVisible}
+        typeOfVisit={result?.typeOfVisit}
         buttonText={"ADD TO CART"}
         setSelected={setSelectedDate}
         selected={selectedDate}
         selectedTime={selectedTime}
         setSelectedTime={setSelectedTime}
+        setSelectedType={setSelectedType}
+        selectedType={selectedType}
         onPress={() => {
           setModalVisible(!modalVisible), handleAddToCart();
         }}

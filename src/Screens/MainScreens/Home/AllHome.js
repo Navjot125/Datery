@@ -47,6 +47,7 @@ const AllHome = (props) => {
   );
   const { signupSucessData } = useSelector((state) => state.signupReducer);
   const SignupToken = signupSucessData?.Usertoken;
+  const userId = loginData?._id 
   const showList = ({ item, index }) => {
     return (
       <View
@@ -62,6 +63,7 @@ const AllHome = (props) => {
             let param = {
               endpoint: API_URL.fetchSingleService,
               serviceId: { serviceId: item?._id },
+              userId,
               userToken: userToken ? userToken : SignupToken,
               navigation: () => navigation.navigate("ListingDetail", item),
               cb: (data) => {

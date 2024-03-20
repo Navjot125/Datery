@@ -164,6 +164,7 @@ const Arts = (props) => {
               serviceId: { serviceId: item?._id },
               navigation: () => navigation.navigate("ListingDetail")
             }
+            console.log('Working merchantDetailsRequest in Arts Home');
             props.merchantDetailsRequest(param)
           }}
         >
