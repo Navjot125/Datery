@@ -29,7 +29,6 @@ import * as Models from "../../../Components/models";
 import { roleRequest } from "../../../modules/Role/actions";
 import { API_URL } from "../../../Constants/Config";
 import {
-  CartListRequest,
   removeFromCartGuestRequest,
   removeItemFromCartRequest,
 } from "../../../modules/Cart/actions";
@@ -66,12 +65,15 @@ const ReviewCart = (props) => {
       ? props.state?.cartReducer?.cartListUser
       : null
   );
-  const documents = useSelector(
+  const documentList = useSelector(
     (state) => state?.cartReducer?.cartListUser?.cartItem?.documents
   );
-  const totalPrice = useSelector(
+  const [documents, setDocuments] = useState(documentList);
+  const [priceToBeRemove, setPriceToBeRemove] = useState();
+  const totalPriceOfCart = useSelector(
     (state) => state?.cartReducer?.cartListUser?.cartItem?.totalPrice
   );
+  const [totalPrice, setTotalPrice] = useState(totalPriceOfCart);
   const [modalVisibleSuccess, setModalVisibleSuccess] = React.useState(false);
   const [modalVisibleFailed, setModalVisibleFailed] = React.useState(false);
   const [modalVisibleAvailablity, setModalVisibleAvailablity] =
@@ -83,6 +85,7 @@ const ReviewCart = (props) => {
   const [counter, setCounter] = React.useState(
     props.state.cartReducer.cartList
   );
+
   const { userToken, loginData } = useSelector((state) => state.loginReducer);
   const userId = loginData?._id;
   const { Usertoken, signupSucessData } = useSelector(
@@ -98,11 +101,19 @@ const ReviewCart = (props) => {
     Dietary: "",
   });
 
+  useEffect(() => {
+    setDocuments(documentList);
+    setTotalPrice(totalPriceOfCart);
+  }, [documentList]);
   const RemoveFromCart = () => {
     const param = {
       endpoint: API_URL?.deleteItem,
       id: idToRemove,
       userId,
+      callBack: (id) => {
+        setDocuments(documents.filter((item) => item?._id !== id));
+        setTotalPrice(totalPrice - priceToBeRemove);
+      },
     };
     dispatch(removeItemFromCartRequest(param));
   };
@@ -449,7 +460,9 @@ const ReviewCart = (props) => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            setAlertModal(true), setIdToRemove(item?._id);
+            setAlertModal(true),
+              setIdToRemove(item?._id),
+              setPriceToBeRemove(item?.itemPrice);
           }}
         >
           <Text
@@ -517,7 +530,7 @@ const ReviewCart = (props) => {
           <ActivityIndicator size="large" color={color._primary_orange} />
         </View>
       )}
-      {cartList?.cartItem && cartList?.cartItem?.documents?.length !== 0 ? (
+      {documents?.length !== 0 ? (
         <View style={styles.mainView}>
           <ScrollView
             bounces={false}
@@ -841,7 +854,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   roleRequest: (data) => dispatch(roleRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   removeItemFromCartRequest: (data) =>
     dispatch(removeItemFromCartRequest(data)),
   removeFromCartGuestRequest: (data) =>

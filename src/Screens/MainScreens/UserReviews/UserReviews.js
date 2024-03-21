@@ -20,7 +20,6 @@ import {
   ReviewAllRequest,
   ReviewfavouriteListRequest,
 } from "../../../modules/userReview/actions";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import { roleRequest } from "../../../modules/Role/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
@@ -85,7 +84,7 @@ const UserReviews = (props) => {
       </View>
     );
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     const formatDate = (isoDateString) => {
       const createdAtDate = new Date(isoDateString);
       const day = createdAtDate.getDate();
@@ -94,7 +93,7 @@ const UserReviews = (props) => {
       return `${month} ${day}, ${year}`;
     };
     return (
-      <View style={styles.viewFlatList}>
+      <View key={index} style={styles.viewFlatList}>
         <View style={styles.itemSpace}>
           <Text style={styles.type}>{"Featured"}</Text>
           <TouchableOpacity
@@ -167,7 +166,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(ReviewAllDetailsRequest(data, navigation)),
   ReviewfavouriteListRequest: (data) =>
     dispatch(ReviewfavouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
 });
 

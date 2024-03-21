@@ -25,7 +25,6 @@ import {
   playguestFavouriteRequest,
 } from "../../../modules/play/actions";
 import {
-  CartListRequest,
   addToCartGuestRequest,
   addToCartRequest,
 } from "../../../modules/Cart/actions";
@@ -115,8 +114,8 @@ const HowToPlay = (props) => {
         <View style={styles.newMain}>
           {item.labels &&
             Array.isArray(item.labels) &&
-            item.labels.map((items) => (
-              <View style={styles.newMain}>
+            item.labels.map((items, index) => (
+              <View key={index} style={styles.newMain}>
                 <View style={styles.newWrp}>
                   <Text style={styles.newWrpTxt}>{items}</Text>
                 </View>
@@ -368,7 +367,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addToCartRequest(data, navigation)),
   addToCartGuestRequest: (data, navigation) =>
     dispatch(addToCartGuestRequest(data, navigation)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   playguestFavouriteRequest: (data) =>
     dispatch(playguestFavouriteRequest(data)),
   LearnremoveFavouriteRequest: (navigation) =>

@@ -38,7 +38,6 @@ import PlanReservedGuest from "./PlanReservedGuest";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
 import { setLoader } from "../../../modules/Loader/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import {
   PlanAllDetailsRequest,
   PlanAllRequest,
@@ -456,13 +455,10 @@ const PlanReserved = (props) => {
                     </Text>
                   </TouchableOpacity> */}
                     {plan && Object.keys(plan).length > 0 ? (
-                      Object.keys(plan).map((month) => {
+                      Object.keys(plan).map((month, index) => {
                         // console.log(month)
                         return (
-                          <>
-                            {/* <Text style={[styles.orangeText, { marginTop: 10 }]}>
-                            {month}
-                          </Text> */}
+                          <View key={index} >
                             <FlatList
                               scrollEnabled={false}
                               data={plan[month]}
@@ -471,7 +467,7 @@ const PlanReserved = (props) => {
                               renderItem={showData}
                               showsVerticalScrollIndicator={false}
                             />
-                          </>
+                          </View>
                         );
                       })
                     ) : (
@@ -533,7 +529,6 @@ const mapDispatchToProps = (dispatch) => ({
   PlanAllDetailsRequest: (data, navigation) =>
     dispatch(PlanAllDetailsRequest(data, navigation)),
   PlanfavouriteListRequest: (data) => dispatch(PlanfavouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
 });
 

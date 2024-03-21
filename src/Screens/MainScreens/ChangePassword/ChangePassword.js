@@ -6,7 +6,6 @@ import {
   Image,
   TextInput,
   ScrollView,
-  FlatList,
 } from "react-native";
 import React from "react";
 

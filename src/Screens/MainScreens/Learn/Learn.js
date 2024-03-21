@@ -23,7 +23,6 @@ import { useIsFocused, useNavigation } from "@react-navigation/native";
 import CommonList from "../Home/CommonList";
 import { API_URL } from "../../../Constants/Config";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import {
   LearnAllDetailsRequest,
   LearnAllRequest,
@@ -416,7 +415,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(LearnAllDetailsRequest(data, navigation)),
   LearnfavouriteListRequest: (data) =>
     dispatch(LearnfavouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
 });
 

@@ -3,7 +3,6 @@ import {
     TouchableOpacity,
     StyleSheet,
     View,
-    FlatList,
     ScrollView
 } from "react-native";
 import Modal from "react-native-modal";

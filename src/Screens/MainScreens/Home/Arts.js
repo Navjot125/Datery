@@ -19,14 +19,16 @@ import Carousel, { Pagination } from "react-native-snap-carousel";
 const deviceWidth = Dimensions.get("window").width;
 const deviceHeight = Dimensions.get("window").height;
 
-
-const screenWidth = Dimensions.get('window').width;
-const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get("window").width;
+const screenHeight = Dimensions.get("window").height;
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { merchantDetailsRequest, merchantRequest } from "../../../modules/Merchants/actions";
+import {
+  merchantDetailsRequest,
+  merchantRequest,
+} from "../../../modules/Merchants/actions";
 import { setLoader } from "../../../modules/Loader/actions";
 import { API_URL } from "../../../Constants/Config";
 import { connect } from "react-redux";
@@ -54,20 +56,20 @@ const data = [
     title: "Balance Dance Studios",
     image: require("../../../assets/images/Dance.png"),
     // imgUrl: require("../../../assets/images/Ballerina.png"),
-    rating: '3.9',
-    ratingCount: '198',
+    rating: "3.9",
+    ratingCount: "198",
     address: "8130 Texas Drive, Dallas \u2022 2.2 mi",
-    id: '1',
+    id: "1",
     LatLng: { latitude: 43.72965878594172, longitude: -79.74931628786995 },
   },
   {
     title: "Chef Jon",
     image: require("../../../assets/images/ChefMap.png"),
     // imgUrl: require("../../../assets/images/Ballerina.png"),
-    rating: '4.9',
-    ratingCount: '123',
+    rating: "4.9",
+    ratingCount: "123",
     address: "8130 Texas Drive, Dallas \u2022 2.2 mi",
-    id: '2',
+    id: "2",
     LatLng: { latitude: 43.10585697641913, longitude: -79.11082324186994 },
   },
   {
@@ -75,19 +77,19 @@ const data = [
 
     // imgUrl: require("../../../assets/images/Ballerina.png"),
     image: require("../../../assets/images/Ballerina.png"),
-    rating: '4',
-    ratingCount: '143',
+    rating: "4",
+    ratingCount: "143",
     address: "8130 Texas Drive, Dallas \u2022 2.2 mi",
-    id: '3',
+    id: "3",
     LatLng: { latitude: 43.16680312868048, longitude: -79.23923759881697 },
   },
   {
     title: "Balance Dance Studios",
     image: require("../../../assets/images/Ballerina.png"),
-    rating: '3.9',
-    ratingCount: '198',
+    rating: "3.9",
+    ratingCount: "198",
     address: "8130 Texas Drive, Dallas \u2022 2.2 mi",
-    id: '4',
+    id: "4",
     LatLng: { latitude: 43.26092327150931, longitude: -79.88984628537143 },
   },
 ];
@@ -133,7 +135,6 @@ const dataList = [
 const Arts = (props) => {
   const navigation = useNavigation();
 
-
   // useEffect(() => {
   //   props.setLoader(false);
   //   let data = { coordinates: ['30.900965', '75.8572758'], serviceType: "649161e44755a8d0372968a1" }
@@ -143,12 +144,16 @@ const Arts = (props) => {
   //   props.merchantRequest(data, params)
   // }, [])
 
-  const [merchantData, setMerchantData] = useState(props.state.merchantReducer?.merchants ?
-    props.state.merchantReducer?.merchants : [])
+  const [merchantData, setMerchantData] = useState(
+    props.state.merchantReducer?.merchants
+      ? props.state.merchantReducer?.merchants
+      : []
+  );
 
-  const showList = ({ item }) => {
+  const showList = ({ item, index }) => {
     return (
       <View
+        key={index}
         style={{
           justifyContent: "space-between",
           marginLeft: 3,
@@ -162,10 +167,10 @@ const Arts = (props) => {
             let param = {
               endpoint: API_URL.fetchSingleService,
               serviceId: { serviceId: item?._id },
-              navigation: () => navigation.navigate("ListingDetail")
-            }
-            console.log('Working merchantDetailsRequest in Arts Home');
-            props.merchantDetailsRequest(param)
+              navigation: () => navigation.navigate("ListingDetail"),
+            };
+            console.log("Working merchantDetailsRequest in Arts Home");
+            props.merchantDetailsRequest(param);
           }}
         >
           <Image
@@ -178,7 +183,7 @@ const Arts = (props) => {
               resizeMode: "cover",
             }}
             source={{ uri: `http://54.92.82.16:3001/data/${item.image}` }}
-          // source={item.image}
+            // source={item.image}
           />
           <Text
             style={{
@@ -194,9 +199,11 @@ const Arts = (props) => {
           </Text>
           <View
             style={{
-              flexDirection: "row", alignItems: "center", marginTop: 9,
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 9,
               width: screenWidth * 0.42,
-              flexWrap: 'wrap',
+              flexWrap: "wrap",
             }}
           >
             <Text
@@ -208,18 +215,19 @@ const Arts = (props) => {
               }}
             >
               {" "}
-              {item.address}{" "} {"\u2022"} {item?.Distance.toFixed(2)} mi
+              {item.address} {"\u2022"} {item?.Distance.toFixed(2)} mi
               {/* {item.address}{" "} {"\u2022"} {item.Distance.toFixed(2)} mi */}
               {/* {item.address}{" "} */}
             </Text>
           </View>
-          <View style={{
-            flexDirection: "row",
-            marginTop: 9,
-            flexWrap: 'wrap',
-          }}>
-            {item.Rating == 0 ?
-              null :
+          <View
+            style={{
+              flexDirection: "row",
+              marginTop: 9,
+              flexWrap: "wrap",
+            }}
+          >
+            {item.Rating == 0 ? null : (
               <Text
                 style={{
                   fontFamily: fonts.REGULAR,
@@ -231,11 +239,9 @@ const Arts = (props) => {
                 {" "}
                 {item.Rating}{" "}
               </Text>
-            }
-            <Atom.Rating
-              currentRating={Math.round(item.Rating)}
-            />
-           
+            )}
+            <Atom.Rating currentRating={Math.round(item.Rating)} />
+
             <Text
               style={{
                 fontFamily: fonts.REGULAR,
@@ -245,7 +251,7 @@ const Arts = (props) => {
               }}
             >
               {" "}
-              {item.ratingCount}{" "}Ratings
+              {item.ratingCount} Ratings
             </Text>
           </View>
           <Text
@@ -257,7 +263,10 @@ const Arts = (props) => {
               fontSize: 13,
             }}
           >
-           From $<Text style={{ fontSize: 14, fontFamily: fonts.BOLD }} >{item.Price}</Text>
+            From $
+            <Text style={{ fontSize: 14, fontFamily: fonts.BOLD }}>
+              {item.Price}
+            </Text>
           </Text>
         </TouchableOpacity>
       </View>
@@ -273,17 +282,19 @@ const Arts = (props) => {
     >
       <Atom.Button
         title={item.name}
-        onPress={() => { props.setFilter(item.name), console.log('hello', item.name); }}
+        onPress={() => {
+          props.setFilter(item.name), console.log("hello", item.name);
+        }}
         style={
           item.selected
             ? { height: 45 }
             : {
-              borderWidth: 1,
-              backgroundColor: "#FFF",
-              borderColor: color._dusty_white,
-              height: 40,
-              paddingHorizontal: 16,
-            }
+                borderWidth: 1,
+                backgroundColor: "#FFF",
+                borderColor: color._dusty_white,
+                height: 40,
+                paddingHorizontal: 16,
+              }
         }
         textStyle={
           item.selected
@@ -338,8 +349,6 @@ const Arts = (props) => {
     setData(renderData);
   };
 
-  
- 
   return (
     <View style={{ flex: 1 }}>
       {/* <View
@@ -379,12 +388,12 @@ const Arts = (props) => {
           showsHorizontalScrollIndicator={false}
         />
       </View> */}
-      <ScrollView 
-       bounces={false}
-       alwaysBounceVertical={false}
-       overScrollMode="never"
-      showsVerticalScrollIndicator={false}
-      // contentContainerStyle={{marginBottom:150}} 
+      <ScrollView
+        bounces={false}
+        alwaysBounceVertical={false}
+        overScrollMode="never"
+        showsVerticalScrollIndicator={false}
+        // contentContainerStyle={{marginBottom:150}}
       >
         {/* <View style={{ alignItems: "center" }}>
           <Carousel
@@ -416,30 +425,29 @@ const Arts = (props) => {
             tappableDots={true}
           />
         </View> */}
-        {
-          merchantData[0] == null ? null :
-            <FlatList
-              // data={dataList}
-              data={merchantData}
-              keyExtractor={(item) => item.id}
-              renderItem={showList}
-              numColumns={2}
-              showsVerticalScrollIndicator={false}
-              scrollEnabled={false}
-            />
-        }
+        {merchantData[0] == null ? null : (
+          <FlatList
+            // data={dataList}
+            data={merchantData}
+            keyExtractor={(item) => item.id}
+            renderItem={showList}
+            numColumns={2}
+            showsVerticalScrollIndicator={false}
+            scrollEnabled={false}
+          />
+        )}
       </ScrollView>
     </View>
   );
 };
 
-
-
 const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => ({
   setLoader: (data) => dispatch(setLoader(data)),
-  merchantRequest: (data, navigation) => dispatch(merchantRequest(data, navigation)),
-  merchantDetailsRequest: (data, navigation) => dispatch(merchantDetailsRequest(data, navigation)),
+  merchantRequest: (data, navigation) =>
+    dispatch(merchantRequest(data, navigation)),
+  merchantDetailsRequest: (data, navigation) =>
+    dispatch(merchantDetailsRequest(data, navigation)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Arts);
 // export default Arts;

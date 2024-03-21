@@ -37,7 +37,6 @@ import { setLoader } from "../../../modules/Loader/actions";
 import { favouriteListRequest, merchantDetailsRequest, merchantRequest } from "../../../modules/Merchants/actions";
 import { API_URL } from "../../../Constants/Config";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import Geolocation from '@react-native-community/geolocation';
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -337,7 +336,6 @@ const mapDispatchToProps = (dispatch) => ({
   merchantRequest: (data) => dispatch(merchantRequest(data)),
   merchantDetailsRequest: (data, navigation) => dispatch(merchantDetailsRequest(data, navigation)),
   favouriteListRequest: (data) => dispatch(favouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
 });
 

@@ -197,7 +197,6 @@ const ListingDetail = (props) => {
   const [selectedType, setSelectedType] = React.useState("");
   const navigation = useNavigation();
   const [isFavorite, setIsFavorite] = useState(props.route.params?.isFavorite);
-  // console.log('props.route?.params?.item', props.route?.params?.item);
   const dispatch = useDispatch();
   const onPress = (page) => {
     navigation.navigate(page);
@@ -213,7 +212,8 @@ const ListingDetail = (props) => {
   let longitude =
     props.state.merchantReducer?.details?.locationCordinates?.coordinates[1] ||
     0;
-
+  const cartData = useSelector((state) => state);
+  // console.log('[-----------------------', JSON.stringify(cartData?.cartReducer));
   // console.log(props.state.merchantReducer.details.locationCordinates.coordinates)
 
   const handleFavListing = () => {
@@ -342,13 +342,26 @@ const ListingDetail = (props) => {
               navigation.navigate("ReviewCart");
             },
           };
+          // role == 2
+          //   ? props.state.cartReducer?.cartCount == null
+          //     ? setEmptyCart(true)
+          //     : props.state.cartReducer?.cartCount == 0
+          //     ? setEmptyCart(true)
+          //     : (props.CartListRequest(param),
+          //       console.log(param, "pcxppp"),
+          //       navigation.navigate("ReviewCart"))
+          //   : props.state.cartReducer?.cartCount == null
+          //   ? setEmptyCart(true)
+          //   : props.state.cartReducer?.cartCount == 0
+          //   ? setEmptyCart(true)
+          //   : navigation.navigate("ReviewCart");
           role == 2
             ? props.state.cartReducer?.cartCount == null
               ? setEmptyCart(true)
               : props.state.cartReducer?.cartCount == 0
               ? setEmptyCart(true)
               : (props.CartListRequest(param),
-                // console.log(param, "pcxppp"),
+                console.log(param, "pcxppp"),
                 navigation.navigate("ReviewCart"))
             : props.state.cartReducer?.cartCount == null
             ? setEmptyCart(true)
@@ -596,7 +609,7 @@ const ListingDetail = (props) => {
               </View>
               <View style={{ flexDirection: "row" }}>
                 {result?.typeOfVisit?.map((item, index) => (
-                  <View style={{ flexDirection: "row" }}>
+                  <View key={index} style={{ flexDirection: "row" }}>
                     <FastImage
                       style={{ height: 15, width: 15 }}
                       source={
@@ -651,6 +664,7 @@ const ListingDetail = (props) => {
                   </Text>
                   {result?.labels?.map((item, index) => (
                     <View
+                      key={index}
                       style={{
                         backgroundColor: color._primary_orange,
                         padding: 5,
@@ -676,6 +690,7 @@ const ListingDetail = (props) => {
               <View>
                 {result?.radioButtonsData?.map((item, index) => (
                   <View
+                    key={index}
                     style={{
                       // backgroundColor: "red",
                       flexDirection: "row",

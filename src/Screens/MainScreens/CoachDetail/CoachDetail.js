@@ -33,7 +33,6 @@ import {
   guestFavouriteRequest,
 } from "../../../modules/Merchants/actions";
 import {
-  CartListRequest,
   addToCartGuestRequest,
   addToCartRequest,
 } from "../../../modules/Cart/actions";
@@ -774,7 +773,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addToCartRequest(data, navigation)),
   addToCartGuestRequest: (data, navigation) =>
     dispatch(addToCartGuestRequest(data, navigation)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   LearnguestFavouriteRequest: (data) =>
     dispatch(LearnguestFavouriteRequest(data)),
   LearnremoveFavouriteRequest: (navigation) =>

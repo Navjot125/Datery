@@ -14,7 +14,6 @@ import {
 } from "../../Common/Functions/CommonFunctions";
 import { showAlert } from "../../Constants/AlertHelper";
 import {
-  CartListRequest,
   CartListSuccess,
   addToCartGuestSuccess,
   addToCartSuccess,
@@ -27,11 +26,11 @@ import { REQUIRED_ERROR_MESSAGE } from "../../Constants/ErrorMessages";
 
 function* onAddToCartRequest({ data, navigation }) {
   yield put(setLoader(true));
-  console.log(
-    navigation,
-    "navigation ---------------request for add to cart User",
-    data
-  );
+  // console.log(
+  //   navigation,
+  //   "navigation ---------------request for add to cart User",
+  //   data
+  // );
   let res = yield axiosClient
     .post(navigation.endpoint, data)
     .then(function (response) {
@@ -49,7 +48,7 @@ function* onAddToCartRequest({ data, navigation }) {
     // console.log(res.data, '....');
     if (res?.data?.status) {
       yield put(setLoader(false));
-      console.log("res?.data in add ton cart", res?.data);
+      // console.log("res?.data in add ton cart", res?.data);
       yield put(addToCartSuccess(res?.data?.cartcount));
       // navigation.navigation()
       // showAlertSuccess(res.data.message)
@@ -97,7 +96,7 @@ function* onRemoveFromCartGuestRequest({ data }) {
 
 function* onCartListRequest({ data }) {
   // yield put(setLoader(true));
-  console.log(data, "navigation ---------------request for cart list");
+  // console.log(data, "navigation ---------------request for cart list");
   let res = yield axiosClient
     .post(data.endpoint, data.userId, {
       headers: {
@@ -112,7 +111,7 @@ function* onCartListRequest({ data }) {
       return;
     });
   if (res) {
-    console.log(res.data, "res of onCartListRequest");
+    // console.log(res.data, "res of onCartListRequest");
     if (res?.data?.status) {
       // yield put(setLoader(false));
       yield put(CartListSuccess(res?.data?.data));
@@ -158,8 +157,10 @@ function* onRemoveItemFromCartRequest({ data }) {
         cartId: data?.id,
         cartCount: res?.data?.cartcount,
       };
-      console.log(removeData,"on remove cart item", res?.data);
-      yield put(removeItemFromCartSuccess(removeData));
+      // console.log(removeData, "on remove cart item", res?.data);
+      // yield put(removeItemFromCartSuccess(removeData));
+      yield put(addToCartSuccess(res.data?.cartcount));
+      data?.callBack(data?.id);
       // navigation.navigation()
       // showAlertSuccess(res.data.message)
       // console.log(res.data, ' message from saga cart remove item');

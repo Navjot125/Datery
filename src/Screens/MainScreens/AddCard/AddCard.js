@@ -4,7 +4,6 @@ import {
   View,
   Image,
   TouchableOpacity,
-  FlatList,
   ImageBackground,
   Alert,
   ScrollView,
@@ -36,7 +35,6 @@ import { API_URL } from "../../../Constants/Config";
 import { roleRequest } from "../../../modules/Role/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
 import { setLoader } from "../../../modules/Loader/actions";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import { ActivityIndicator } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
@@ -633,7 +631,6 @@ const mapDispatchToProps = (dispatch) => ({
   CardAllDetailsRequest: (data, navigation) =>
     dispatch(CardAllDetailsRequest(data, navigation)),
   CardfavouriteListRequest: (data) => dispatch(CardfavouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
 });
 

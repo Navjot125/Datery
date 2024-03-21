@@ -52,8 +52,13 @@ const ProfileGuestUser = (props) => {
   ];
   // props.roleRequest({ user: 'Guest', id: 1 })
 
-  const Item = ({ title, onPress }) => (
-    <TouchableOpacity activeOpacity={0.9} style={styles.item} onPress={onPress}>
+  const Item = ({ index, title, onPress }) => (
+    <TouchableOpacity
+      key={index}
+      activeOpacity={0.9}
+      style={styles.item}
+      onPress={onPress}
+    >
       {/* <View style={styles.item}> */}
       <Text style={styles.title}>{title}</Text>
       {/* </View> */}
@@ -111,8 +116,8 @@ const ProfileGuestUser = (props) => {
 
             <FlatList
               data={DATA}
-              renderItem={({ item }) => (
-                <Item title={item.title} onPress={item.onPress} />
+              renderItem={({ item, index }) => (
+                <Item index={index} title={item.title} onPress={item.onPress} />
               )}
               keyExtractor={(item) => item.id}
               scrollEnabled={false}

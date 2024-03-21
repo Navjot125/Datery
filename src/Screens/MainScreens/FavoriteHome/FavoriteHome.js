@@ -93,7 +93,7 @@ const FavoriteHome = (props) => {
   //   status={checked ? 'checked' : 'unchecked'}
   // // status={types[0] == item.title ? 'checked' : 'unchecked'}
   // />
-  const renderItemEdit = ({ item }) => {
+  const renderItemEdit = ({ item, index }) => {
     const onPressChange = (item) => {
       item?.serviceId == checkedId
         ? setCheckedId()
@@ -101,6 +101,7 @@ const FavoriteHome = (props) => {
     };
     return (
       <View
+        key={index}
         style={[
           {
             flexDirection: "row",
@@ -239,9 +240,9 @@ const FavoriteHome = (props) => {
       </View>
     );
   };
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item, index }) => {
     return (
-      <View style={styles.cardView}>
+      <View key={index} style={styles.cardView}>
         <TouchableOpacity
           activeOpacity={0.9}
           onPress={() => navigation.navigate("ListingDetail")}

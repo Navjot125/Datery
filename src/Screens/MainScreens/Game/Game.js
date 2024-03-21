@@ -2,9 +2,6 @@ import {
   SafeAreaView,
   Text,
   View,
-  Image,
-  TouchableOpacity,
-  FlatList,
 } from "react-native";
 import { Dimensions } from "react-native";
 

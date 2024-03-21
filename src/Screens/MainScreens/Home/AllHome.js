@@ -51,6 +51,7 @@ const AllHome = (props) => {
   const showList = ({ item, index }) => {
     return (
       <View
+      key={index}
         style={{
           flex: 1,
           // backgroundColor:"red",
@@ -121,6 +122,7 @@ const AllHome = (props) => {
             </Text>
             {item?.typeOfVisit?.map((item, index) => (
               <View
+              key={index}
                 style={{
                   marginHorizontal: 5,
                   flexDirection: "row",

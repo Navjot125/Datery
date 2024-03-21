@@ -1,12 +1,12 @@
-import React from 'react';
-import {TouchableOpacity, Text, View, Image, FlatList} from 'react-native';
-import styles from './Dropdown2Style';
-import Icon from 'react-native-vector-icons/Feather';
-import color from '../../../Constants/Color';
-import base from '../../../Constants/CommonStyle';
+import React from "react";
+import { TouchableOpacity, Text, View, Image, FlatList } from "react-native";
+import styles from "./Dropdown2Style";
+import Icon from "react-native-vector-icons/Feather";
+import color from "../../../Constants/Color";
+import base from "../../../Constants/CommonStyle";
 // import Add from '../../../resources/svg/ic_add.svg';
 
-export const Dropdown = props => {
+export const Dropdown = (props) => {
   // const [showList, setShow] = React.useState(false);
 
   const {
@@ -29,14 +29,14 @@ export const Dropdown = props => {
   return (
     <View style={[styles.mainContainer, mainContainer]}>
       <TouchableOpacity
-            activeOpacity={0.9}
-
+        activeOpacity={0.9}
         style={[styles.drodownContainer, inputContainerStyle]}
         onPress={() => {
           // setShow(!showList),
           setShowList();
         }}
-        {...props}>
+        {...props}
+      >
         {/* {selectedValue.length !== 0 ? (
           selectedValue.map((item, index) => {
             return (
@@ -74,23 +74,25 @@ export const Dropdown = props => {
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             nestedScrollEnabled={true}
-            renderItem={({item}) => {
+            renderItem={({ item, index }) => {
               let id = item.title;
               let categoryId = item.id;
-              let selectd = '';
+              let selectd = "";
               return (
                 <TouchableOpacity
-            activeOpacity={0.9}
+                  key={index}
+                  activeOpacity={0.9}
                   style={[styles.dropdownItems, listItemStyle]}
                   onPress={() => {
                     // setShow(!showList);
                     setShowList();
                     onChangeText(item);
-                  }}>
+                  }}
+                >
                   {selectedValue.length !== 0 ? (
                     <>
                       {/* <Text style={[styles.labelTxt, selectedValue.map((item) => { return (id === item ? { color: color._dark_blue } : { color: color._dark_gray_50 }) })]}>{id}</Text> */}
-                      {selectedValue.map(item => {
+                      {selectedValue.map((item) => {
                         if (item.id === categoryId) {
                           selectd = categoryId;
                         }
@@ -99,15 +101,17 @@ export const Dropdown = props => {
                       <View
                         style={[
                           base.horizontal,
-                          {justifyContent: 'space-between'},
-                        ]}>
+                          { justifyContent: "space-between" },
+                        ]}
+                      >
                         <Text
                           style={[
                             styles.labelTxt,
                             {
                               color: selectd ? color._gray : color._font_Dark,
                             },
-                          ]}>
+                          ]}
+                        >
                           {item.title}
                         </Text>
                         <Text>
@@ -118,7 +122,9 @@ export const Dropdown = props => {
                       </View>
                     </>
                   ) : (
-                    <Text style={[styles.labelTxt, {color: color._font_Dark}]}>
+                    <Text
+                      style={[styles.labelTxt, { color: color._font_Dark }]}
+                    >
                       {item.title}
                     </Text>
                   )}

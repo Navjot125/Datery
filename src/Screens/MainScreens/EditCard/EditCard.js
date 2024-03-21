@@ -42,7 +42,6 @@ import {
 import { roleRequest } from "../../../modules/Role/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
 import { setLoader } from "../../../modules/Loader/actions";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 
 const EditCard = (props) => {
@@ -418,7 +417,6 @@ const mapDispatchToProps = (dispatch) => ({
   removeAnswer: (data, navigation) => dispatch(removeAnswer(data, navigation)),
   setLoader: (data) => dispatch(setLoader(data)),
   CardEditRequest: (data) => dispatch(CardEditRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
   CardAllRequest: (data) => dispatch(CardAllRequest(data)),
   CardAllDetailsRequest: (data, navigation) =>

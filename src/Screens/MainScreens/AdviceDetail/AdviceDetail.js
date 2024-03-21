@@ -18,7 +18,6 @@ import { connect, useDispatch } from "react-redux";
 import { BackHeader } from "../../../Components/molecules";
 import Images from "../../../assets/Images";
 import {
-  CartListRequest,
   addToCartGuestRequest,
   addToCartRequest,
 } from "../../../modules/Cart/actions";
@@ -286,13 +285,14 @@ const AdviceDetail = (props) => {
     return radioButton ? radioButton.price : null;
   }
 
-  const showData = ({ item }) => {
+  const showData = ({ item, index }) => {
     const formatDate = (isoDateString) => {
       const createdAtDate = new Date(isoDateString);
       return `${createdAtDate.toDateString()}`;
     };
     return (
       <View
+        key={index}
         style={{
           marginTop: 11.9,
           marginBottom: 10,
@@ -473,7 +473,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(addToCartRequest(data, navigation)),
   addToCartGuestRequest: (data, navigation) =>
     dispatch(addToCartGuestRequest(data, navigation)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   LearnguestFavouriteRequest: (data) =>
     dispatch(LearnguestFavouriteRequest(data)),
   LearnremoveFavouriteRequest: (navigation) =>

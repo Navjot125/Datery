@@ -92,8 +92,11 @@ const FavoritesGames = (props) => {
                 <View style={{ flexDirection: "row" }}>
                   {item.labels &&
                     Array.isArray(item.labels) &&
-                    item.labels.map((items) => (
-                      <View style={[styles.newMain, { marginRight: 7 }]}>
+                    item.labels.map((items, index) => (
+                      <View
+                        key={index}
+                        style={[styles.newMain, { marginRight: 7 }]}
+                      >
                         <View style={styles.newWrp}>
                           <Text style={styles.newWrpTxt}>{items}</Text>
                         </View>
@@ -139,8 +142,11 @@ const FavoritesGames = (props) => {
               <View style={{ flexDirection: "row" }}>
                 {item.labels &&
                   Array.isArray(item.labels) &&
-                  item.labels.map((items) => (
-                    <View style={[styles.newMain, { marginRight: 7 }]}>
+                  item.labels.map((items, index) => (
+                    <View
+                      key={index}
+                      style={[styles.newMain, { marginRight: 7 }]}
+                    >
                       <View style={styles.newWrp}>
                         <Text style={styles.newWrpTxt}>{items}</Text>
                       </View>
@@ -250,6 +256,7 @@ const FavoritesGames = (props) => {
                 </TouchableOpacity>
               </>
             ) : null
+          ) : (
             // <FlatList
             //   data={favData}
             //   ListEmptyComponent={emptyData}
@@ -258,7 +265,6 @@ const FavoritesGames = (props) => {
             //   renderItem={showData}
             //   showsVerticalScrollIndicator={false}
             // />
-          ) : (
             <Text
               style={{
                 flex: 1,

@@ -280,6 +280,7 @@ const AllMap = (props) => {
   const showList = ({ item, index }) => {
     return (
       <View
+        key={index}
         style={{
           backgroundColor: "white",
           borderRadius: 10,

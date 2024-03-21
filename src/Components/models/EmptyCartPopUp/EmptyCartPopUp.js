@@ -10,7 +10,6 @@ import {
   TouchableOpacity,
   StyleSheet,
   View,
-  FlatList,
   Image,
 } from "react-native";
 import {

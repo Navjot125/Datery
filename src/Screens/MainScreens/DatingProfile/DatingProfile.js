@@ -377,7 +377,7 @@ const DatingProfile = (props) => {
 
   const renderItem = ({ item, index }) => {
     return (
-      <View style={{ flex: 1, marginTop: 24 }}>
+      <View key={index} style={{ flex: 1, marginTop: 24 }}>
         <Atom.CheckBox
           label={item.title}
           containerStyle={{}}
@@ -410,9 +410,9 @@ const DatingProfile = (props) => {
     props.setLoader(false);
   };
 
-  const renderTopicsItem = ({ item }) => {
+  const renderTopicsItem = ({ item , index}) => {
     return (
-      <View style={{ flex: 1, marginTop: 24 }}>
+      <View key={index} style={{ flex: 1, marginTop: 24 }}>
         <Atom.CheckBox
           label={item.title}
           containerStyle={{}}

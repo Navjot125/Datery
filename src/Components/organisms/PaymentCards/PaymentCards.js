@@ -35,7 +35,6 @@ import {
 import { roleRequest } from "../../../modules/Role/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
 import { setLoader } from "../../../modules/Loader/actions";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import { API_URL } from "../../../Constants/Config";
 import {
@@ -287,7 +286,6 @@ const mapDispatchToProps = (dispatch) => ({
   CardAllDetailsSuccess: (data, navigation) =>
     dispatch(CardAllDetailsSuccess(data, navigation)),
   CardfavouriteListRequest: (data) => dispatch(CardfavouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
   CardremoveFavouriteRequest: (navigation) =>
     dispatch(CardremoveFavouriteRequest(navigation)),

@@ -12,6 +12,7 @@ export const Tab = props => {
           {titleList.map((title, i) => {
             return (
               <View
+              key={i}
                 style={[
                   styles.tabRow,
                   currentTab == i
@@ -51,6 +52,7 @@ export const Tab = props => {
             // 	start={{ x: 1, y: 0 }} end={{ x: 0, y: 1 }}
             // 	style={[{ flex: 1, flexDirection: 'row', }, currentTab == i ? styles.activeGradient : styles.inactiveGradient]}	>
             <TouchableOpacity
+            key={i}
             activeOpacity={0.9}
               style={[
                 styles.tab,

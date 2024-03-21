@@ -24,7 +24,6 @@ import {
   playRequest,
   playfavouriteListRequest,
 } from "../../../modules/play/actions";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import { removeAnswer, setAnswer } from "../../../modules/SetAnswer/actions";
 import { roleRequest } from "../../../modules/Role/actions";
@@ -373,7 +372,6 @@ const mapDispatchToProps = (dispatch) => ({
   playDetailsRequest: (data, navigation) =>
     dispatch(playDetailsRequest(data, navigation)),
   playfavouriteListRequest: (data) => dispatch(playfavouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
 });
 

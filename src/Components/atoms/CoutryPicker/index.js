@@ -98,7 +98,7 @@ export default class CountryPicker extends Component {
 
   _renderListItems(item, index) {
     return (
-      <View>
+      <View key={index} >
         <TouchableOpacity 
             activeOpacity={0.9}
         

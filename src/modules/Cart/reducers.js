@@ -98,7 +98,6 @@ export default (state = INITIAL_STATE, action) => {
       };
 
     case REMOVE_ITEM_FROM_CART_SUCCESS:
-      console.log(action?.data, "data of actionnn cartId", INITIAL_STATE);
       return {
         ...state,
         cartListUser: state?.cartListUser?.filter(

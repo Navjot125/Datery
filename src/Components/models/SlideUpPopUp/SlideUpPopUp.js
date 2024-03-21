@@ -58,9 +58,10 @@ export const SlideUpPopUp = (props) => {
     setModalVisible(isVisible);
   }, [isVisible]);
 
-  const showData = ({ item }) => {
+  const showData = ({ item, index }) => {
     return (
       <TouchableOpacity
+        key={index}
         activeOpacity={0.9}
         style={{
           flex: 1,
@@ -166,6 +167,7 @@ export const SlideUpPopUp = (props) => {
           <View style={{ flexDirection: "row" }}>
             {typeOfVisit?.map((item, index) => (
               <TouchableOpacity
+                key={index}
                 style={{
                   flexDirection: "row",
                   marginTop: 5,

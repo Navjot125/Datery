@@ -48,7 +48,6 @@ import {
 } from "../../../modules/Merchants/actions";
 import { API_URL } from "../../../Constants/Config";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { CartListRequest } from "../../../modules/Cart/actions";
 import { datingProfileRequest } from "../../../modules/Profile/actions";
 import Geolocation from "@react-native-community/geolocation";
 import Carousel, { Pagination } from "react-native-snap-carousel";
@@ -442,6 +441,7 @@ const Home = (props) => {
               : false;
           return (
             <TouchableOpacity
+              key={idx}
               onPress={() => {
                 // item?.body[1]?.title == i?.title
                 //   ? setOpen(true)
@@ -1043,7 +1043,6 @@ const mapDispatchToProps = (dispatch) => ({
   merchantDetailsRequest: (data, navigation) =>
     dispatch(merchantDetailsRequest(data, navigation)),
   favouriteListRequest: (data) => dispatch(favouriteListRequest(data)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   datingProfileRequest: (data) => dispatch(datingProfileRequest(data)),
 });
 

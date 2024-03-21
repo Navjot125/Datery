@@ -1,10 +1,10 @@
-import React from 'react';
-import {TouchableOpacity, Text, View, Image, FlatList} from 'react-native';
-import styles from './DropdownStyle';
-import Icon from 'react-native-vector-icons/Feather';
-import color from '../../../Constants/Color';
+import React from "react";
+import { TouchableOpacity, Text, View, Image, FlatList } from "react-native";
+import styles from "./DropdownStyle";
+import Icon from "react-native-vector-icons/Feather";
+import color from "../../../Constants/Color";
 
-export const Dropdown = props => {
+export const Dropdown = (props) => {
   const [showList, setShow] = React.useState(false);
 
   const {
@@ -27,14 +27,15 @@ export const Dropdown = props => {
   return (
     <View style={[styles.mainContainer, mainContainer]}>
       <TouchableOpacity
-            activeOpacity={0.9}
+        activeOpacity={0.9}
         style={[styles.drodownContainer, inputContainerStyle]}
         onPress={() => {
           setShow(!showList), setShowList();
         }}
         disabled={disabled}
-        {...props}>
-        {JSON.stringify(selectedValue) !== '{}' ? (
+        {...props}
+      >
+        {JSON.stringify(selectedValue) !== "{}" ? (
           <Text style={styles.selectedTxt}>{selectedValue.label}</Text>
         ) : (
           <Text style={[styles.landPlaceHolder, placeholderStyle]}>
@@ -58,10 +59,11 @@ export const Dropdown = props => {
             bounces={false}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            renderItem={({item, index}) => {
+            renderItem={({ item, index }) => {
               return (
                 <TouchableOpacity
-            activeOpacity={0.9}
+                  key={index}
+                  activeOpacity={0.9}
                   style={[
                     styles.dropdownItems,
                     {
@@ -73,18 +75,20 @@ export const Dropdown = props => {
                     setShow(!showList);
                     setShowList();
                     onChangeText(item);
-                  }}>
+                  }}
+                >
                   {selectedValue != null ? (
                     <>
                       <Text
                         style={[
                           item.value === selectedValue.value
-                            ? {color: color._gray}
+                            ? { color: color._gray }
                             : {
                                 color: color._font_Dark,
                               },
                           styles.labelTxt,
-                        ]}>
+                        ]}
+                      >
                         {item.label}
                       </Text>
 
@@ -93,7 +97,9 @@ export const Dropdown = props => {
                       )}
                     </>
                   ) : (
-                    <Text style={[{color: color._font_Dark}, styles.labelTxt]}>
+                    <Text
+                      style={[{ color: color._font_Dark }, styles.labelTxt]}
+                    >
                       {item.label}
                     </Text>
                   )}

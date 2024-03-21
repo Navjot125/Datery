@@ -43,7 +43,7 @@ function* onLoginRequest({ data, navigation }) {
       return;
     });
   if (res?.data?.status) {
-    console.log(JSON.stringify(res?.data), "res?.data-------- on login");
+    // console.log(JSON.stringify(res?.data), "res?.data-------- on login");
     yield put(setLoader(false));
     yield put(loginSuccess(res.data));
     yield put(addToCartSuccess(res.data?.cartcount));

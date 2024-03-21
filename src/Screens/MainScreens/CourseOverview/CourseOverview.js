@@ -42,7 +42,6 @@ import {
   LearnremoveGuestFavouriteRequest,
 } from "../../../modules/learn/actions";
 import {
-  CartListRequest,
   addToCartGuestRequest,
   addToCartRequest,
 } from "../../../modules/Cart/actions";
@@ -294,7 +293,7 @@ const CourseOverview = (props) => {
         contentContainerStyle={{ flexGrow: 1 }}
         renderItem={() => {
           return (
-            <View style={{ flex: 1 }}>
+            <View key={1} style={{ flex: 1 }}>
               {/* <ScrollView> */}
               <VideoPlayer
                 source={{
@@ -524,7 +523,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(LearnremoveGuestFavouriteRequest(data)),
   LearnremoveFavouriteRequest: (navigation) =>
     dispatch(LearnremoveFavouriteRequest(navigation)),
-  CartListRequest: (data) => dispatch(CartListRequest(data)),
   LearnguestFavouriteRequest: (data) =>
     dispatch(LearnguestFavouriteRequest(data)),
 });

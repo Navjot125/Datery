@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   TouchableOpacity,
   View,
   Text,
   FlatList,
   TouchableHighlight,
-} from 'react-native';
-import styles from './SelectItemStyle';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import color from '../../../Constants/Color';
-import * as Atom from '../../../Components/atoms';
+} from "react-native";
+import styles from "./SelectItemStyle";
+import AntDesign from "react-native-vector-icons/AntDesign";
+import color from "../../../Constants/Color";
+import * as Atom from "../../../Components/atoms";
 
 const SelectItem = ({
   DATA = [],
   EXISTING_DATA = [],
-  onChange = () => { },
+  onChange = () => {},
   multiSelect = false,
   numColumns,
   double,
@@ -22,7 +22,7 @@ const SelectItem = ({
   const [data, setData] = useState();
 
   useEffect(() => {
-    var ArrData = DATA.map(ele => {
+    var ArrData = DATA.map((ele) => {
       if (EXISTING_DATA.includes(ele._id)) {
         ele.selected = true;
       } else {
@@ -33,8 +33,15 @@ const SelectItem = ({
     setData(ArrData);
   }, []);
 
-  const Item = ({ item }) => (
-    <View style={double == true ? { width: '46%', marginLeft: '2%', marginTop: 5 } : { width: '100%', marginTop: 5 }} >
+  const Item = ({ index, item }) => (
+    <View
+      key={index}
+      style={
+        double == true
+          ? { width: "46%", marginLeft: "2%", marginTop: 5 }
+          : { width: "100%", marginTop: 5 }
+      }
+    >
       <Atom.Button
         title={item.name}
         onPress={() =>
@@ -44,21 +51,20 @@ const SelectItem = ({
           item.selected
             ? { height: 45 }
             : {
-              borderWidth: 1,
-              backgroundColor: '#FFF',
-              borderColor: color._primary_orange,
-              height: 45,
-            }
+                borderWidth: 1,
+                backgroundColor: "#FFF",
+                borderColor: color._primary_orange,
+                height: 45,
+              }
         }
-        textStyle={item.selected ? {} : { color: '#2F2729' }}
+        textStyle={item.selected ? {} : { color: "#2F2729" }}
       />
     </View>
   );
-  const renderItem = ({ item }) => {
-
-    return <Item item={item} />;
+  const renderItem = ({ item, index }) => {
+    return <Item index={index} item={item} />;
   };
-  const handlePressSingle = item => {
+  const handlePressSingle = (item) => {
     let renderData = [...data];
     for (let e of renderData) {
       if (e._id === item._id) {
@@ -72,10 +78,10 @@ const SelectItem = ({
     setData(renderData);
   };
 
-  const handlePressMulti = item => {
+  const handlePressMulti = (item) => {
     let renderData = [...data];
 
-    if (item.name == 'All') {
+    if (item.name == "All") {
       if (item.selected) {
         for (let data of renderData) {
           data.selected = false;
@@ -87,7 +93,7 @@ const SelectItem = ({
       }
     } else {
       for (let data of renderData) {
-        if (data._id == '1' && data.selected) {
+        if (data._id == "1" && data.selected) {
           data.selected = false;
         }
         if (data._id == item._id) {
@@ -96,7 +102,9 @@ const SelectItem = ({
         }
       }
     }
-    const selectedData = renderData.filter(e => e.selected).map(e => e.name);
+    const selectedData = renderData
+      .filter((e) => e.selected)
+      .map((e) => e.name);
     onChange(selectedData);
     setData(renderData);
   };
@@ -105,7 +113,7 @@ const SelectItem = ({
       <FlatList
         data={data}
         renderItem={renderItem}
-        keyExtractor={item => item._id}
+        keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
         numColumns={numColumns}
       />
