@@ -91,10 +91,10 @@ function* onplayRequest({ data }) {
         Authorization: data?.userToken,
       },
     };
-    console.log("data----", data, "config----", config);
+    // console.log("data----", data, "config----", config);
     const res = yield axiosClient.get(data?.endpoint, config);
     if (res?.data) {
-      console.log(res.data, "------Play res");
+      // console.log(res.data, "------Play res");
       if (res.data.status) {
         yield put(playSuccess(res.data));
       } else if (res.data.message !== "Please provide the coordinates.") {

@@ -134,7 +134,6 @@ const Profile = (props) => {
       },
     },
   ];
-
   const handleSignOut = async () => {
     try {
       let params = {
@@ -142,11 +141,12 @@ const Profile = (props) => {
         changeRole: props.roleRequest,
         userToken: userToken ? userToken : SignupToken,
         navigation: () =>
-          navigation.reset({
-            index: 0,
-            routes: [{ name: "Root", params: { screen: "Profile" } }],
-          }),
+        navigation.reset({
+          index: 0,
+          routes: [{ name: "Root", params: { screen: "Profile" } }],
+        }),
       };
+      console.log("userToken", params);
       dispatch(signOutRequest(params));
     } catch (error) {
       console.log(error?.response?.data, "EEEe in handleSignOut", error);

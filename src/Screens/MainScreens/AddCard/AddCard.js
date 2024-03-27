@@ -9,6 +9,7 @@ import {
   ScrollView,
   InteractionManager,
   KeyboardAvoidingView,
+  // StyleSheet,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -25,6 +26,7 @@ import { connect, useDispatch } from "react-redux";
 import * as Atom from "../../../Components/atoms";
 import * as Models from "../../../Components/models";
 import * as Yup from "yup";
+import { CardField, useStripe } from "@stripe/stripe-react-native";
 import Toast from "react-native-toast-message";
 import {
   CardAllDetailsRequest,
@@ -40,6 +42,8 @@ import { ActivityIndicator } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const AddCard = (props) => {
+  const { confirmPayment } = useStripe();
+
   const [modalVisibleUpdate, setModalVisibleUpdate] = useState(false);
   const fromOnboarding = props?.route?.params?.fromOnboarding;
   // console.log(props?.route?.params?.fromOnboarding,'[[======', fromOnboarding? 'true':'false');
@@ -232,31 +236,32 @@ const AddCard = (props) => {
             // userId: props.state.loginReducer?.loginData._id
             //   ? props.state.loginReducer?.loginData._id
             //   : props.state?.signupReducer?.signupSucessData?.UserData?._id,
-            cardHolderName: name,
-            cardNumber: cardNumber,
+
+            number: cardNumber,
             exp_month: date.slice(0, 2),
             exp_year: date.slice(3, 5),
-            cardCVV: cvv,
-            address: address,
+            name: name,
+            cvc: cvv,
+            line1: address,
             city: city,
             state: state,
-            zipCode: zipCode,
+            postal_code: zipCode,
             default: isDefault,
+            email: "krishanindiit@yopmial.com",
           };
           // if (!data.default) delete data.default;
           // setLoader(false);
           const callback = (res) => {
             isFromOnboarding
               ? // navigation.navigate("Done")
-              (navigation.reset({
-                index: 0,
-                routes: [{ name: 'Done' }],
-              })
-              // (navigation.reset({
-              //     index: 0,
-              //     routes: [{ name: "Root", params: { screen: "Done" } }],
-              //   })
-                ,
+                (navigation.reset({
+                  index: 0,
+                  routes: [{ name: "Done" }],
+                }),
+                // (navigation.reset({
+                //     index: 0,
+                //     routes: [{ name: "Root", params: { screen: "Done" } }],
+                //   })
                 setIsFromOnboarding(false))
               : navigation.goBack();
             // console.log("working callback", res);
@@ -309,314 +314,415 @@ const AddCard = (props) => {
       ? navigation?.navigate("Age")
       : navigation?.navigate("Profile");
   };
+
+  const handlePayments = async () => {
+    try {
+      const { paymentIntent, error } = await confirmPayment("client_secret", {
+        type: "Card",
+      });
+
+      if (error) {
+        console.log(error,"Payment failed:", error.message);
+      } else if (paymentIntent) {
+        console.log("Payment successful:", paymentIntent);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
   return (
-    <SafeAreaView style={styles.scrollView}>
-      <BackHeader onBackPress={onBackPress} title={"Add Payment Card"} />
-      {/* <KeyboardAvoidingView style={{ flexGrow: 1 }} behavior="padding">
-        <ScrollView
-          // automaticallyAdjustKeyboardInsets={true}
-          // keyboardDismissMode="none"
-          // keyboardShouldPersistTaps="handled"
-          contentContainerStyle={{ flexGrow: 1 }}
-        > */}
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps="always"
-        showsVerticalScrollIndicator={false}
-        extraScrollHeight={20}
-      >
-        <View
-          style={[
-            styles.mainView,
-            loader && {
-              justifyContent: "center",
-            },
-          ]}
-        >
-          {loader ? (
-            <ActivityIndicator color={color._primary_orange} size={"large"} />
-          ) : (
-            <ScrollView
-              bounces={false}
-              alwaysBounceVertical={false}
-              overScrollMode="never"
-              style={{ marginTop: 20 }}
-              showsVerticalScrollIndicator={false}
-              keyboardShouldPersistTaps="always"
-            >
-              <Text style={styles.headings}>Name on Card</Text>
-              <Atom.TextInputSimple
-                textFieldStyle={[styles.textField]}
-                value={cardDetails.name}
-                name={"name"}
-                onChangeText={(value) => {
-                  setName(value),
-                    handleChange("name", value),
-                    setError({ ...error, name: "" });
-                }}
-              />
-              {error?.name ? (
-                <Text style={styles?.inputErrorText}>{error?.name}</Text>
-              ) : null}
-
-              <Text style={styles.headings}>Card Number</Text>
-              <Atom.TextInputSimple
-                maxLength={19}
-                name={"cardNumber"}
-                textFieldStyle={styles.textField}
-                keyboardType={"numeric"}
-                // value={cardDetails?.cardNumber}
-                value={cardNumber}
-                onChangeText={(value) => {
-                  // handleChangeCardNumber(value);
-                  setCardNumber(formatCardNumber(value));
-                  handleChange("cardNumber", value);
-                  setError({ ...error, cardNumber: "" });
-                }}
-              />
-              {error?.cardNumber ? (
-                <Text style={styles?.inputErrorText}>{error?.cardNumber}</Text>
-              ) : null}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.headings}>Expiration date</Text>
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "flex-start",
-                    }}
-                  >
-                    <Atom.TextInputSimple
-                      // value={`${cardDetails.expiryMonth} / ${cardDetails.expiryYear}`}
-                      value={date}
-                      textFieldStyle={{ height: 48, width: 150 }}
-                      onChangeText={(value) => {
-                        value?.length > 6
-                          ? null
-                          : setDate(handleInputChange(value));
-                        handleChange("date", handleInputChange(value));
-                        setError({ ...error, date: "" });
-                      }}
-                      placeholder={"MM/YY"}
-                      placeholderTextColor={"lightgray"}
-                    />
-
-                    {/* <View style={{ left: 10 }}>
-                    <Atom.TextInputSimple
-                      value={cardDetails.expiryYear}
-                      textFieldStyle={{ height: 48, width: 70 }}
-                      onChangeText={(value) =>
-                        handleChange("expiryYear", value)
-                      }
-                    />
-                  </View> */}
-                  </View>
-                  {error?.date ? (
-                    <Text style={styles?.inputErrorText}>{error?.date}</Text>
-                  ) : null}
-                </View>
-                <View>
-                  <Text style={styles.headings}>CVV</Text>
-                  <Atom.TextInputSimple
-                    secureTextEntry={true}
-                    hideEye={true}
-                    keyboardType="numbers-and-punctuation"
-                    textFieldStyle={{ height: 48, width: 156 }}
-                    value={cardDetails.cvv}
-                    onChangeText={(value) => {
-                      setCvv(value), handleChange("cvv", value);
-                      setError({ ...error, cvv: "" });
-                    }}
-                    placeholder={"123"}
-                    placeholderTextColor={"lightgray"}
-                  />
-                  {error?.cvv ? (
-                    <Text style={styles?.inputErrorText}>{error?.cvv}</Text>
-                  ) : null}
-                </View>
-              </View>
-              {!isFromOnboarding && (
-                <Atom.CheckBox
-                  label={"Set as default payment method"}
-                  // checkValue={cardDetails.default}
-                  checkValue={isDefault}
-                  onPress={
-                    () => setIsDefault(!isDefault)
-                    // setCardDetails({
-                    //   ...cardDetails,
-                    //   default: !cardDetails.default,
-                    // })
-                  }
-                  labelStyle={styles.checkBoxStyle}
-                />
-              )}
-              <Text style={styles.headingAddress}>Billing Address</Text>
-              <Text style={styles.headings}>Address</Text>
-              {/* <Atom.TextInputSimple
-              textFieldStyle={styles.textField}
-              value={cardDetails.adress}
-              onChangeText={(value) => handleChange("adress", value)}
-            /> */}
-              <>
-                <View style={{ marginVertical: 10 }}>
-                  <GooglePlacesAutocomplete
-                    placeholder="Search"
-                    enablePoweredByContainer={false}
-                    // textInputProps={{ clearButtonMode: "never" }}
-                    styles={{
-                      textInputContainer: {
-                        // backgroundColor: "grey",
-                      },
-                      container: {
-                        flex: 0,
-                      },
-                      textInput: {
-                        height: 58,
-                        color: "#5d5d5d",
-                        fontSize: 16,
-                        borderWidth: 1,
-                        borderRadius: 16,
-                        borderColor: "#DCDCDD",
-                        // backgroundColor:'red',
-                      },
-                      predefinedPlacesDescription: {
-                        color: "#1faadb",
-                      },
-                    }}
-                    fetchDetails={true}
-                    onPress={(data, details = null) => {
-                      console.log(data, "[[[[[[[[[[[[[[");
-                      setError({ ...error, state: "", address: "", city: "" }),
-                        setAddress(details?.formatted_address),
-                        setCity(details?.address_components[1]?.long_name),
-                        setState(details?.address_components[3]?.long_name),
-                        handleChange("address", details?.formatted_address);
-                    }}
-                    query={{
-                      key: "AIzaSyCWbsC3b6QgedZG8VQe2ux5lovNGxTptZM",
-                      language: "en",
-                    }}
-                    currentLocation={false}
-                    // currentLocationLabel="Current location"
-                  />
-                </View>
-                {error?.address ? (
-                  <Text style={styles?.inputErrorText}>{error?.address}</Text>
-                ) : null}
-              </>
-              <Text style={styles.headings}>City</Text>
-              <Atom.TextInputSimple
-                textFieldStyle={styles.textField}
-                // value={cardDetails.city}
-                value={city}
-                onChangeText={(value) => {
-                  setCity(value),
-                    handleChange("city", value),
-                    setError({ ...error, city: "" });
-                }}
-              />
-              {error?.city ? (
-                <Text style={styles?.inputErrorText}>{error?.city}</Text>
-              ) : null}
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <View>
-                  <Text style={styles.headings}>State</Text>
-                  <Atom.TextInputSimple
-                    textFieldStyle={{ height: 48, width: 157 }}
-                    // value={cardDetails.state}
-                    value={state}
-                    onChangeText={(value) => {
-                      handleChange("state", value);
-                      setState(value), setError({ ...error, state: "" });
-                    }}
-                  />
-                  {error?.state ? (
-                    <Text style={styles?.inputErrorText}>{error?.state}</Text>
-                  ) : null}
-                </View>
-                <View>
-                  <Text style={styles.headings}>Zip code</Text>
-                  <Atom.TextInputSimple
-                    keyboardType={"numeric"}
-                    textFieldStyle={{ height: 48, width: 156 }}
-                    value={zipCode}
-                    onChangeText={(value) => {
-                      handleChange("zipCode", value),
-                        setZipCode(value),
-                        setError({ ...error, zipCode: "" });
-                    }}
-                  />
-                  {error?.zipCode ? (
-                    <Text style={styles?.inputErrorText}>{error?.zipCode}</Text>
-                  ) : null}
-                </View>
-              </View>
-              {isFromOnboarding && (
-                <Text
-                  onPress={() => {
-                    navigation.navigate("Done");
-                  }}
-                  style={{
-                    alignSelf: "center",
-                    color: color._primary_orange,
-                    marginHorizontal: 5,
-                  }}
-                >
-                  SKIP
-                </Text>
-              )}
-              {isFromOnboarding ? (
-                <Atom.Button
-                  onPress={() => {
-                    handlePayment();
-                  }}
-                  title={"NEXT"}
-                />
-              ) : (
-                <Atom.Button
-                  onPress={() => {
-                    // InteractionManager.runAfterInteractions(() => {
-                    handlePayment();
-                    // setLoader(true);
-                  }}
-                  title={"SAVE"}
-                />
-              )}
-              <Text style={styles.lastHeading}>
-                <Icon name="shield-checkmark" size={15} color={"#726A6A"} />{" "}
-                Information is sent over a secure connection
-              </Text>
-            </ScrollView>
-          )}
-        </View>
-      </KeyboardAwareScrollView>
-      {/* </ScrollView>
-      </KeyboardAvoidingView> */}
-      <Models.CommonPopUp
-        isVisible={modalVisibleUpdate}
-        title="Successful"
-        titleTxt={{ fontSize: 24 }}
-        discription="Payment Method Updated!"
-        descriptionTxt={styles.description}
-        // middleContent={middleContentCardDecline()}
-        middleContentStyle={{ paddingTop: 19 }}
-        btnTxt="BACK TO PAYMENTS"
-        onPress={() => {
-          navigation.goBack(), setModalVisibleUpdate(false);
+    // <View style={styles.container}>
+    //   <TextInput
+    //     style={styles.input}
+    //     placeholder="Card Number"
+    //     value={cardDetails.number}
+    //     onChangeText={(value) => handleInputChange("number", value)}
+    //   />
+    //   <View style={styles.inlineInputs}>
+    //     <TextInput
+    //       style={[styles.input, { flex: 1 }]}
+    //       placeholder="MM"
+    //       value={cardDetails.expMonth}
+    //       onChangeText={(value) => handleInputChange("expMonth", value)}
+    //     />
+    //     <TextInput
+    //       style={[styles.input, { flex: 1 }]}
+    //       placeholder="YY"
+    //       value={cardDetails.expYear}
+    //       onChangeText={(value) => handleInputChange("expYear", value)}
+    //     />
+    //     <TextInput
+    //       style={[styles.input, { flex: 1 }]}
+    //       placeholder="CVC"
+    //       value={cardDetails.cvc}
+    //       onChangeText={(value) => handleInputChange("cvc", value)}
+    //     />
+    //   </View>
+    //   <Button title="Pay" onPress={handlePayment} />
+    // </View>
+    <View>
+      <CardField
+        postalCodeEnabled={true}
+        placeholders={{
+          number: "4242 4242 4242 4242",
+        }}
+        cardStyle={{
+          backgroundColor: "#FFFFFF",
+          textColor: "#000000",
+        }}
+        style={{
+          width: "100%",
+          height: 50,
+          marginVertical: 30,
+        }}
+        onCardChange={(cardDetails) => {
+          console.log("cardDetails", cardDetails);
+        }}
+        onFocus={(focusedField) => {
+          console.log("focusField", focusedField);
         }}
       />
-    </SafeAreaView>
+      <TouchableOpacity
+        style={{
+          height: 60,
+          width: 200,
+          backgroundColor: "red",
+          alignSelf: "center",
+        }}
+        onPress={() => {
+          handlePayments();
+        }}
+      ></TouchableOpacity>
+    </View>
+    // <SafeAreaView style={styles.scrollView}>
+    //   <BackHeader onBackPress={onBackPress} title={"Add Payment Card"} />
+    //   {/* <KeyboardAvoidingView style={{ flexGrow: 1 }} behavior="padding">
+    //     <ScrollView
+    //       // automaticallyAdjustKeyboardInsets={true}
+    //       // keyboardDismissMode="none"
+    //       // keyboardShouldPersistTaps="handled"
+    //       contentContainerStyle={{ flexGrow: 1 }}
+    //     > */}
+    //   <KeyboardAwareScrollView
+    //     keyboardShouldPersistTaps="always"
+    //     showsVerticalScrollIndicator={false}
+    //     extraScrollHeight={20}
+    //   >
+    //     <View
+    //       style={[
+    //         styles.mainView,
+    //         loader && {
+    //           justifyContent: "center",
+    //         },
+    //       ]}
+    //     >
+    //       {loader ? (
+    //         <ActivityIndicator color={color._primary_orange} size={"large"} />
+    //       ) : (
+    //         <ScrollView
+    //           bounces={false}
+    //           alwaysBounceVertical={false}
+    //           overScrollMode="never"
+    //           style={{ marginTop: 20 }}
+    //           showsVerticalScrollIndicator={false}
+    //           keyboardShouldPersistTaps="always"
+    //         >
+    //           <Text style={styles.headings}>Name on Card</Text>
+    //           <Atom.TextInputSimple
+    //             textFieldStyle={[styles.textField]}
+    //             value={cardDetails.name}
+    //             name={"name"}
+    //             onChangeText={(value) => {
+    //               setName(value),
+    //                 handleChange("name", value),
+    //                 setError({ ...error, name: "" });
+    //             }}
+    //           />
+    //           {error?.name ? (
+    //             <Text style={styles?.inputErrorText}>{error?.name}</Text>
+    //           ) : null}
+
+    //           <Text style={styles.headings}>Card Number</Text>
+    //           <Atom.TextInputSimple
+    //             maxLength={19}
+    //             name={"cardNumber"}
+    //             textFieldStyle={styles.textField}
+    //             keyboardType={"numeric"}
+    //             // value={cardDetails?.cardNumber}
+    //             value={cardNumber}
+    //             onChangeText={(value) => {
+    //               // handleChangeCardNumber(value);
+    //               setCardNumber(formatCardNumber(value));
+    //               handleChange("cardNumber", value);
+    //               setError({ ...error, cardNumber: "" });
+    //             }}
+    //           />
+    //           {error?.cardNumber ? (
+    //             <Text style={styles?.inputErrorText}>{error?.cardNumber}</Text>
+    //           ) : null}
+    //           <View
+    //             style={{
+    //               flexDirection: "row",
+    //               justifyContent: "space-between",
+    //             }}
+    //           >
+    //             <View style={{ flex: 1 }}>
+    //               <Text style={styles.headings}>Expiration date</Text>
+    //               <View
+    //                 style={{
+    //                   flexDirection: "row",
+    //                   justifyContent: "flex-start",
+    //                 }}
+    //               >
+    //                 <Atom.TextInputSimple
+    //                   // value={`${cardDetails.expiryMonth} / ${cardDetails.expiryYear}`}
+    //                   value={date}
+    //                   textFieldStyle={{ height: 48, width: 150 }}
+    //                   onChangeText={(value) => {
+    //                     value?.length > 6
+    //                       ? null
+    //                       : setDate(handleInputChange(value));
+    //                     handleChange("date", handleInputChange(value));
+    //                     setError({ ...error, date: "" });
+    //                   }}
+    //                   placeholder={"MM/YY"}
+    //                   placeholderTextColor={"lightgray"}
+    //                 />
+
+    //                 {/* <View style={{ left: 10 }}>
+    //                 <Atom.TextInputSimple
+    //                   value={cardDetails.expiryYear}
+    //                   textFieldStyle={{ height: 48, width: 70 }}
+    //                   onChangeText={(value) =>
+    //                     handleChange("expiryYear", value)
+    //                   }
+    //                 />
+    //               </View> */}
+    //               </View>
+    //               {error?.date ? (
+    //                 <Text style={styles?.inputErrorText}>{error?.date}</Text>
+    //               ) : null}
+    //             </View>
+    //             <View>
+    //               <Text style={styles.headings}>CVV</Text>
+    //               <Atom.TextInputSimple
+    //                 secureTextEntry={true}
+    //                 hideEye={true}
+    //                 keyboardType="numbers-and-punctuation"
+    //                 textFieldStyle={{ height: 48, width: 156 }}
+    //                 value={cardDetails.cvv}
+    //                 onChangeText={(value) => {
+    //                   setCvv(value), handleChange("cvv", value);
+    //                   setError({ ...error, cvv: "" });
+    //                 }}
+    //                 placeholder={"123"}
+    //                 placeholderTextColor={"lightgray"}
+    //               />
+    //               {error?.cvv ? (
+    //                 <Text style={styles?.inputErrorText}>{error?.cvv}</Text>
+    //               ) : null}
+    //             </View>
+    //           </View>
+    //           {!isFromOnboarding && (
+    //             <Atom.CheckBox
+    //               label={"Set as default payment method"}
+    //               // checkValue={cardDetails.default}
+    //               checkValue={isDefault}
+    //               onPress={
+    //                 () => setIsDefault(!isDefault)
+    //                 // setCardDetails({
+    //                 //   ...cardDetails,
+    //                 //   default: !cardDetails.default,
+    //                 // })
+    //               }
+    //               labelStyle={styles.checkBoxStyle}
+    //             />
+    //           )}
+    //           <Text style={styles.headingAddress}>Billing Address</Text>
+    //           <Text style={styles.headings}>Address</Text>
+    //           {/* <Atom.TextInputSimple
+    //           textFieldStyle={styles.textField}
+    //           value={cardDetails.adress}
+    //           onChangeText={(value) => handleChange("adress", value)}
+    //         /> */}
+    //           <>
+    //             <View style={{ marginVertical: 10 }}>
+    //               <GooglePlacesAutocomplete
+    //                 placeholder="Search"
+    //                 enablePoweredByContainer={false}
+    //                 // textInputProps={{ clearButtonMode: "never" }}
+    //                 styles={{
+    //                   textInputContainer: {
+    //                     // backgroundColor: "grey",
+    //                   },
+    //                   container: {
+    //                     flex: 0,
+    //                   },
+    //                   textInput: {
+    //                     height: 58,
+    //                     color: "#5d5d5d",
+    //                     fontSize: 16,
+    //                     borderWidth: 1,
+    //                     borderRadius: 16,
+    //                     borderColor: "#DCDCDD",
+    //                     // backgroundColor:'red',
+    //                   },
+    //                   predefinedPlacesDescription: {
+    //                     color: "#1faadb",
+    //                   },
+    //                 }}
+    //                 fetchDetails={true}
+    //                 onPress={(data, details = null) => {
+    //                   console.log(data, "[[[[[[[[[[[[[[");
+    //                   setError({ ...error, state: "", address: "", city: "" }),
+    //                     setAddress(details?.formatted_address),
+    //                     setCity(details?.address_components[1]?.long_name),
+    //                     setState(details?.address_components[3]?.long_name),
+    //                     handleChange("address", details?.formatted_address);
+    //                 }}
+    //                 query={{
+    //                   key: "AIzaSyCWbsC3b6QgedZG8VQe2ux5lovNGxTptZM",
+    //                   language: "en",
+    //                 }}
+    //                 currentLocation={false}
+    //                 // currentLocationLabel="Current location"
+    //               />
+    //             </View>
+    //             {error?.address ? (
+    //               <Text style={styles?.inputErrorText}>{error?.address}</Text>
+    //             ) : null}
+    //           </>
+    //           <Text style={styles.headings}>City</Text>
+    //           <Atom.TextInputSimple
+    //             textFieldStyle={styles.textField}
+    //             // value={cardDetails.city}
+    //             value={city}
+    //             onChangeText={(value) => {
+    //               setCity(value),
+    //                 handleChange("city", value),
+    //                 setError({ ...error, city: "" });
+    //             }}
+    //           />
+    //           {error?.city ? (
+    //             <Text style={styles?.inputErrorText}>{error?.city}</Text>
+    //           ) : null}
+    //           <View
+    //             style={{
+    //               flexDirection: "row",
+    //               justifyContent: "space-between",
+    //             }}
+    //           >
+    //             <View>
+    //               <Text style={styles.headings}>State</Text>
+    //               <Atom.TextInputSimple
+    //                 textFieldStyle={{ height: 48, width: 157 }}
+    //                 // value={cardDetails.state}
+    //                 value={state}
+    //                 onChangeText={(value) => {
+    //                   handleChange("state", value);
+    //                   setState(value), setError({ ...error, state: "" });
+    //                 }}
+    //               />
+    //               {error?.state ? (
+    //                 <Text style={styles?.inputErrorText}>{error?.state}</Text>
+    //               ) : null}
+    //             </View>
+    //             <View>
+    //               <Text style={styles.headings}>Zip code</Text>
+    //               <Atom.TextInputSimple
+    //                 keyboardType={"numeric"}
+    //                 textFieldStyle={{ height: 48, width: 156 }}
+    //                 value={zipCode}
+    //                 onChangeText={(value) => {
+    //                   handleChange("zipCode", value),
+    //                     setZipCode(value),
+    //                     setError({ ...error, zipCode: "" });
+    //                 }}
+    //               />
+    //               {error?.zipCode ? (
+    //                 <Text style={styles?.inputErrorText}>{error?.zipCode}</Text>
+    //               ) : null}
+    //             </View>
+    //           </View>
+    //           {isFromOnboarding && (
+    //             <Text
+    //               onPress={() => {
+    //                 navigation.navigate("Done");
+    //               }}
+    //               style={{
+    //                 alignSelf: "center",
+    //                 color: color._primary_orange,
+    //                 marginHorizontal: 5,
+    //               }}
+    //             >
+    //               SKIP
+    //             </Text>
+    //           )}
+    //           {isFromOnboarding ? (
+    //             <Atom.Button
+    //               onPress={() => {
+    //                 handlePayment();
+    //               }}
+    //               title={"NEXT"}
+    //             />
+    //           ) : (
+    //             <Atom.Button
+    //               onPress={() => {
+    //                 // InteractionManager.runAfterInteractions(() => {
+    //                 handlePayment();
+    //                 // setLoader(true);
+    //               }}
+    //               title={"SAVE"}
+    //             />
+    //           )}
+    //           <Text style={styles.lastHeading}>
+    //             <Icon name="shield-checkmark" size={15} color={"#726A6A"} />{" "}
+    //             Information is sent over a secure connection
+    //           </Text>
+    //         </ScrollView>
+    //       )}
+    //     </View>
+    //   </KeyboardAwareScrollView>
+    //   {/* </ScrollView>
+    //   </KeyboardAvoidingView> */}
+    //   <Models.CommonPopUp
+    //     isVisible={modalVisibleUpdate}
+    //     title="Successful"
+    //     titleTxt={{ fontSize: 24 }}
+    //     discription="Payment Method Updated!"
+    //     descriptionTxt={styles.description}
+    //     // middleContent={middleContentCardDecline()}
+    //     middleContentStyle={{ paddingTop: 19 }}
+    //     btnTxt="BACK TO PAYMENTS"
+    //     onPress={() => {
+    //       navigation.goBack(), setModalVisibleUpdate(false);
+    //     }}
+    //   />
+    // </SafeAreaView>
   );
 };
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     padding: 20,
+//   },
+//   input: {
+//     width: "100%",
+//     height: 40,
+//     borderColor: "gray",
+//     borderWidth: 1,
+//     marginBottom: 10,
+//     paddingHorizontal: 10,
+//   },
+//   inlineInputs: {
+//     flexDirection: "row",
+//     justifyContent: "space-between",
+//     width: "100%",
+//     marginBottom: 10,
+//   },
+// });
 
 const mapStateToProps = (state) => ({
   state: state,

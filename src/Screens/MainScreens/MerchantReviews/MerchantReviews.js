@@ -20,39 +20,41 @@ import axiosClient from "../../../Utils/ApiClient";
 import { API_URL } from "../../../Constants/Config";
 
 const MerchantReviews = (props) => {
-
   // console.log(props.route.params)
 
-  const dispatch = useDispatch()
-  const { userToken, loginData } = useSelector(state => state.loginReducer)
-  const { Usertoken, signupSucessData } = useSelector(state => state.signupReducer)
-  const [userReview, setUserReview] = useState()
-
+  const dispatch = useDispatch();
+  const { userToken, loginData } = useSelector((state) => state.loginReducer);
+  const { Usertoken, signupSucessData } = useSelector(
+    (state) => state.signupReducer
+  );
+  const [userReview, setUserReview] = useState();
 
   const handleRes = async () => {
-    console.log("hello", props.route.params.mId)
+    console.log("hello", props.route.params.mId);
     try {
-      let query = `?merchantId=${props.route.params.mId}`
-      const res = await axiosClient.get(API_URL.fetchMerchantReview + query, {
-        merchantId: props.route.params.mId,
-      }, {
-        headers: {
-          Authorization: userToken ? userToken :
-            Usertoken
+      let query = `?merchantId=${props.route.params.mId}`;
+      const res = await axiosClient.get(
+        API_URL.fetchMerchantReview + query,
+        {
+          merchantId: props.route.params.mId,
+        },
+        {
+          headers: {
+            Authorization: userToken ? userToken : Usertoken,
+          },
         }
-      })
-      console.log(res.data)
-      if (res.data.status)
-        setUserReview(res.data.data)
+      );
+      console.log(res.data, "--------------======");
+      if (res.data.status) setUserReview(res.data.data);
     } catch (error) {
       // console.log("ERR", error)
     }
-  }
+  };
   // console.log(userReview[0]?.reviews)
 
   useEffect(() => {
-    handleRes()
-  }, [])
+    handleRes();
+  }, []);
 
   const DATA = [
     {
@@ -139,7 +141,10 @@ const MerchantReviews = (props) => {
           }}
         >
           <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={styles.review}> {userReview && userReview[0] && userReview[0]?.averageRating} </Text>
+            <Text style={styles.review}>
+              {" "}
+              {userReview && userReview[0] && userReview[0]?.averageRating}{" "}
+            </Text>
             {userReview && userReview[0] && (
               <Atom.Rating
                 disabled={true}
@@ -147,7 +152,10 @@ const MerchantReviews = (props) => {
                 titleStyle={{ paddingLeft: 3 }}
               />
             )}
-            <Text style={styles.rating}> ({userReview && userReview[0]?.ratingCount}) </Text>
+            <Text style={styles.rating}>
+              {" "}
+              ({userReview && userReview[0]?.ratingCount}){" "}
+            </Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Text style={styles.review}>Sort By </Text>
@@ -174,7 +182,7 @@ const MerchantReviews = (props) => {
           data={userReview && userReview[0]?.reviews}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
-        //   ItemSeparatorComponent={FlatListItemSeparator}
+          //   ItemSeparatorComponent={FlatListItemSeparator}
         />
       </View>
     </SafeAreaView>

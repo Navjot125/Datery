@@ -130,7 +130,6 @@ const CommonCrousal = () => {
 
   const renderPagination = React.useMemo(() => {
     return (
-      // console.log("indexx", indexx),
       <View style={styles.wrapPagination}>
         {data.map((_, index) => {
           return (
